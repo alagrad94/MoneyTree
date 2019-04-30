@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MoneyTrree.Models {
+namespace MoneyTree.Models {
     public class Customer {
 
         [Required]
@@ -8,15 +8,25 @@ namespace MoneyTrree.Models {
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required]
-        public string PhohneNumber { get; set; }
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
 
         [Required]
         public string Email { get; set; }
+
+        [Display(Name = "Customer Name")]
+        public string FullName {
+            get {
+                return $"{FirstName} {LastName}";
+            }
+        }
     }
 }

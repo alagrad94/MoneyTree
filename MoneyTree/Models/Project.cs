@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MoneyTrree.Models {
+namespace MoneyTree.Models {
     public class Project {
 
         [Required]
@@ -12,13 +12,20 @@ namespace MoneyTrree.Models {
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Project Name")]
         public string ProjectName { get; set; }
 
         [Required]
+        [Display(Name = "Start Date")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
 
+        [Display(Name = "Completion Date")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime CompletionDate { get; set; }
 
+        [Display(Name = "Amount Charged")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public int AmountCharged { get; set; }
 
         public int CustomerId { get; set; }
