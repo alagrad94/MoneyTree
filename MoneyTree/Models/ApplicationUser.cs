@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
-namespace MoneyTrree.Models {
-    public class ApplicationUser {
-
-        [Required]
-        [Key]
-        public int Id { get; set; }
+namespace MoneyTree.Models {
+    public class ApplicationUser : IdentityUser {
 
         [Required]
         public string FirstName { get; set; }
@@ -13,10 +10,10 @@ namespace MoneyTrree.Models {
         [Required]
         public string LastName { get; set; }
 
-        [Required]
-        public string UserName { get; set; }
-
-        [Required]
-        public string UserEmail { get; set; }
+        public string FullName {
+            get {
+                return $"{FirstName} {LastName}";
+            }
+        }
     }
 }
