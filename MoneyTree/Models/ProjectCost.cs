@@ -30,5 +30,14 @@ namespace MoneyTree.Models {
 
         [Display(Name = "Cost Item")]
         public CostItem CostItem { get; set; }
+
+        public CostPerUnit CostPerUnit { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public double TotalCost {
+            get {
+                return Quantity * CostPerUnit.Cost;
+            }
+        }
     }
 }
