@@ -35,6 +35,26 @@ namespace MoneyTree.Models {
 
         public Customer Customer { get; set; }
 
+        public List<ProjectCost> ProjectCosts { get; set; }
+
         public ApplicationUser User { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public double TotalCost {
+            get {
+                double Total = 0.00;
+                foreach (var item in ProjectCosts) {
+                    Total += item.TotalCost;
+                }
+                return Total;
+            }
+        }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public double Profit {
+            get {
+                return AmountCharged - TotalCost;
+            }
+        }
     }
 }

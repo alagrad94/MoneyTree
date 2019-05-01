@@ -306,6 +306,8 @@ namespace MoneyTree.Migrations
 
                     b.Property<int>("CostItemId");
 
+                    b.Property<int?>("CostPerUnitId");
+
                     b.Property<DateTime>("DateUsed");
 
                     b.Property<int>("ProjectId");
@@ -315,6 +317,8 @@ namespace MoneyTree.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CostItemId");
+
+                    b.HasIndex("CostPerUnitId");
 
                     b.HasIndex("ProjectId");
 
@@ -433,8 +437,12 @@ namespace MoneyTree.Migrations
                         .HasForeignKey("CostItemId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MoneyTree.Models.Project", "Project")
+                    b.HasOne("MoneyTree.Models.CostPerUnit", "CostPerUnit")
                         .WithMany()
+                        .HasForeignKey("CostPerUnitId");
+
+                    b.HasOne("MoneyTree.Models.Project", "Project")
+                        .WithMany("ProjectCosts")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
