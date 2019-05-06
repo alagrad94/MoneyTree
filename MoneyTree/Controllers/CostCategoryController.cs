@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,39 +6,38 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoneyTree.Data;
 using MoneyTree.Models;
+using MoneyTree.Models.ViewModels;
 
-namespace MoneyTree.Controllers
-{
-    public class CostCategoryController : Controller
-    {
+namespace MoneyTree.Controllers {
+
+    public class CostCategoryController : Controller {
+
         private readonly ApplicationDbContext _context;
 
-        public CostCategoryController(ApplicationDbContext context)
-        {
+        public CostCategoryController(ApplicationDbContext context) {
+
             _context = context;
         }
 
         // GET: CostCategories
-        public async Task<IActionResult> Index()
-        {
+        public async Task<IActionResult> Index() {
+
             return View(await _context.CostCategory.ToListAsync());
         }
 
         // GET: CostCategories/Create
-        public IActionResult Create()
-        {
+        public IActionResult Create() {
+
             return View();
         }
 
         // POST: CostCategories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryName")] CostCategory costCategory)
-        {
-            if (ModelState.IsValid)
-            {
+        public async Task<IActionResult> Create([Bind("Id,CategoryName")] CostCategory costCategory) {
+
+            if (ModelState.IsValid) {
+
                 _context.Add(costCategory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -48,48 +46,47 @@ namespace MoneyTree.Controllers
         }
 
         // GET: CostCategories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Edit(int? id) {
+
+            if (id == null) {
+
                 return NotFound();
             }
 
             var costCategory = await _context.CostCategory.FindAsync(id);
-            if (costCategory == null)
-            {
+
+            if (costCategory == null) {
                 return NotFound();
             }
             return View(costCategory);
         }
 
         // POST: CostCategories/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName")] CostCategory costCategory)
-        {
-            if (id != costCategory.Id)
-            {
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName")] CostCategory costCategory) {
+
+            if (id != costCategory.Id) {
+
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
+            if (ModelState.IsValid) {
+
+                try {
+
                     _context.Update(costCategory);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CostCategoryExists(costCategory.Id))
-                    {
+
+                catch (DbUpdateConcurrencyException) {
+
+                    if (!CostCategoryExists(costCategory.Id)) {
+
                         return NotFound();
-                    }
-                    else
-                    {
+
+                    } else {
+
                         throw;
                     }
                 }
@@ -99,36 +96,53 @@ namespace MoneyTree.Controllers
         }
 
         // GET: CostCategories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Delete(int id) {
+
+            if (id == null) {
+
                 return NotFound();
             }
 
-            var costCategory = await _context.CostCategory
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (costCategory == null)
-            {
-                return NotFound();
-            }
+            //ViewData["NewCategoryId"] = new SelectList(_context.CostCategory.Where(c => c.Id != id), "Id", "CategoryName");
+            //CostCategory costCategory = _context.CostCategory.FirstOrDefault(c => c.Id == id);
+            DeleteCategoryViewModel viewModel = new DeleteCategoryViewModel {
 
-            return View(costCategory);
+                OldCategoryId = id,
+                CostCategories = _context.CostCategory.ToList(),
+                CostCategory = _context.CostCategory.FirstOrDefault(c => c.Id == id)
+            };
+
+            return View(viewModel);
         }
 
         // POST: CostCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var costCategory = await _context.CostCategory.FindAsync(id);
+        public async Task<IActionResult> DeleteConfirmed(DeleteCategoryViewModel viewModel) {
+
+            int NewCategoryId = viewModel.NewCategoryId;
+
+            ReassignItemsToNewCategory(viewModel.OldCategoryId, NewCategoryId);
+            await _context.SaveChangesAsync();
+            var costCategory = await _context.CostCategory.FindAsync(viewModel.OldCategoryId);
             _context.CostCategory.Remove(costCategory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CostCategoryExists(int id)
-        {
+        private void ReassignItemsToNewCategory(int oldCatId, int newCatId) {
+
+            List<CostItem> Items = _context.CostItem.Where(i => i.CostCategoryId == oldCatId).ToList();
+
+            foreach (var item in Items) {
+
+                item.CostCategoryId = newCatId;
+                _context.Update(item);
+            }
+        }
+
+        private bool CostCategoryExists(int id) {
+
             return _context.CostCategory.Any(e => e.Id == id);
         }
     }

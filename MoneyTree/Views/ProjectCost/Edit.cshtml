@@ -12,18 +12,24 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="CostItemId" class="control-label">Cost Item</label>
-                <select asp-for="CostItemId" class="form-control" asp-items="ViewBag.CostItemId"></select>
-                <span asp-validation-for="CostItemId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="ProjectId" class="control-label">Project Name</label>
                 <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
                 <span asp-validation-for="ProjectId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CostItemId" class="control-label">Cost Item</label>
+                <select asp-for="CostItemId" class="form-control" asp-items="ViewBag.CostItemId"></select>
+                <span asp-validation-for="CostItemId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CostPerUnitId" class="control-label">Cost Item</label>
+                <select asp-for="CostPerUnitId" class="form-control" asp-items="ViewBag.CostPerUnitId"></select>
+                <span asp-validation-for="CostItemId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="DateUsed" class="control-label">Date Used</label>
-                <input asp-for="DateUsed" class="form-control" />
+                <input asp-for="DateUsed" type="date" class="form-control" />
+                <p>***If you edit the Date Used, you must also select the appropriate Cost Per Unit in the dropdown above based on the new date you entered.</p>
                 <span asp-validation-for="DateUsed" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,7 +45,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Details" asp-controller="Project" asp-route-id="@Model.ProjectId">Back to List</a>
 </div>
 
 @section Scripts {

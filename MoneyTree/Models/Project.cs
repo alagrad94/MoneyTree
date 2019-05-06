@@ -17,21 +17,18 @@ namespace MoneyTree.Models {
 
         [Required]
         [Display(Name = "Start Date")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime StartDate { get; set; }
 
         [Display(Name = "Completion Date")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
-        public DateTime CompletionDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime? CompletionDate { get; set; }
 
         [Display(Name = "Amount Charged")]
         [DisplayFormat(DataFormatString = "{0:C}")]
-        public int AmountCharged { get; set; }
+        public double AmountCharged { get; set; }
 
-        public int CustomerId { get; set; }
-
-        [Required]
-        public int UserId { get; set; }
+        public int? CustomerId { get; set; }
 
         public Customer Customer { get; set; }
 

@@ -4,22 +4,12 @@
 	c.  Project post uses signed in user
 	d.  ????
 
-2.  Project Cost Create View Model
-	a.  Create sub view models…Partial Views???
-	b.  Workflow??  Where should this reside?
+Stretch 
 
-3.  Eliminate unnecessary views and controllers
-	a.  Combine ProjectCostController with ProjectController????
-
-4.  For Cost Categories, Unit of Measure, Cost Item, Cost Per Unit - combine everything into a single view???
-
-5.  Cost Category delete - write logic for reassigning to new category
-
-6.  Cost Per Unit - write logic to ensure only one open record at a time (close existing record)
-	a.  Then: the "Create Cost Per Unit" form is displayed where the user can select 	the Cost Item, enter the start date of the date range and the cost per unit
-	When: the user clicks the Submit button, a new record is created in the 	database and if the associated Cost Item has an Open CPU record, that 	record should be closed with an End Date which is 1 day before the Start 	Date entered in the new record
-
-	b.  Then: the "Edit Cost Per Unit" form is displayed where the user can edit the 	Start Date, End Date and Cost Per Unit
-	When: the user clicks the Submit button, the system should verify 1) the edited 	record doesn't create an overlap of CPU records associated with the Cost Item 	2) the edited record doesn't create a date gap where no CPU information is 	available if the associated Cost Item is assigned to a project with a "Date Used" 	value in the gap that would be created
-
-7.  Write logic for cascading delete on Project (delete all associated ProjectCost records)
+1.  For Cost Categories, Unit of Measure, Cost Item, Cost Per Unit - combine everything into a single view???
+2.  Add multiple costs to a project at once
+3.  Sort CostPerUnit Index into Current/Past and Group by Category
+4.  Make CostItem Index with a dropdown to choose category and then display only items in that category
+5.  Sort Customers Alphabetically and group under letter headings ("A", "B", etc...)
+6.  Sort Project Index in reverse chronological order and group by Open/Complete
+7.  Add Suppliers (Supplier Table with SupplierId in CPU table or CostItem table or both???) to allow for having multiple cost records open for the same item if purchased from different places

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MoneyTree.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class RecreateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,7 +51,7 @@ namespace MoneyTree.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CostCategories",
+                name: "CostCategory",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -60,27 +60,27 @@ namespace MoneyTree.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CostCategories", x => x.Id);
+                    table.PrimaryKey("PK_CostCategory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "Customer",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
-                    PhohneNumber = table.Column<string>(nullable: false),
+                    PhoneNumber = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_Customer", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UnitOfMeasures",
+                name: "UnitOfMeasure",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -89,7 +89,7 @@ namespace MoneyTree.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UnitOfMeasures", x => x.Id);
+                    table.PrimaryKey("PK_UnitOfMeasure", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,108 +199,109 @@ namespace MoneyTree.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Projects",
+                name: "Project",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProjectName = table.Column<string>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
-                    CompletionDate = table.Column<DateTime>(nullable: false),
-                    AmountCharged = table.Column<int>(nullable: false),
-                    CustomerId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true)
+                    CompletionDate = table.Column<DateTime>(nullable: true),
+                    AmountCharged = table.Column<double>(nullable: false),
+                    CustomerId = table.Column<int>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Projects", x => x.Id);
+                    table.PrimaryKey("PK_Project", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Projects_Customers_CustomerId",
+                        name: "FK_Project_Customer_CustomerId",
                         column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Customer",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Projects_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Project_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CostItems",
+                name: "CostItem",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ItemName = table.Column<string>(nullable: true),
                     UnitOfMeasureId = table.Column<int>(nullable: false),
                     CostCategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CostItems", x => x.Id);
+                    table.PrimaryKey("PK_CostItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CostItems_CostCategories_CostCategoryId",
+                        name: "FK_CostItem_CostCategory_CostCategoryId",
                         column: x => x.CostCategoryId,
-                        principalTable: "CostCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "CostCategory",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CostItems_UnitOfMeasures_UnitOfMeasureId",
+                        name: "FK_CostItem_UnitOfMeasure_UnitOfMeasureId",
                         column: x => x.UnitOfMeasureId,
-                        principalTable: "UnitOfMeasures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "UnitOfMeasure",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "CostPerUnits",
+                name: "CostPerUnit",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: true),
                     Cost = table.Column<double>(nullable: false),
                     CostItemId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CostPerUnits", x => x.Id);
+                    table.PrimaryKey("PK_CostPerUnit", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CostPerUnits_CostItems_CostItemId",
+                        name: "FK_CostPerUnit_CostItem_CostItemId",
                         column: x => x.CostItemId,
-                        principalTable: "CostItems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "CostItem",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProjectCosts",
+                name: "ProjectCost",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CostItemId = table.Column<int>(nullable: false),
                     ProjectId = table.Column<int>(nullable: false),
+                    CostPerUnitId = table.Column<int>(nullable: false),
                     DateUsed = table.Column<DateTime>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectCosts", x => x.Id);
+                    table.PrimaryKey("PK_ProjectCost", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProjectCosts_CostItems_CostItemId",
+                        name: "FK_ProjectCost_CostItem_CostItemId",
                         column: x => x.CostItemId,
-                        principalTable: "CostItems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "CostItem",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ProjectCosts_Projects_ProjectId",
+                        name: "FK_ProjectCost_CostPerUnit_CostPerUnitId",
+                        column: x => x.CostPerUnitId,
+                        principalTable: "CostPerUnit",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ProjectCost_Project_ProjectId",
                         column: x => x.ProjectId,
-                        principalTable: "Projects",
+                        principalTable: "Project",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -345,39 +346,44 @@ namespace MoneyTree.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CostItems_CostCategoryId",
-                table: "CostItems",
+                name: "IX_CostItem_CostCategoryId",
+                table: "CostItem",
                 column: "CostCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CostItems_UnitOfMeasureId",
-                table: "CostItems",
+                name: "IX_CostItem_UnitOfMeasureId",
+                table: "CostItem",
                 column: "UnitOfMeasureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CostPerUnits_CostItemId",
-                table: "CostPerUnits",
+                name: "IX_CostPerUnit_CostItemId",
+                table: "CostPerUnit",
                 column: "CostItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectCosts_CostItemId",
-                table: "ProjectCosts",
-                column: "CostItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProjectCosts_ProjectId",
-                table: "ProjectCosts",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Projects_CustomerId",
-                table: "Projects",
+                name: "IX_Project_CustomerId",
+                table: "Project",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_UserId1",
-                table: "Projects",
-                column: "UserId1");
+                name: "IX_Project_UserId",
+                table: "Project",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectCost_CostItemId",
+                table: "ProjectCost",
+                column: "CostItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectCost_CostPerUnitId",
+                table: "ProjectCost",
+                column: "CostPerUnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectCost_ProjectId",
+                table: "ProjectCost",
+                column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -398,31 +404,31 @@ namespace MoneyTree.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CostPerUnits");
-
-            migrationBuilder.DropTable(
-                name: "ProjectCosts");
+                name: "ProjectCost");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "CostItems");
+                name: "CostPerUnit");
 
             migrationBuilder.DropTable(
-                name: "Projects");
+                name: "Project");
 
             migrationBuilder.DropTable(
-                name: "CostCategories");
+                name: "CostItem");
 
             migrationBuilder.DropTable(
-                name: "UnitOfMeasures");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Customer");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "CostCategory");
+
+            migrationBuilder.DropTable(
+                name: "UnitOfMeasure");
         }
     }
 }

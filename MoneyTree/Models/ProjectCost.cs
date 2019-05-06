@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace MoneyTree.Models {
+namespace MoneyTree.Models
+{
+
     public class ProjectCost {
 
         [Required]
@@ -18,7 +17,10 @@ namespace MoneyTree.Models {
         public int ProjectId { get; set; }
 
         [Required]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        public int CostPerUnitId { get; set; }
+
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "Date Used")]
         public DateTime DateUsed { get; set; }
 
@@ -36,7 +38,7 @@ namespace MoneyTree.Models {
         [DisplayFormat(DataFormatString = "{0:C}")]
         public double TotalCost {
             get {
-                return Quantity * CostPerUnit.Cost;
+                return Quantity * (CostPerUnit?.Cost??0);
             }
         }
     }

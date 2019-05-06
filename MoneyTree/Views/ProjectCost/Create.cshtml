@@ -11,16 +11,15 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CostItemId" class="control-label">Cost Item</label>
-                <select asp-for="CostItemId" class ="form-control" asp-items="ViewBag.CostItemId"></select>
+                <input type="hidden" asp-for="ProjectId" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="ProjectId" class="control-label">Project Name</label>
-                <select asp-for="ProjectId" class ="form-control" asp-items="ViewBag.ProjectId"></select>
+                <label asp-for="CostItemId" class="control-label">Cost Item</label>
+                <select asp-for="CostItemId" class="form-control" asp-items="ViewBag.CostItemId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="DateUsed" class="control-label">Date Used</label>
-                <input asp-for="DateUsed" class="form-control" />
+                <input asp-for="DateUsed" type="date" class="form-control" />
                 <span asp-validation-for="DateUsed" class="text-danger"></span>
             </div>
             <div class="form-group">

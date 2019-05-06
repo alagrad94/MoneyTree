@@ -234,7 +234,7 @@ namespace MoneyTree.Migrations
 
                     b.Property<int>("CostItemId");
 
-                    b.Property<DateTime>("EndDate");
+                    b.Property<DateTime?>("EndDate");
 
                     b.Property<DateTime>("StartDate");
 
@@ -274,26 +274,24 @@ namespace MoneyTree.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AmountCharged");
+                    b.Property<double>("AmountCharged");
 
-                    b.Property<DateTime>("CompletionDate");
+                    b.Property<DateTime?>("CompletionDate");
 
-                    b.Property<int>("CustomerId");
+                    b.Property<int?>("CustomerId");
 
                     b.Property<string>("ProjectName")
                         .IsRequired();
 
                     b.Property<DateTime>("StartDate");
 
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("UserId1");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Project");
                 });
@@ -306,7 +304,7 @@ namespace MoneyTree.Migrations
 
                     b.Property<int>("CostItemId");
 
-                    b.Property<int?>("CostPerUnitId");
+                    b.Property<int>("CostPerUnitId");
 
                     b.Property<DateTime>("DateUsed");
 
@@ -401,41 +399,36 @@ namespace MoneyTree.Migrations
                 {
                     b.HasOne("MoneyTree.Models.CostCategory", "CostCategory")
                         .WithMany()
-                        .HasForeignKey("CostCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CostCategoryId");
 
                     b.HasOne("MoneyTree.Models.UnitOfMeasure", "UnitOfMeasure")
                         .WithMany()
-                        .HasForeignKey("UnitOfMeasureId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UnitOfMeasureId");
                 });
 
             modelBuilder.Entity("MoneyTree.Models.CostPerUnit", b =>
                 {
                     b.HasOne("MoneyTree.Models.CostItem", "CostItem")
                         .WithMany()
-                        .HasForeignKey("CostItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CostItemId");
                 });
 
             modelBuilder.Entity("MoneyTree.Models.Project", b =>
                 {
                     b.HasOne("MoneyTree.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("MoneyTree.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("MoneyTree.Models.ProjectCost", b =>
                 {
                     b.HasOne("MoneyTree.Models.CostItem", "CostItem")
                         .WithMany()
-                        .HasForeignKey("CostItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CostItemId");
 
                     b.HasOne("MoneyTree.Models.CostPerUnit", "CostPerUnit")
                         .WithMany()

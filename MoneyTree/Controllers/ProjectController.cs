@@ -46,8 +46,8 @@ namespace MoneyTree.Controllers
 
             var project = GetProjectById(id);
 
-            if (project == null)
-            {
+            if (project == null) {
+
                 return NotFound();
             }
 
@@ -168,6 +168,11 @@ namespace MoneyTree.Controllers
             return _context.Project.Any(e => e.Id == id);
         }
 
+        private bool ProjectCostExists(int id) {
+
+            return _context.ProjectCost.Any(e => e.Id == id);
+        }
+
         public Project GetProjectById(int? id) {
 
             using (SqlConnection conn = Connection) {
@@ -185,10 +190,11 @@ namespace MoneyTree.Controllers
                                      LEFT JOIN Customer c ON p.CustomerId = c.Id
                                      LEFT JOIN ProjectCost pc ON p.Id = pc.ProjectId
                                      LEFT JOIN CostItem ci ON pc.CostItemId = ci.Id
-                                     LEFT JOIN CostPerUnit cpu ON pc.DateUsed BETWEEN cpu.StartDate AND cpu.EndDate
+                                     LEFT JOIN CostPerUnit cpu ON pc.CostPerUnitId = cpu.Id
                                      LEFT JOIN CostCategory cc ON ci.CostCategoryId = cc.Id
                                      LEFT JOIN UnitOfMeasure um ON ci.UnitOfMeasureId = um.Id 
-                                         WHERE p.Id = @id";
+                                         WHERE p.Id = @id
+                                      ORDER BY pc.DateUsed DESC;";
 
                     cmd.Parameters.Add(new SqlParameter("@id", id));
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -205,7 +211,7 @@ namespace MoneyTree.Controllers
                                 ProjectName = reader.GetString(reader.GetOrdinal("ProjectName")),
                                 StartDate = reader.GetDateTime(reader.GetOrdinal("ProjectStart")),
                                 CompletionDate = reader.GetDateTime(reader.GetOrdinal("ProjectEnd")),
-                                AmountCharged = reader.GetInt32(reader.GetOrdinal("AmountCharged")),
+                                AmountCharged = reader.GetDouble(reader.GetOrdinal("AmountCharged")),
                                 Customer = new Customer {
                                     Id = reader.GetInt32(reader.GetOrdinal("CustomerId")),
                                     FirstName = reader.GetString(reader.GetOrdinal("FirstName")),

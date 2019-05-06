@@ -1,21 +1,21 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace MoneyTree.Models
-{
+namespace MoneyTree.Models {
+
     public class CostPerUnit {
 
         [Required]
         public int Id { get; set; }
 
         [Required]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "End Date")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:C}")]
