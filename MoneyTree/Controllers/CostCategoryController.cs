@@ -96,18 +96,19 @@ namespace MoneyTree.Controllers {
         }
 
         // GET: CostCategories/Delete/5
-        public ActionResult Delete(int id) {
+        public ActionResult Delete(int? id) {
 
             if (id == null) {
 
                 return NotFound();
             }
 
+            int catId = id ?? default;
             //ViewData["NewCategoryId"] = new SelectList(_context.CostCategory.Where(c => c.Id != id), "Id", "CategoryName");
             //CostCategory costCategory = _context.CostCategory.FirstOrDefault(c => c.Id == id);
             DeleteCategoryViewModel viewModel = new DeleteCategoryViewModel {
 
-                OldCategoryId = id,
+                OldCategoryId = catId,
                 CostCategories = _context.CostCategory.ToList(),
                 CostCategory = _context.CostCategory.FirstOrDefault(c => c.Id == id)
             };

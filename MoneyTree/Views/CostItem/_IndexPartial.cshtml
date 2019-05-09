@@ -1,0 +1,43 @@
+﻿@model MoneyTree.Models.ViewModels.CostItemIndexViewModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryItems[0].ItemName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryItems[0].UnitOfMeasure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryItems[0].CostCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryItems[0].CurrentCost)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CategoryItems) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitOfMeasure.UnitName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CostCategory.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentCost)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

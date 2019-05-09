@@ -11,6 +11,9 @@ namespace MoneyTree.Models {
         [Key]
         public int Id { get; set; }
 
+        [Display(Name = "Complete")]
+        public bool IsComplete { get; set; }
+
         [Required]
         [Display(Name = "Project Name")]
         public string ProjectName { get; set; }
@@ -40,8 +43,11 @@ namespace MoneyTree.Models {
         public double TotalCost {
             get {
                 double Total = 0.00;
-                foreach (var item in ProjectCosts) {
-                    Total += item.TotalCost;
+                if (ProjectCosts != null) {
+
+                    foreach (var item in ProjectCosts) {
+                        Total += item.TotalCost;
+                    }
                 }
                 return Total;
             }

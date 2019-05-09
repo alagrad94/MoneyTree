@@ -1,46 +1,36 @@
-﻿@model IEnumerable<MoneyTree.Models.CostItem>
+﻿@model MoneyTree.Models.ViewModels.CostItemIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+        asp-fallback-test="window.jQuery"
+        crossorigin="anonymous"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+</script>
 
 <h1>Cost Items</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ItemName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitOfMeasure)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CostCategory)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitOfMeasure.UnitName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CostCategory.CategoryName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div id="container">
+    <label for="ddlCategory" class="control-label">Select A Cost Category</label>
+    <select id="ddlCategory" asp-items="@Model.CategoryOptions"></select>
+<br />
+<hr />
+<div id="dvCategoryResults">
+    @{Html.RenderPartial("_IndexPartial", Model);}
+</div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ddlCategory").change(function () {
+            var categoryId =  $("#ddlCategory").val();
+               $("#dvCategoryResults").load('CostItem?categoryId=' + categoryId);
+        });
+    });
+</script>  

@@ -1,6 +1,8 @@
 ﻿using MoneyTree.Data;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -12,7 +14,7 @@ namespace MoneyTree.Models
         private readonly ApplicationDbContext _context;
 
         public CostItem() {
-
+            
         }
 
         public CostItem(ApplicationDbContext context) {
@@ -39,18 +41,24 @@ namespace MoneyTree.Models
         [Display(Name = "Cost Category")]
         public CostCategory CostCategory { get; set; }
 
-        public CostPerUnit CurrentCost {
-            get {
+        [Display(Name = "Cost History")]
+        public List<CostPerUnit> CostHistory { get; set; }
 
+        [Display(Name = "Current Cost")]
+        [NotMapped]
+        public double CurrentCost {
+            get {
                 return GetCurrentCost();
             }
+            set { }
         }
 
-        private CostPerUnit GetCurrentCost () {
+        private double GetCurrentCost () {
 
-            CostPerUnit CuurentCostPerUnit = _context.CostPerUnit.Where(cpu => cpu.CostItemId == Id)
-                                                        .FirstOrDefault(cpu => cpu.EndDate == null);
-            return CuurentCostPerUnit;
+            CostPerUnit CurrentCost = _context?.CostPerUnit
+                .Where(cpu => cpu.CostItemId == Id).FirstOrDefault(cpu => cpu.EndDate == null);
+
+            return CurrentCost?.Cost??0;
         }
     }
 }

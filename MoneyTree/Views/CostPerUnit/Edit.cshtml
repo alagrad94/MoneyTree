@@ -12,9 +12,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="CostItemId" class="control-label">Item Name</label>
-                <select asp-for="CostItemId" class="form-control" asp-items="ViewBag.CostItemId"></select>
-                <span asp-validation-for="CostItemId" class="text-danger"></span>
+                <input type="hidden" asp-for="CostItemId" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
@@ -22,7 +20,8 @@
                 <p>***The system attempts to ensure historical cost records for a cost time do not have overlapping date ranges.  Therefore, the Start Date cannot be edited because it was used to set the End Date of the previous record when this one was created.  If you need to change the Start Date, please delete this record and create a new one.</p>
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
-            @if (Model.EndDate == null) {
+            @if (Model.EndDate == null)
+            {
 
                 <div class="form-group">
                     <label asp-for="EndDate" class="control-label"></label>
@@ -30,7 +29,9 @@
                     <p>***The Current Cost of each Item is represented by a single record with a blank End Date.  If you are attempting to change the currrent cost of an item, please create a new cost record.  The application will automatically close this record when a new one is created.</p>
                     <span asp-validation-for="EndDate" class="text-danger"></span>
                 </div>
-            } else {
+            }
+            else
+            {
 
                 <div class="form-group">
                     <label asp-for="EndDate" class="control-label"></label>
@@ -51,7 +52,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Details" asp-controller="CostItem" asp-route-id="@ViewBag.CostItemId">Back to List</a>
 </div>
 
 @section Scripts {

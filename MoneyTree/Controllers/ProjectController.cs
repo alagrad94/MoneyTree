@@ -32,7 +32,7 @@ namespace MoneyTree.Controllers
         // GET: Projects
         public async Task<IActionResult> Index() { 
 
-            var applicationDbContext = _context.Project.Include(p => p.Customer);
+            var applicationDbContext = _context.Project.Include(p => p.Customer).OrderByDescending(p => p.StartDate);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -181,7 +181,7 @@ namespace MoneyTree.Controllers
                 using (SqlCommand cmd = conn.CreateCommand()) {
 
                     cmd.CommandText = @"SELECT p.Id AS ProjectId, p.ProjectName, p.StartDate AS ProjectStart, 
-                                               p.CompletionDate AS ProjectEnd, p.AmountCharged, c.Id AS CustomerID, 
+                                               p.CompletionDate AS ProjectEnd, p.AmountCharged, c.Id AS CustomerId, 
                                                c.FirstName, c.LastName, c.PhoneNumber, c.Email, pc.Id AS ProjectCostId, 
                                                pc.DateUsed, pc.Quantity, ci.Id AS CostItemId, ci.ItemName, um.Id AS UnitId,
                                                um.UnitName, cc.Id AS CostCategoryId, cc.CategoryName, cpu.Id AS CostPerUnitId,
@@ -210,21 +210,34 @@ namespace MoneyTree.Controllers
                                 Id = reader.GetInt32(reader.GetOrdinal("ProjectId")),
                                 ProjectName = reader.GetString(reader.GetOrdinal("ProjectName")),
                                 StartDate = reader.GetDateTime(reader.GetOrdinal("ProjectStart")),
-                                CompletionDate = reader.GetDateTime(reader.GetOrdinal("ProjectEnd")),
-                                AmountCharged = reader.GetDouble(reader.GetOrdinal("AmountCharged")),
-                                Customer = new Customer {
-                                    Id = reader.GetInt32(reader.GetOrdinal("CustomerId")),
-                                    FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                                    LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                                    Email = reader.GetString(reader.GetOrdinal("Email")),
-                                    PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber"))
-                                },
-                                ProjectCosts = new List<ProjectCost>()
+                            };
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("ProjectEnd"))) {
+
+                            project.CompletionDate = reader.GetDateTime(reader.GetOrdinal("ProjectEnd"));
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("AmountCharged"))) {
+
+                            project.AmountCharged = reader.GetDouble(reader.GetOrdinal("AmountCharged"));
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("CustomerId"))) {
+
+                            project.Customer = new Customer {
+
+                                Id = reader.GetInt32(reader.GetOrdinal("CustomerId")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                Email = reader.GetString(reader.GetOrdinal("Email")),
+                                PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber"))
                             };
                         }
 
                         if (!reader.IsDBNull(reader.GetOrdinal("ProjectCostId"))) {
 
+                            project.ProjectCosts = new List<ProjectCost>();
                             int projectId = reader.GetInt32(reader.GetOrdinal("ProjectCostId"));
 
                             if (!project.ProjectCosts.Any(pc => pc.Id == projectId)) {
