@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoneyTree.Data;
 using MoneyTree.Models;
+using MoneyTree.Models.ViewModels;
 
 namespace MoneyTree.Controllers
 {
@@ -20,9 +21,21 @@ namespace MoneyTree.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Customer.ToListAsync());
+        public async Task<IActionResult> Index() {
+
+            CustomerIndexViewModel viewModel = new CustomerIndexViewModel(); 
+
+               var CustomerList = await (
+                    from Customer in _context.Customer
+                    group Customer by Customer.LastName.Substring(0, 1) into customerGroup
+                    select new GroupedCustomers {
+                        FirstLetter = customerGroup.Key,
+                        CustomerList = customerGroup.ToList()
+                    }).OrderBy(letter => letter.FirstLetter)
+                    .ToListAsync();
+
+            viewModel.GroupedCustomers = CustomerList;
+            return View(viewModel);
         }
 
         // GET: Customers/Details/5

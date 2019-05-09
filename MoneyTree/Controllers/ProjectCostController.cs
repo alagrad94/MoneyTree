@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using MoneyTree.Data;
 using MoneyTree.Models;
 
-namespace MoneyTree.Controllers {
+namespace MoneyTree.Controllers
+{
 
     public class ProjectCostController : Controller {
 

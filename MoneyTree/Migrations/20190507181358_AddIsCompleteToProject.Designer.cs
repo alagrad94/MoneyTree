@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoneyTree.Data;
 
 namespace MoneyTree.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190507181358_AddIsCompleteToProject")]
+    partial class AddIsCompleteToProject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -401,11 +403,13 @@ namespace MoneyTree.Migrations
                 {
                     b.HasOne("MoneyTree.Models.CostCategory", "CostCategory")
                         .WithMany()
-                        .HasForeignKey("CostCategoryId");
+                        .HasForeignKey("CostCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MoneyTree.Models.UnitOfMeasure", "UnitOfMeasure")
                         .WithMany()
-                        .HasForeignKey("UnitOfMeasureId");
+                        .HasForeignKey("UnitOfMeasureId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MoneyTree.Models.CostPerUnit", b =>
@@ -431,11 +435,13 @@ namespace MoneyTree.Migrations
                 {
                     b.HasOne("MoneyTree.Models.CostItem", "CostItem")
                         .WithMany()
-                        .HasForeignKey("CostItemId");
+                        .HasForeignKey("CostItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MoneyTree.Models.CostPerUnit", "CostPerUnit")
                         .WithMany()
-                        .HasForeignKey("CostPerUnitId");
+                        .HasForeignKey("CostPerUnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MoneyTree.Models.Project", "Project")
                         .WithMany("ProjectCosts")

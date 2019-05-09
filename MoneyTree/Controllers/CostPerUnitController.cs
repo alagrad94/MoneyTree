@@ -25,31 +25,37 @@ namespace MoneyTree.Controllers {
             MaintainCostPerUnitRecords(_context);
 
             var applicationDbContext = _context.CostPerUnit.Include(c => c.CostItem)
+                .ThenInclude(ci => ci.CostCategory)
                 .OrderBy(cpu => cpu.CostItemId)
-                .ThenByDescending(cpu => cpu.StartDate);
+                .ThenByDescending(cpu => cpu.StartDate)
+                .ThenBy(cpu => cpu.CostItem.CostCategory);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: CostPerUnits/Create
-        public IActionResult Create() {
+        public IActionResult Create(int id) {
 
             MaintainCostPerUnitRecords(_context);
 
-            ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName");
+            ViewData["CostItemId"] = id;
             return View();
         }
 
         // POST: CostPerUnits/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,Cost,CostItemId")] CostPerUnit costPerUnit) {
+        public async Task<IActionResult> Create(int id, CostPerUnit costPerUnit) {
 
-             DateTime Today = DateTime.UtcNow;
-           
-            if (costPerUnit.EndDate == null) {
+            costPerUnit.CostItemId = id;
+            costPerUnit.Id = 0;
+            DateTime Today = DateTime.UtcNow;
 
-                CostPerUnit CuurentCostPerUnit = _context.CostPerUnit.Where(cpu => cpu.CostItemId == costPerUnit.CostItemId)
-                                                           .FirstOrDefault(cpu => cpu.EndDate == null);
+            CostPerUnit CuurentCostPerUnit = _context.CostPerUnit.Where(cpu => cpu.CostItemId == costPerUnit.CostItemId)
+                                                        .FirstOrDefault(cpu => cpu.EndDate == null);
+            
+            ModelState.Remove("CostItemId");
+            if (CuurentCostPerUnit != null && costPerUnit.EndDate == null) {
+
                 CuurentCostPerUnit.EndDate = Today.AddDays(-1);
 
                 if (ModelState.IsValid) {
@@ -59,10 +65,10 @@ namespace MoneyTree.Controllers {
 
                     _context.Add(costPerUnit);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(actionName: "Details", controllerName: "CostItem", routeValues: new { id = costPerUnit.CostItemId });
                 }
 
-                ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName", costPerUnit.CostItemId);
+                ViewData["CostItemId"] = id;
                 return View(costPerUnit);
 
             } else {
@@ -71,10 +77,10 @@ namespace MoneyTree.Controllers {
 
                     _context.Add(costPerUnit);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(actionName: "Details", controllerName: "CostItem", routeValues: new { id = costPerUnit.CostItemId });
                 }
 
-                ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName", costPerUnit.CostItemId);
+                ViewData["CostItemId"] = id;
                 return View(costPerUnit);
             }
         }
@@ -95,7 +101,7 @@ namespace MoneyTree.Controllers {
                 return NotFound();
             }
 
-            ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName", costPerUnit.CostItemId);
+            ViewData["CostItemId"] = costPerUnit.CostItemId;
             return View(costPerUnit);
         }
 
@@ -126,9 +132,9 @@ namespace MoneyTree.Controllers {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(actionName: "Details", controllerName: "CostItem", routeValues: new { id = costPerUnit.CostItemId });
             }
-            ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName", costPerUnit.CostItemId);
+            ViewData["CostItemId"] = costPerUnit.CostItemId;
             return View(costPerUnit);
         }
 

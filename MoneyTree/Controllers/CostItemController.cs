@@ -1,12 +1,15 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoneyTree.Data;
 using MoneyTree.Models;
+using MoneyTree.Models.ViewModels;
 
-namespace MoneyTree.Controllers {
+namespace MoneyTree.Controllers
+{
 
     public class CostItemController : Controller {
 
@@ -18,10 +21,33 @@ namespace MoneyTree.Controllers {
         }
 
         // GET: CostItems
-        public async Task<IActionResult> Index() {
+        [HttpGet]
+        public async Task<IActionResult> Index(string categoryId = "") {
 
-            var applicationDbContext = _context.CostItem.Include(c => c.CostCategory).Include(c => c.UnitOfMeasure);
-            return View(await applicationDbContext.ToListAsync());
+            if (categoryId == "") {
+
+                var model = new CostItemIndexViewModel {
+
+                    CostCategories = await _context.CostCategory.ToListAsync(),
+                    CategoryItems = new List<CostItem>()
+                };
+
+                return View(model);
+
+            } else {
+
+                var catId = int.Parse(categoryId);
+                var model = new CostItemIndexViewModel {
+
+                    CategoryItems = await _context.CostItem.Where(ci => ci.CostCategoryId == catId)
+                                    .Include(c => c.CostCategory)
+                                    .Include(c => c.UnitOfMeasure)
+                                    .ToListAsync()
+                };
+
+                return PartialView("_IndexPartial", model);
+            }
+
         }
 
         // GET: CostItems/Details/5
@@ -36,6 +62,10 @@ namespace MoneyTree.Controllers {
                 .Include(c => c.CostCategory)
                 .Include(c => c.UnitOfMeasure)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            costItem.CostHistory = await _context.CostPerUnit.Where(cpu => cpu.CostItemId == id)
+                                                .OrderByDescending(cpu => cpu.StartDate)
+                                                .ToListAsync();
 
             if (costItem == null) {
 
@@ -56,7 +86,7 @@ namespace MoneyTree.Controllers {
         // POST: CostItems/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UnitOfMeasureId,CostCategoryId")] CostItem costItem) {
+        public async Task<IActionResult> Create([Bind("Id,ItemName,UnitOfMeasureId,CostCategoryId")] CostItem costItem) {
 
             if (ModelState.IsValid) {
 
