@@ -84,14 +84,10 @@ namespace MoneyTree.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UnitOfMeasureExists(unitOfMeasure.Id))
-                    {
+                    if (!UnitOfMeasureExists(unitOfMeasure.Id)) {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }

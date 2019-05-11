@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoneyTree.Data;
 using MoneyTree.Models;
+using MoneyTree.Models.ViewModels;
 
-namespace MoneyTree.Controllers
-{
+namespace MoneyTree.Controllers {
 
     public class ProjectCostController : Controller {
 
@@ -24,46 +24,63 @@ namespace MoneyTree.Controllers
 
             CostPerUnitController.MaintainCostPerUnitRecords(_context);
 
+            ProjectCostCreateViewModel model = new ProjectCostCreateViewModel {
+
+                Costs = new List<ProjectCost>()
+            };
+
+            ProjectCost Cost = new ProjectCost {
+                ProjectId = id
+            };
+
+            model.Costs.Add(Cost);
+
             ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName");
-            ViewData["ProjectId"] = id;
-            return View();
+            return View(model);
         }
 
         // POST: ProjectCosts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id, ProjectCost projectCost) {
+        public async Task<IActionResult> Create(ProjectCostCreateViewModel projectCosts) {
 
-            projectCost.ProjectId = id;
-            projectCost.Id = 0;
+            //foreach (var cost in projectCosts.Costs) {
+            //    cost.ProjectId = id;
+            //    cost.Id = 0;
 
-            CostPerUnit CuurentCostPerUnit = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId)
-                                            .FirstOrDefault(cpu => cpu.EndDate == null);
-
-            if (projectCost.DateUsed < CuurentCostPerUnit.StartDate) {
-
-               CostPerUnit CostPerUnitCorrectDate = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId)
-                                                .FirstOrDefault(cpu => projectCost.DateUsed <= cpu.EndDate
-                                                                        && projectCost.DateUsed >= cpu.StartDate);
-                projectCost.CostPerUnitId = CostPerUnitCorrectDate.Id;
-
-            } else {
-
-                projectCost.CostPerUnitId = CuurentCostPerUnit.Id;
-            }
-
-            ModelState.Remove("ProjectId");
+            //    ModelState.Remove("ProjectId");
+            //}
 
             if (ModelState.IsValid) {
 
-                _context.Add(projectCost);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(actionName:"Details", controllerName: "Project", routeValues: new { id = projectCost.ProjectId });
+                foreach (var projectCost in projectCosts.Costs) {
+
+                    //projectCost.ProjectId = id;
+                    //projectCost.Id = 0;
+
+                    CostPerUnit CuurentCostPerUnit = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId)
+                                                    .FirstOrDefault(cpu => cpu.EndDate == null);
+
+                    if (projectCost.DateUsed < CuurentCostPerUnit.StartDate) {
+
+                        CostPerUnit CostPerUnitCorrectDate = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId)
+                                 .FirstOrDefault(cpu => projectCost.DateUsed <= cpu.EndDate && projectCost.DateUsed >= cpu.StartDate);
+                        projectCost.CostPerUnitId = CostPerUnitCorrectDate.Id;
+
+                    } else {
+
+                        projectCost.CostPerUnitId = CuurentCostPerUnit.Id;
+                    }
+
+                    _context.Add(projectCost);
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction("Details", "Project", new { id = projectCosts.Costs[0].ProjectId });
             }
 
-            ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName", projectCost.CostItemId);
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "ProjectName", projectCost.ProjectId);
-            return View(projectCost);
+            ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName");
+            //ViewData["ProjectId"] = id;
+            return View(projectCosts);
         }
 
         // GET: ProjectCosts/Edit/5
@@ -121,12 +138,10 @@ namespace MoneyTree.Controllers
                     if (!ProjectCostExists(projectCost.Id)) {
 
                         return NotFound();
-                    } else {
-
-                        throw;
                     }
+                    throw;
                 }
-                return RedirectToAction(actionName:"Details", controllerName: "Project", routeValues: new { id = projectCost.ProjectId });
+                return RedirectToAction("Details", "Project", new { id = projectCost.ProjectId });
             }
 
             List<CostPerUnit> CostPerUnitList = await _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId).OrderByDescending(cpu => cpu.StartDate).ToListAsync();
@@ -179,7 +194,7 @@ namespace MoneyTree.Controllers
             var projectCost = await _context.ProjectCost.FindAsync(id);
             _context.ProjectCost.Remove(projectCost);
             await _context.SaveChangesAsync();
-            return RedirectToAction(actionName: "Details", controllerName: "Project", routeValues: new { id = projectCost.ProjectId });
+            return RedirectToAction("Details", "Project", new { id = projectCost.ProjectId });
         }
 
         private bool ProjectCostExists(int id) {

@@ -17,14 +17,14 @@ namespace MoneyTree.Models.ViewModels
 
         public List<SelectListItem> CategoryOptions {
             get {
-                List<SelectListItem> CategoryOptions = CostCategories?.Where(c => c.Id != OldCategoryId)
+                List<SelectListItem> CategoryOptionsList = CostCategories?.Where(c => c.Id != OldCategoryId)
                 .Select(c => new SelectListItem {
                     Value = c.Id.ToString(),
                     Text = c.CategoryName
                 }).ToList();
 
-                CategoryOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
-                return CategoryOptions;
+                CategoryOptionsList?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
+                return CategoryOptionsList;
             }
         }
     }

@@ -142,10 +142,8 @@ namespace MoneyTree.Controllers
                     if (!CostItemExists(costItem.Id)) {
 
                         return NotFound();
-                    } else {
-
-                        throw;
                     }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }

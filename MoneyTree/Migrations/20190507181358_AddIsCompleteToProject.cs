@@ -27,8 +27,8 @@ namespace MoneyTree.Migrations
             //    table: "ProjectCost");
 
             migrationBuilder.AddColumn<bool>(
-                name: "IsComplete",
-                table: "Project",
+                "IsComplete",
+                "Project",
                 nullable: false,
                 defaultValue: false);
 
@@ -76,66 +76,66 @@ namespace MoneyTree.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_CostItem_CostCategory_CostCategoryId",
-                table: "CostItem");
+                "FK_CostItem_CostCategory_CostCategoryId",
+                "CostItem");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_CostItem_UnitOfMeasure_UnitOfMeasureId",
-                table: "CostItem");
+                "FK_CostItem_UnitOfMeasure_UnitOfMeasureId",
+                "CostItem");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_CostPerUnit_CostItem_CostItemId",
-                table: "CostPerUnit");
+                "FK_CostPerUnit_CostItem_CostItemId",
+                "CostPerUnit");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_ProjectCost_CostItem_CostItemId",
-                table: "ProjectCost");
+                "FK_ProjectCost_CostItem_CostItemId",
+                "ProjectCost");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_ProjectCost_CostPerUnit_CostPerUnitId",
-                table: "ProjectCost");
+                "FK_ProjectCost_CostPerUnit_CostPerUnitId",
+                "ProjectCost");
 
             migrationBuilder.DropColumn(
-                name: "IsComplete",
-                table: "Project");
+                "IsComplete",
+                "Project");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CostItem_CostCategory_CostCategoryId",
-                table: "CostItem",
-                column: "CostCategoryId",
-                principalTable: "CostCategory",
+                "FK_CostItem_CostCategory_CostCategoryId",
+                "CostItem",
+                "CostCategoryId",
+                "CostCategory",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CostItem_UnitOfMeasure_UnitOfMeasureId",
-                table: "CostItem",
-                column: "UnitOfMeasureId",
-                principalTable: "UnitOfMeasure",
+                "FK_CostItem_UnitOfMeasure_UnitOfMeasureId",
+                "CostItem",
+                "UnitOfMeasureId",
+                "UnitOfMeasure",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CostPerUnit_CostItem_CostItemId",
-                table: "CostPerUnit",
-                column: "CostItemId",
-                principalTable: "CostItem",
+                "FK_CostPerUnit_CostItem_CostItemId",
+                "CostPerUnit",
+                "CostItemId",
+                "CostItem",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ProjectCost_CostItem_CostItemId",
-                table: "ProjectCost",
-                column: "CostItemId",
-                principalTable: "CostItem",
+                "FK_ProjectCost_CostItem_CostItemId",
+                "ProjectCost",
+                "CostItemId",
+                "CostItem",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ProjectCost_CostPerUnit_CostPerUnitId",
-                table: "ProjectCost",
-                column: "CostPerUnitId",
-                principalTable: "CostPerUnit",
+                "FK_ProjectCost_CostPerUnit_CostPerUnitId",
+                "ProjectCost",
+                "CostPerUnitId",
+                "CostPerUnit",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }

@@ -2,30 +2,24 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MoneyTree.Migrations
-{
-    public partial class RecreateDatabase : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+namespace MoneyTree.Migrations {
+    public partial class RecreateDatabase : Migration {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                columns: table => new
-                {
+                "AspNetRoles",
+                table => new {
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
+                "AspNetUsers",
+                table => new {
                     Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
@@ -45,28 +39,24 @@ namespace MoneyTree.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CostCategory",
-                columns: table => new
-                {
+                "CostCategory",
+                table => new {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CategoryName = table.Column<string>(nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_CostCategory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
-                columns: table => new
-                {
+                "Customer",
+                table => new {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(nullable: false),
@@ -74,134 +64,120 @@ namespace MoneyTree.Migrations
                     PhoneNumber = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Customer", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UnitOfMeasure",
-                columns: table => new
-                {
+                "UnitOfMeasure",
+                table => new {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UnitName = table.Column<string>(nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_UnitOfMeasure", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
-                columns: table => new
-                {
+                "AspNetRoleClaims",
+                table => new {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
+                        "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        x => x.RoleId,
+                        "AspNetRoles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
-                columns: table => new
-                {
+                "AspNetUserClaims",
+                table => new {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
-                columns: table => new
-                {
+                "AspNetUserLogins",
+                table => new {
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
-                columns: table => new
-                {
+                "AspNetUserRoles",
+                table => new {
                     UserId = table.Column<string>(nullable: false),
                     RoleId = table.Column<string>(nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
+                        "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        x => x.RoleId,
+                        "AspNetRoles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
-                columns: table => new
-                {
+                "AspNetUserTokens",
+                table => new {
                     UserId = table.Column<string>(nullable: false),
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Project",
-                columns: table => new
-                {
+                "Project",
+                table => new {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProjectName = table.Column<string>(nullable: false),
@@ -211,51 +187,47 @@ namespace MoneyTree.Migrations
                     CustomerId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Project", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Project_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "Id");
+                        "FK_Project_Customer_CustomerId",
+                        x => x.CustomerId,
+                        "Customer",
+                        "Id");
                     table.ForeignKey(
-                        name: "FK_Project_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_Project_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CostItem",
-                columns: table => new
-                {
+                "CostItem",
+                table => new {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ItemName = table.Column<string>(nullable: true),
                     UnitOfMeasureId = table.Column<int>(nullable: false),
                     CostCategoryId = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_CostItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CostItem_CostCategory_CostCategoryId",
-                        column: x => x.CostCategoryId,
-                        principalTable: "CostCategory",
-                        principalColumn: "Id");
+                        "FK_CostItem_CostCategory_CostCategoryId",
+                        x => x.CostCategoryId,
+                        "CostCategory",
+                        "Id");
                     table.ForeignKey(
-                        name: "FK_CostItem_UnitOfMeasure_UnitOfMeasureId",
-                        column: x => x.UnitOfMeasureId,
-                        principalTable: "UnitOfMeasure",
-                        principalColumn: "Id");
+                        "FK_CostItem_UnitOfMeasure_UnitOfMeasureId",
+                        x => x.UnitOfMeasureId,
+                        "UnitOfMeasure",
+                        "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "CostPerUnit",
-                columns: table => new
-                {
+                "CostPerUnit",
+                table => new {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     StartDate = table.Column<DateTime>(nullable: false),
@@ -263,20 +235,18 @@ namespace MoneyTree.Migrations
                     Cost = table.Column<double>(nullable: false),
                     CostItemId = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_CostPerUnit", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CostPerUnit_CostItem_CostItemId",
-                        column: x => x.CostItemId,
-                        principalTable: "CostItem",
-                        principalColumn: "Id");
+                        "FK_CostPerUnit_CostItem_CostItemId",
+                        x => x.CostItemId,
+                        "CostItem",
+                        "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProjectCost",
-                columns: table => new
-                {
+                "ProjectCost",
+                table => new {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CostItemId = table.Column<int>(nullable: false),
@@ -285,150 +255,148 @@ namespace MoneyTree.Migrations
                     DateUsed = table.Column<DateTime>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_ProjectCost", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProjectCost_CostItem_CostItemId",
-                        column: x => x.CostItemId,
-                        principalTable: "CostItem",
-                        principalColumn: "Id");
+                        "FK_ProjectCost_CostItem_CostItemId",
+                        x => x.CostItemId,
+                        "CostItem",
+                        "Id");
                     table.ForeignKey(
-                        name: "FK_ProjectCost_CostPerUnit_CostPerUnitId",
-                        column: x => x.CostPerUnitId,
-                        principalTable: "CostPerUnit",
-                        principalColumn: "Id");
+                        "FK_ProjectCost_CostPerUnit_CostPerUnitId",
+                        x => x.CostPerUnitId,
+                        "CostPerUnit",
+                        "Id");
                     table.ForeignKey(
-                        name: "FK_ProjectCost_Project_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Project",
-                        principalColumn: "Id",
+                        "FK_ProjectCost_Project_ProjectId",
+                        x => x.ProjectId,
+                        "Project",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetRoleClaims_RoleId",
-                table: "AspNetRoleClaims",
-                column: "RoleId");
+                "IX_AspNetRoleClaims_RoleId",
+                "AspNetRoleClaims",
+                "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles",
-                column: "NormalizedName",
+                "RoleNameIndex",
+                "AspNetRoles",
+                "NormalizedName",
                 unique: true,
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_UserId",
-                table: "AspNetUserClaims",
-                column: "UserId");
+                "IX_AspNetUserClaims_UserId",
+                "AspNetUserClaims",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_UserId",
-                table: "AspNetUserLogins",
-                column: "UserId");
+                "IX_AspNetUserLogins_UserId",
+                "AspNetUserLogins",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_RoleId",
-                table: "AspNetUserRoles",
-                column: "RoleId");
+                "IX_AspNetUserRoles_RoleId",
+                "AspNetUserRoles",
+                "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "EmailIndex",
-                table: "AspNetUsers",
-                column: "NormalizedEmail");
+                "EmailIndex",
+                "AspNetUsers",
+                "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
+                "UserNameIndex",
+                "AspNetUsers",
+                "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CostItem_CostCategoryId",
-                table: "CostItem",
-                column: "CostCategoryId");
+                "IX_CostItem_CostCategoryId",
+                "CostItem",
+                "CostCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CostItem_UnitOfMeasureId",
-                table: "CostItem",
-                column: "UnitOfMeasureId");
+                "IX_CostItem_UnitOfMeasureId",
+                "CostItem",
+                "UnitOfMeasureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CostPerUnit_CostItemId",
-                table: "CostPerUnit",
-                column: "CostItemId");
+                "IX_CostPerUnit_CostItemId",
+                "CostPerUnit",
+                "CostItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Project_CustomerId",
-                table: "Project",
-                column: "CustomerId");
+                "IX_Project_CustomerId",
+                "Project",
+                "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Project_UserId",
-                table: "Project",
-                column: "UserId");
+                "IX_Project_UserId",
+                "Project",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectCost_CostItemId",
-                table: "ProjectCost",
-                column: "CostItemId");
+                "IX_ProjectCost_CostItemId",
+                "ProjectCost",
+                "CostItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectCost_CostPerUnitId",
-                table: "ProjectCost",
-                column: "CostPerUnitId");
+                "IX_ProjectCost_CostPerUnitId",
+                "ProjectCost",
+                "CostPerUnitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectCost_ProjectId",
-                table: "ProjectCost",
-                column: "ProjectId");
+                "IX_ProjectCost_ProjectId",
+                "ProjectCost",
+                "ProjectId");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
+                "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
+                "AspNetUserClaims");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
+                "AspNetUserLogins");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
+                "AspNetUserRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
+                "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ProjectCost");
+                "ProjectCost");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "CostPerUnit");
+                "CostPerUnit");
 
             migrationBuilder.DropTable(
-                name: "Project");
+                "Project");
 
             migrationBuilder.DropTable(
-                name: "CostItem");
+                "CostItem");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                "Customer");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "CostCategory");
+                "CostCategory");
 
             migrationBuilder.DropTable(
-                name: "UnitOfMeasure");
+                "UnitOfMeasure");
         }
     }
 }

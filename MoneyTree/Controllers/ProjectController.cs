@@ -9,8 +9,7 @@ using Microsoft.Extensions.Configuration;
 using MoneyTree.Data;
 using MoneyTree.Models;
 
-namespace MoneyTree.Controllers
-{
+namespace MoneyTree.Controllers {
 
     public class ProjectController : Controller {
 
@@ -122,10 +121,8 @@ namespace MoneyTree.Controllers
 
                         return NotFound();
                     }
-                    else {
 
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -168,11 +165,6 @@ namespace MoneyTree.Controllers
             return _context.Project.Any(e => e.Id == id);
         }
 
-        private bool ProjectCostExists(int id) {
-
-            return _context.ProjectCost.Any(e => e.Id == id);
-        }
-
         public Project GetProjectById(int? id) {
 
             using (SqlConnection conn = Connection) {
@@ -209,7 +201,7 @@ namespace MoneyTree.Controllers
 
                                 Id = reader.GetInt32(reader.GetOrdinal("ProjectId")),
                                 ProjectName = reader.GetString(reader.GetOrdinal("ProjectName")),
-                                StartDate = reader.GetDateTime(reader.GetOrdinal("ProjectStart")),
+                                StartDate = reader.GetDateTime(reader.GetOrdinal("ProjectStart"))
                             };
                         }
 

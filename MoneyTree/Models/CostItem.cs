@@ -50,16 +50,14 @@ namespace MoneyTree.Models
             get {
                 return GetCurrentCost();
             }
-            set { }
         }
 
         private double GetCurrentCost () {
 
-            CostPerUnit CurrentCost = _context?.CostPerUnit
+            CostPerUnit GetCurrentCPU = _context?.CostPerUnit
                 .Where(cpu => cpu.CostItemId == Id).FirstOrDefault(cpu => cpu.EndDate == null);
 
-            return CurrentCost?.Cost??0;
+            return GetCurrentCPU?.Cost??0;
         }
     }
 }
- 
