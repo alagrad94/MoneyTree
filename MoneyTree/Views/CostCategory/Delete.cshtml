@@ -4,31 +4,32 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete Cost Category</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<hr />
-<div>
-
-    <form asp-action="Delete">
-    <dl class="row">
-        <dt class="col-sm-2">
-           @Html.DisplayNameFor(model => model.CostCategory.CategoryName)
-        </dt>
-        <dd class="col-sm-10">
-           @Html.DisplayFor(model => model.CostCategory.CategoryName)
-        </dd>
-    </dl>
-
-    <p style="font-weight: bold">Please select a new category below.  All Cost Items current assigned to the deleted Cost Category will be reassigned to the new category chosen.</p>
-
-    <div class="form-group">
-        @*<label asp-for="@Model.NewCategoryId" class="control-label">Please Select A New Category</label>*@
-        <select asp-for="@Model.NewCategoryId" class="form-control" asp-items="@Model.CategoryOptions"></select>
-    </div>
-
-        <input type="hidden" asp-for="@Model.OldCategoryId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">Delete Category  <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
 </div>
+
+<card class="card text-center mb-4" style="padding: 5px; width: 40%">
+    <h3 class="text-danger">Are you sure you want to delete this?</h3>
+    <div>
+        <form asp-action="Delete">
+            <dl class="row">
+                <dt class="col-sm">
+                    @Html.DisplayNameFor(model => model.CostCategory.CategoryName):
+                </dt>
+                <dd class="col-sm">
+                    @Html.DisplayFor(model => model.CostCategory.CategoryName)
+                </dd>
+            </dl>
+
+            <p style="font-weight: bold">Please select a new category below.  All Cost Items current assigned to the deleted Cost Category will be reassigned to the new category chosen.</p>
+
+            <div class="form-group">
+                @*<label asp-for="@Model.NewCategoryId" class="control-label">Please Select A New Category</label>*@
+                <select asp-for="@Model.NewCategoryId" class="form-control" asp-items="@Model.CategoryOptions"></select>
+            </div>
+
+            <input type="hidden" asp-for="@Model.OldCategoryId" />
+            <input type="submit" value="Delete" class="btn btn-dark" />
+        </form>
+    </div>
+</card>

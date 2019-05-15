@@ -201,7 +201,9 @@ namespace MoneyTree.Controllers {
 
                                 Id = reader.GetInt32(reader.GetOrdinal("ProjectId")),
                                 ProjectName = reader.GetString(reader.GetOrdinal("ProjectName")),
-                                StartDate = reader.GetDateTime(reader.GetOrdinal("ProjectStart"))
+                                StartDate = reader.GetDateTime(reader.GetOrdinal("ProjectStart")),
+                                Customer = new Customer(),
+                                ProjectCosts = new List<ProjectCost>()
                             };
                         }
 
@@ -217,19 +219,16 @@ namespace MoneyTree.Controllers {
 
                         if (!reader.IsDBNull(reader.GetOrdinal("CustomerId"))) {
 
-                            project.Customer = new Customer {
-
-                                Id = reader.GetInt32(reader.GetOrdinal("CustomerId")),
-                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                                LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                                Email = reader.GetString(reader.GetOrdinal("Email")),
-                                PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber"))
-                            };
+                            project.Customer.Id = reader.GetInt32(reader.GetOrdinal("CustomerId"));
+                            project.Customer.FirstName = reader.GetString(reader.GetOrdinal("FirstName"));
+                            project.Customer.LastName = reader.GetString(reader.GetOrdinal("LastName"));
+                            project.Customer.Email = reader.GetString(reader.GetOrdinal("Email"));
+                            project.Customer.PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber"));
+                            
                         }
 
                         if (!reader.IsDBNull(reader.GetOrdinal("ProjectCostId"))) {
 
-                            project.ProjectCosts = new List<ProjectCost>();
                             int projectId = reader.GetInt32(reader.GetOrdinal("ProjectCostId"));
 
                             if (!project.ProjectCosts.Any(pc => pc.Id == projectId)) {

@@ -4,39 +4,37 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit Cost Item</h1>
-<hr />
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">Edit Cost Item <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
+</div>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="ItemName" class="control-label"></label>
-                <input asp-for="ItemName" class="form-control" />
-                <span asp-validation-for="ItemName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UnitOfMeasureId" class="control-label">Unit of Measure</label>
-                <select asp-for="UnitOfMeasureId" class="form-control" asp-items="ViewBag.UnitOfMeasureId"></select>
-                <span asp-validation-for="UnitOfMeasureId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CostCategoryId" class="control-label">Cost Category</label>
-                <select asp-for="CostCategoryId" class="form-control" asp-items="ViewBag.CostCategoryId"></select>
-                <span asp-validation-for="CostCategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        <card class="card text-center mb-4" style="padding: 5px">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="ItemName" class="control-label"></label>
+                    <input asp-for="ItemName" class="form-control" />
+                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UnitOfMeasureId" class="control-label">Unit of Measure</label>
+                    <select asp-for="UnitOfMeasureId" class="form-control" asp-items="ViewBag.UnitOfMeasureId"></select>
+                    <span asp-validation-for="UnitOfMeasureId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CostCategoryId" class="control-label">Cost Category</label>
+                    <select asp-for="CostCategoryId" class="form-control" asp-items="ViewBag.CostCategoryId"></select>
+                    <span asp-validation-for="CostCategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-dark" />
+                </div>
+            </form>
+        </card>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

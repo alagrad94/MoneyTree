@@ -3,94 +3,97 @@
 @{
     ViewData["Title"] = "Details";
 }
-<div>
-    <a asp-action="Index">Back to List</a>
+<br />
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">@Html.DisplayFor(model => model.ProjectName)  <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
 </div>
-</br>
-<h1>@Html.DisplayFor(model => model.ProjectName)</h1>
-<table style="width:100%">
-    <tbody>
-        <tr style="border:solid">
-            <td class="project_customer_data" style="width:80%; padding: 10px">
-                Customer: @Html.DisplayFor(model => model.Customer.FullName) <br />
-                Email: @Html.DisplayFor(model => model.Customer.Email)<br />
-                Phone: @Html.DisplayFor(model => model.Customer.PhoneNumber)<br />
-                Start Date: @Html.DisplayFor(model => model.StartDate)<br />
-                Completed: @Html.DisplayFor(model => model.CompletionDate)
-            </td>
-            <td class="project_cost_data" style="width:20%; padding: 10px">
-                Invoiced Amount: @Html.DisplayFor(model => model.AmountCharged)<br />
-                Project Cost: @Html.DisplayFor(model => model.TotalCost)<br />
-                Profit: @Html.DisplayFor(model => model.Profit)
-            </td>
-        </tr>
-    </tbody>
-</table>
-    <h3 style="width:100%; border-left:solid; padding:10px; border-right:solid; margin:0px">Project Costs 
-    <a asp-controller="ProjectCost" asp-action="Create" asp-route-id="@Model.Id" style="font-size:1rem">Add Project Cost</a></h3> 
-<table style="width:100%; border:solid">
-    <thead>
-        <tr>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                Name
-            </th>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                Category
-            </th>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                Units
-            </th>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                Cost Per Unit
-            </th>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                Quantity
-            </th>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                Date Used
-            </th>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                Total
-            </th>
-            @if (Model.ProjectCosts != null) {
-                <th>
-
-                </th>
-            }
+<card class="card text-center mb-4">
+    <table style="width: 100%;">
+        <tbody >
+            <tr style="border: thin solid grey;">
+                <td class="project_customer_data" style="width:75%; padding: 10px; text-align: left;">
+                    Customer: @Html.DisplayFor(model => model.Customer.FullName) <br />
+                    Email: @Html.DisplayFor(model => model.Customer.Email)<br />
+                    Phone: @Html.DisplayFor(model => model.Customer.PhoneNumber)<br />
+                    Start Date: @Html.DisplayFor(model => model.StartDate)<br />
+                    Completed: @Html.DisplayFor(model => model.CompletionDate)
+                </td>
+                <td class="project_cost_data" style="width:25%; padding: 10px; text-align: left;">
+                    Invoiced Amount: $@Html.DisplayFor(model => model.AmountCharged)<br />
+                    Project Cost: $@Html.DisplayFor(model => model.TotalCost)<br />
+                    Profit: $@Html.DisplayFor(model => model.Profit)
+                </td>
             </tr>
-    </thead>
-    <tbody>
-        @if (Model.ProjectCosts != null) {
+        </tbody>
+    </table>
+    <h3 style="width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
+        Project Costs  <a asp-controller="ProjectCost" asp-action="Create" asp-route-id="@Model.Id" style="font-size:1rem">
+        <i class="fas fa-plus-circle fa-2x"></i></a>
+    </h3>
+    <table style="width:100%; ">
+        <thead>
+            <tr style="border: thin solid grey;">
+                <th style="border: thin solid grey;">
+                    Name
+                </th>
+                <th style="border: thin solid grey;">
+                    Category
+                </th>
+                <th style="border: thin solid grey;">
+                    Units
+                </th>
+                <th style="border: thin solid grey;">
+                    Cost Per Unit
+                </th>
+                <th style="border: thin solid grey;">
+                    Quantity
+                </th>
+                <th style="border: thin solid grey;">
+                    Date Used
+                </th>
+                <th style="border: thin solid grey;">
+                    Total
+                </th>
+                @if (Model.ProjectCosts.Count > 0){
+                    <th style="border: thin solid grey;">
 
-            @foreach (var item in Model.ProjectCosts) {
-                <tr>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.CostItem.ItemName)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.CostItem.CostCategory.CategoryName)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.CostItem.UnitOfMeasure.UnitName)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.CostPerUnit.Cost)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.DateUsed)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.TotalCost)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        <a asp-controller="ProjectCost" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-controller="ProjectCost" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ProjectCosts != null){
+
+                @foreach (var item in Model.ProjectCosts){
+                    <tr style="border: thin solid grey">
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.CostItem.ItemName)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.CostItem.CostCategory.CategoryName)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.CostItem.UnitOfMeasure.UnitName)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            $@Html.DisplayFor(modelItem => item.CostPerUnit.Cost)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.DateUsed)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            $@Html.DisplayFor(modelItem => item.TotalCost)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            <a asp-controller="ProjectCost" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |
+                            <a asp-controller="ProjectCost" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</card>

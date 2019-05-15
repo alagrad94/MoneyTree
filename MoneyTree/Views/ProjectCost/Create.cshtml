@@ -20,45 +20,49 @@
         asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
         asp-fallback-test="window.jQuery"
         crossorigin="anonymous"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
 
-</script>
-
-<h1>Add A Cost to A Project</h1>
-<div>
-    <a asp-action="Details" asp-controller="Project" asp-route-id="@Model.Costs[0].ProjectId">Back to List</a>
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">
+        Add Costs to This Project  <a asp-action="Details" asp-controller="Project" asp-route-id="@Model.Costs[0].ProjectId">
+            <i class="fas fa-sm fa-arrow-alt-circle-left"></i>
+        </a>
+    </h1>
 </div>
-<hr />
-
-<form asp-action="Create" class="" style="width: 100%">
-    <div id="pc_form" class="project_cost_create_form">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="project_cost_create_row" id="pc_form_row_0">
-            <div class="form-group" id="cost_item_projectId_div_0">
-                <input type="hidden" asp-for="Costs[0].ProjectId" class="form-control" id="cost_item_projectId_input_0" />
-            </div>
-            <div class="form-group project_cost_create_field" id="cost_item_select_div_0">
-                <label asp-for="Costs[0].CostItemId" class="control-label" id="cost_item_select_label_0">Cost Item</label>
-                <select asp-for="Costs[0].CostItemId" class="form-control" asp-items="ViewBag.CostItemId" id="cost_item_select_0"></select>
-                <span asp-validation-for="Costs[0].CostItemId" class="text-danger" id="cost_item_select_val_0"></span>
-            </div>
-            <div class="form-group project_cost_create_field" id="cost_item_date_div_0">
-                <label asp-for="Costs[0].DateUsed" class="control-label" id="cost_item_date_label_0">Date Used</label>
-                <input asp-for="Costs[0].DateUsed" type="date" class="form-control" id="cost_item_date_0" />
-                <span asp-validation-for="Costs[0].DateUsed" class="text-danger" id="cost_item_date_val_0"></span>
-            </div>
-            <div class="form-group project_cost_create_field" id="cost_item_quantity_div_0">
-                <label asp-for="Costs[0].Quantity" class="control-label" id="cost_item_quantity_label_0">Quantity</label>
-                <input asp-for="Costs[0].Quantity" class="form-control" id="cost_item_quantity_0" />
-                <span asp-validation-for="Costs[0].Quantity" class="text-danger" id="cost_item_quantity_val_0"></span>
+<card class="card text-center mb-4" style="padding: 5px; width: 60%">
+    <form asp-action="Create" class="" style="width: 100%">
+        <div id="pc_form" class="project_cost_create_form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="project_cost_create_row" id="pc_form_row_0">
+                <div class="form-group" id="model_projectId_div_0">
+                    <input type="hidden" asp-for="ProjectId" class="form-control" id="model_projectId_input_0" />
+                </div>
+                <div class="form-group" id="cost_item_projectId_div_0">
+                    <input type="hidden" asp-for="Costs[0].ProjectId" class="form-control" id="cost_item_projectId_input_0" />
+                </div>
+                <div class="form-group project_cost_create_field" id="cost_item_select_div_0">
+                    <label asp-for="Costs[0].CostItemId" class="control-label" id="cost_item_select_label_0">Cost Item</label>
+                    <select asp-for="Costs[0].CostItemId" class="form-control" asp-items="@Model.ItemOptions" id="cost_item_select_0"></select>
+                    <span asp-validation-for="Costs[0].CostItemId" class="text-danger" id="cost_item_select_val_0"></span>
+                </div>
+                <div class="form-group project_cost_create_field" id="cost_item_date_div_0">
+                    <label asp-for="Costs[0].DateUsed" class="control-label" id="cost_item_date_label_0">Date Used</label>
+                    <input asp-for="Costs[0].DateUsed" type="date" class="form-control" id="cost_item_date_0" />
+                    <span asp-validation-for="Costs[0].DateUsed" class="text-danger" id="cost_item_date_val_0"></span>
+                </div>
+                <div class="form-group project_cost_create_field" id="cost_item_quantity_div_0">
+                    <label asp-for="Costs[0].Quantity" class="control-label" id="cost_item_quantity_label_0">Quantity</label>
+                    <input asp-for="Costs[0].Quantity" class="form-control" id="cost_item_quantity_0" />
+                    <span asp-validation-for="Costs[0].Quantity" class="text-danger" id="cost_item_quantity_val_0"></span>
+                </div>
             </div>
         </div>
-    </div>
-    <div>
-        <input id="addButton" type="button" class="btn btn-primary" value="Add Another Cost" onclick="AddRow()" />
-        <input type="submit" value="Submit" class="btn btn-primary" />
-    </div>
-</form>
+        <div>
+            <input type="button" class="btn btn-dark" value="Add Another Cost" onclick="AddRow()" />
+            <input type="submit" value="Submit" class="btn btn-dark" />
+        </div>
+    </form>
+</card>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

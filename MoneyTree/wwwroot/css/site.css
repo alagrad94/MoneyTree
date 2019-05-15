@@ -1,6 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-
+@import url("https://fonts.googleapis.com/css?family=Quicksand");
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -10,8 +10,9 @@ a.navbar-brand {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+  font-size: 20px;
 }
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -42,8 +43,10 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    font-family: Quicksand;
+    background-color: RGB(227,227,227);
 }
 .footer {
   position: absolute;
@@ -53,4 +56,84 @@ body {
   /* Set the fixed height of the footer here */
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
+}
+
+/*MY CSS*/
+
+.navbar-brand {
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: xx-large;
+    font-weight: bold;
+    border: 2px solid white;
+    border-style:inset;
+    border-radius: 10px;
+}
+
+a.nav-link {
+    font-weight: bold;
+    font-size: larger;
+}
+
+th, td {
+    width: auto;
+    padding: 10px;
+    text-align: center;
+    font-size: large;
+    text-wrap: none;
+}
+
+h1, h2, h3 {
+
+    font-weight: bold
+}
+
+.fas {
+    color: RGB(93,109,126);
+}
+
+.page_title_container {
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.container-fluid {
+
+    padding-left: 0;
+}
+
+.card {
+    border-radius: 10px;
+    background-color: RGB(220,220,220);
+}
+
+.col-sm {
+    padding-right:10px;
+    padding-left: 0;
+}
+
+dt {
+    text-align: right;
+    padding-right: 10px;
+    font-size:larger;
+    font-weight: bolder
+}
+
+dd {
+    text-align: left;
+    padding-right: 0;
+    font-size: larger;
+    font-weight: bold
+}
+
+.control-label {
+    font-size: large;
+    font-weight: bolder
+}
+.category {
+    padding-left: 20px
 }

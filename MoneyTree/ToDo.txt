@@ -1,15 +1,9 @@
-﻿1.  Setup Identity user restrictions
-	a.  Navbar not show until signed in
-	b.  Controller methods require authentication	
-	c.  Project post uses signed in user
-	d.  ????
-
-Stretch 
+﻿Stretch 
 
 New Functionality:
 
-6. LOE: H  Add multiple costs to a project at once
 7. LOE: C  Estimating project costs
-8. LOE: M  Add Suppliers (Supplier Table with SupplierId in CPU table or CostItem table or both???) to allow for having multiple cost records open for the same item if purchased from different places
+8. LOE: M  Add Suppliers (Supplier Table with SupplierId in CPU table or CostItem table or both???) 
+to allow for having multiple cost records open for the same item if purchased from different places
 
 

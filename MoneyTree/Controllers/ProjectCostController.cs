@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -24,18 +25,22 @@ namespace MoneyTree.Controllers {
 
             CostPerUnitController.MaintainCostPerUnitRecords(_context);
 
+            DateTime Today = DateTime.UtcNow;
+
             ProjectCostCreateViewModel model = new ProjectCostCreateViewModel {
 
-                Costs = new List<ProjectCost>()
+                ProjectId = id,
+                Costs = new List<ProjectCost>(),
+                CostItems = _context.CostItem.ToList()
             };
 
             ProjectCost Cost = new ProjectCost {
-                ProjectId = id
+                ProjectId = id,
+                DateUsed = Today
             };
 
             model.Costs.Add(Cost);
 
-            ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName");
             return View(model);
         }
 
@@ -44,43 +49,87 @@ namespace MoneyTree.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProjectCostCreateViewModel projectCosts) {
 
-            //foreach (var cost in projectCosts.Costs) {
-            //    cost.ProjectId = id;
-            //    cost.Id = 0;
+            List<ProjectCost> ProjectCostsInContext = await _context.ProjectCost.Where(pc => pc.ProjectId == projectCosts.ProjectId).ToListAsync();
+            List<ProjectCost> CostsEntered = (projectCosts.Costs?.Count > 0) ? projectCosts.Costs :  projectCosts.RejectedEntries;
+            List<ProjectCost> RejectecdEntries = new List<ProjectCost>();
+            List<ProjectCost> UpdatedRecords = new List<ProjectCost>();
 
-            //    ModelState.Remove("ProjectId");
-            //}
+            DateTime CheckDate = DateTime.UtcNow.AddDays(-365);
 
-            if (ModelState.IsValid) {
+            foreach (var cost in CostsEntered.ToList()) {
 
-                foreach (var projectCost in projectCosts.Costs) {
+                ProjectCost ExistingCost = ProjectCostsInContext.FirstOrDefault(pc => pc.ProjectId == cost.ProjectId && pc.CostItemId == cost.CostItemId && pc.DateUsed == cost.DateUsed);
 
-                    //projectCost.ProjectId = id;
-                    //projectCost.Id = 0;
+                if (cost.DateUsed <= CheckDate || cost.ProjectId == 0 || cost.CostItemId == 0) {
 
-                    CostPerUnit CuurentCostPerUnit = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId)
-                                                    .FirstOrDefault(cpu => cpu.EndDate == null);
+                    CostsEntered.Remove(cost);
+                    RejectecdEntries.Add(cost);
+                }
 
-                    if (projectCost.DateUsed < CuurentCostPerUnit.StartDate) {
+                if (ExistingCost != null) {
 
-                        CostPerUnit CostPerUnitCorrectDate = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId)
-                                 .FirstOrDefault(cpu => projectCost.DateUsed <= cpu.EndDate && projectCost.DateUsed >= cpu.StartDate);
-                        projectCost.CostPerUnitId = CostPerUnitCorrectDate.Id;
+                    ExistingCost.Quantity += cost.Quantity;
+                    CostsEntered.Remove(cost);
+                    UpdatedRecords.Add(ExistingCost);
 
-                    } else {
-
-                        projectCost.CostPerUnitId = CuurentCostPerUnit.Id;
-                    }
-
-                    _context.Add(projectCost);
+                    _context.Update(ExistingCost);
                     await _context.SaveChangesAsync();
                 }
-                return RedirectToAction("Details", "Project", new { id = projectCosts.Costs[0].ProjectId });
             }
 
-            ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName");
-            //ViewData["ProjectId"] = id;
-            return View(projectCosts);
+            foreach (var projectCost in CostsEntered) {
+
+                CostPerUnit CuurentCostPerUnit = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId).FirstOrDefault(cpu => cpu.EndDate == null);
+
+                if (projectCost.DateUsed < CuurentCostPerUnit.StartDate) {
+
+                    CostPerUnit CostPerUnitCorrectDate = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId).FirstOrDefault(cpu => projectCost.DateUsed <= cpu.EndDate && projectCost.DateUsed >= cpu.StartDate);
+
+                    projectCost.CostPerUnitId = CostPerUnitCorrectDate.Id;
+
+                } else {
+
+                    projectCost.CostPerUnitId = CuurentCostPerUnit.Id;
+                }
+
+                _context.Add(projectCost);
+                await _context.SaveChangesAsync();
+            }
+
+            if(RejectecdEntries.Count > 0 || UpdatedRecords.Count > 0) {
+
+                if (RejectecdEntries.Count > 0) {
+
+                    foreach (var item in RejectecdEntries) {
+
+                        item.CostItem = _context.CostItem.FirstOrDefault(ci => ci.Id == item.CostItemId);
+                        item.CostPerUnit = _context.CostPerUnit.FirstOrDefault(cpu => cpu.Id == item.CostPerUnitId);
+                    }
+                }
+
+                if (UpdatedRecords.Count > 0) {
+
+                    foreach (var item in UpdatedRecords) { 
+
+                        item.CostItem = _context.CostItem.FirstOrDefault(ci => ci.Id == item.CostItemId);
+                        item.CostPerUnit = _context.CostPerUnit.FirstOrDefault(cpu => cpu.Id == item.CostPerUnitId);
+                    }
+                }
+
+                ProjectCostCreateViewModel viewModel = new ProjectCostCreateViewModel {
+
+                    ProjectId = projectCosts.ProjectId,
+                    CostItems = _context.CostItem.ToList(),
+                    RejectedEntries = RejectecdEntries,
+                    UpdatedRecords = UpdatedRecords
+                };
+
+                return View("CreateFinish", viewModel);
+
+            } else {
+
+                return RedirectToAction("Details", "Project", new { id = projectCosts.ProjectId });
+            }
         }
 
         // GET: ProjectCosts/Edit/5
@@ -114,9 +163,6 @@ namespace MoneyTree.Controllers {
             return View(projectCost);
         }
 
-        // POST: ProjectCosts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, 
@@ -129,17 +175,23 @@ namespace MoneyTree.Controllers {
 
             if (ModelState.IsValid) {
 
-                try {
+                ProjectCost ExistingCost = _context.ProjectCost.FirstOrDefault(pc => pc.ProjectId == projectCost.ProjectId && pc.CostItemId == projectCost.CostItemId && pc.DateUsed == projectCost.DateUsed);
 
-                    _context.Update(projectCost);
+                if (ExistingCost != null && ExistingCost.Id != projectCost.Id) {
+
+                    ExistingCost.Quantity += projectCost.Quantity;
+                    _context.Update(ExistingCost);
+                    _context.Remove(projectCost);
                     await _context.SaveChangesAsync();
-                } catch (DbUpdateConcurrencyException) {
+                } else {
 
-                    if (!ProjectCostExists(projectCost.Id)) {
-
-                        return NotFound();
-                    }
-                    throw;
+                    ExistingCost.ProjectId = projectCost.ProjectId;
+                    ExistingCost.CostItemId = projectCost.CostItemId;
+                    ExistingCost.CostPerUnitId = projectCost.CostPerUnitId;
+                    ExistingCost.DateUsed = projectCost.DateUsed;
+                    ExistingCost.Quantity = projectCost.Quantity;
+                    _context.Update(ExistingCost);
+                    await _context.SaveChangesAsync();
                 }
                 return RedirectToAction("Details", "Project", new { id = projectCost.ProjectId });
             }
@@ -195,11 +247,6 @@ namespace MoneyTree.Controllers {
             _context.ProjectCost.Remove(projectCost);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "Project", new { id = projectCost.ProjectId });
-        }
-
-        private bool ProjectCostExists(int id) {
-
-            return _context.ProjectCost.Any(e => e.Id == id);
         }
     }
 }

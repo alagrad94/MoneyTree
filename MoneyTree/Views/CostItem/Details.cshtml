@@ -4,61 +4,58 @@
     ViewData["Title"] = "Details";
 }
 
-<div>
-    <a asp-action="Index">Back to List</a><br />
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">Item Details  <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
 </div>
-<br />
 <h4>Item Name : @Html.DisplayFor(model => model.ItemName)</h4>
-<h5>@Html.DisplayNameFor(model => model.CostCategory):  @Html.DisplayFor(model => model.CostCategory.CategoryName)</h5>
-<h5>@Html.DisplayNameFor(model => model.UnitOfMeasure):  @Html.DisplayFor(model => model.UnitOfMeasure.UnitName)</h5>
-<h5>@Html.DisplayNameFor(model => model.CurrentCost):  @Html.DisplayFor(model => model.CurrentCost)</h5>
+<h4>@Html.DisplayNameFor(model => model.CostCategory):  @Html.DisplayFor(model => model.CostCategory.CategoryName)</h4>
+<h4>@Html.DisplayNameFor(model => model.UnitOfMeasure):  @Html.DisplayFor(model => model.UnitOfMeasure.UnitName)</h4>
+<h4>@Html.DisplayNameFor(model => model.CurrentCost):  $@Html.DisplayFor(model => model.CurrentCost)</h4>
 <br />
-<h3 style="width:100%; padding:10px; margin:0px"> Cost History
-    <a asp-controller="CostPerUnit" asp-action="Create" asp-route-id="@Model.Id" style="font-size:1rem">Create A New Cost Record</a>
+<h3 style="width:100%; padding:5px; margin:0px"> Cost History
+    <a asp-controller="CostPerUnit" asp-action="Create" asp-route-id="@Model.Id">
+    <i class="fas fa-plus-circle"></i></a>
 </h3>
-<br />
-<table style="width:100%; border:solid">
-    <thead>
-        <tr>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                Start Date
-            </th>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                End Date
-            </th>
-            <th style="width:auto; padding: 10px; border:solid; text-align:center">
-                Cost
-            </th>
-            @if (Model.CostHistory != null)
-            {
-                <th>
-
+<card  class="card text-center mb-4">
+    <table style="width:100%; ">
+        <thead>
+            <tr>
+                <th style="border: thin solid grey;">
+                    Start Date
                 </th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.CostHistory != null)
-        {
+                <th style="width:auto; padding: 10px; text-align:center; border: thin solid grey;">
+                    End Date
+                </th>
+                <th style="width:auto; padding: 10px; text-align:center; border: thin solid grey;">
+                    Cost
+                </th>
+                @if (Model.CostHistory != null){
+                    <th style="width:auto; padding: 10px; text-align:center; border: thin solid grey;">
 
-            @foreach (var item in Model.CostHistory)
-            {
-                <tr>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        @Html.DisplayFor(modelItem => item.Cost)
-                    </td>
-                    <td style="width:auto; padding: 10px; border:solid; text-align:center">
-                        <a asp-controller="CostPerUnit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    </td>
-                </tr>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.CostHistory != null){
+
+                @foreach (var item in Model.CostHistory){
+                    <tr>
+                        <td style="width:auto; padding: 10px; text-align:center; border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td style="width:auto; padding: 10px; text-align:center; border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td style="width:auto; padding: 10px; text-align:center; border: thin solid grey;">
+                            $@Html.DisplayFor(modelItem => item.Cost)
+                        </td>
+                        <td style="width:auto; padding: 10px; text-align:center; border: thin solid grey;">
+                            <a asp-controller="CostPerUnit" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</card>

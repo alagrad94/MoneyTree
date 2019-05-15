@@ -45,6 +45,7 @@ namespace MoneyTree.Models
         public List<CostPerUnit> CostHistory { get; set; }
 
         [Display(Name = "Current Cost")]
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         [NotMapped]
         public double CurrentCost {
             get {
