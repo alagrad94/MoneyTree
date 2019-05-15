@@ -1,9 +1,10 @@
-﻿Stretch 
+﻿New Functionality (after demo day):
 
-New Functionality:
-
-7. LOE: C  Estimating project costs
-8. LOE: M  Add Suppliers (Supplier Table with SupplierId in CPU table or CostItem table or both???) 
+1. LOE: C  Estimating project costs - create PDF of estimate
+2. LOE: M  Add Suppliers (Supplier Table with SupplierId in CPU table or CostItem table or both???) 
 to allow for having multiple cost records open for the same item if purchased from different places
-
+3. Make Cost Item select take input and narrow list??
+4. Excel Import Export
+5. Custom (one-time) ProjectCosts
+6. Cascading dropdowns CC => CI
 

@@ -23,7 +23,7 @@ namespace MoneyTree.Controllers {
         // GET: CostCategories
         public async Task<IActionResult> Index() {
 
-            return View(await _context.CostCategory.ToListAsync());
+            return View(await _context.CostCategory.OrderBy(cc => cc.CategoryName).ToListAsync());
         }
 
         // GET: CostCategories/Create

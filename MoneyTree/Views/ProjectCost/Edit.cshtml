@@ -15,19 +15,17 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group">
-                    <label asp-for="ProjectId" class="control-label">Project Name</label>
-                    <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
-                    <span asp-validation-for="ProjectId" class="text-danger"></span>
+                    <input type="hidden" asp-for="ProjectId" class="form-control" />
+                    <input asp-for="Project.ProjectName" readonly type="text" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label asp-for="CostItemId" class="control-label">Cost Item</label>
-                    <select asp-for="CostItemId" class="form-control" asp-items="ViewBag.CostItemId"></select>
-                    <span asp-validation-for="CostItemId" class="text-danger"></span>
+                    <input type="hidden" asp-for="CostItemId" class="form-control" />
+                    <input asp-for="CostItem.ItemName" readonly type="text" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label asp-for="CostPerUnitId" class="control-label">Cost Item</label>
                     <select asp-for="CostPerUnitId" class="form-control" asp-items="ViewBag.CostPerUnitId"></select>
-                    <span asp-validation-for="CostItemId" class="text-danger"></span>
+                    <span asp-validation-for="CostPerUnitId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="DateUsed" class="control-label">Date Used</label>
