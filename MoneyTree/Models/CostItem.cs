@@ -45,21 +45,20 @@ namespace MoneyTree.Models
         public List<CostPerUnit> CostHistory { get; set; }
 
         [Display(Name = "Current Cost")]
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         [NotMapped]
         public double CurrentCost {
             get {
                 return GetCurrentCost();
             }
-            set { }
         }
 
         private double GetCurrentCost () {
 
-            CostPerUnit CurrentCost = _context?.CostPerUnit
+            CostPerUnit GetCurrentCPU = _context?.CostPerUnit
                 .Where(cpu => cpu.CostItemId == Id).FirstOrDefault(cpu => cpu.EndDate == null);
 
-            return CurrentCost?.Cost??0;
+            return GetCurrentCPU?.Cost??0;
         }
     }
 }
- 

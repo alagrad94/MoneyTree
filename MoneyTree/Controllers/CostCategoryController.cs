@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -38,9 +39,18 @@ namespace MoneyTree.Controllers {
 
             if (ModelState.IsValid) {
 
-                _context.Add(costCategory);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                CostCategory ExistingCategory = _context.CostCategory.FirstOrDefault(cc => cc.CategoryName.ToUpper() == costCategory.CategoryName.ToUpper());
+
+                if (ExistingCategory == null) {
+
+                    _context.Add(costCategory);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                } else {
+
+                    return View("CreateDuplicate", costCategory);
+                }
             }
             return View(costCategory);
         }
@@ -73,24 +83,18 @@ namespace MoneyTree.Controllers {
 
             if (ModelState.IsValid) {
 
-                try {
+                CostCategory ExistingCategory = _context.CostCategory.FirstOrDefault(cc => cc.CategoryName.ToUpper() == costCategory.CategoryName.ToUpper());
+
+                if (ExistingCategory == null) {
 
                     _context.Update(costCategory);
                     await _context.SaveChangesAsync();
+ 
+                    return RedirectToAction(nameof(Index));
+                } else {
+
+                    return View("EditDuplicate", costCategory);
                 }
-
-                catch (DbUpdateConcurrencyException) {
-
-                    if (!CostCategoryExists(costCategory.Id)) {
-
-                        return NotFound();
-
-                    } else {
-
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
             return View(costCategory);
         }
@@ -103,9 +107,8 @@ namespace MoneyTree.Controllers {
                 return NotFound();
             }
 
-            int catId = id ?? default;
-            //ViewData["NewCategoryId"] = new SelectList(_context.CostCategory.Where(c => c.Id != id), "Id", "CategoryName");
-            //CostCategory costCategory = _context.CostCategory.FirstOrDefault(c => c.Id == id);
+            int catId = id.GetValueOrDefault();
+
             DeleteCategoryViewModel viewModel = new DeleteCategoryViewModel {
 
                 OldCategoryId = catId,

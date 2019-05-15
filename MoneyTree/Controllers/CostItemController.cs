@@ -8,8 +8,7 @@ using MoneyTree.Data;
 using MoneyTree.Models;
 using MoneyTree.Models.ViewModels;
 
-namespace MoneyTree.Controllers
-{
+namespace MoneyTree.Controllers {
 
     public class CostItemController : Controller {
 
@@ -90,9 +89,17 @@ namespace MoneyTree.Controllers
 
             if (ModelState.IsValid) {
 
-                _context.Add(costItem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                CostItem ExistingItem = _context.CostItem.FirstOrDefault(ci => ci.ItemName.ToUpper() == costItem.ItemName.ToUpper());
+
+                if (ExistingItem == null) {
+
+                    _context.Add(costItem);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                } else {
+                    return View("CreateDuplicate", costItem);
+                }
             }
 
             ViewData["CostCategoryId"] = new SelectList(_context.CostCategory, "Id", "CategoryName", costItem.CostCategoryId);
@@ -109,6 +116,7 @@ namespace MoneyTree.Controllers
             }
 
             var costItem = await _context.CostItem.FindAsync(id);
+
             if (costItem == null) {
 
                 return NotFound();
@@ -119,12 +127,9 @@ namespace MoneyTree.Controllers
             return View(costItem);
         }
 
-        // POST: CostItems/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UnitOfMeasureId,CostCategoryId")] CostItem costItem) {
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ItemName,UnitOfMeasureId,CostCategoryId")] CostItem costItem) {
 
             if (id != costItem.Id) {
 
@@ -133,29 +138,22 @@ namespace MoneyTree.Controllers
 
             if (ModelState.IsValid) {
 
-                try {
+                CostItem ExistingItem = _context.CostItem.FirstOrDefault(ci => ci.ItemName.ToUpper() == costItem.ItemName.ToUpper());
+
+                if (ExistingItem == null) {
 
                     _context.Update(costItem);
                     await _context.SaveChangesAsync();
-                } catch (DbUpdateConcurrencyException) {
 
-                    if (!CostItemExists(costItem.Id)) {
-
-                        return NotFound();
-                    } else {
-
-                        throw;
-                    }
+                    return RedirectToAction(nameof(Index));
+                } else {
+                    return View("EditDuplicate", costItem);
                 }
-                return RedirectToAction(nameof(Index));
             }
+
             ViewData["CostCategoryId"] = new SelectList(_context.CostCategory, "Id", "CategoryName", costItem.CostCategoryId);
             ViewData["UnitOfMeasureId"] = new SelectList(_context.UnitOfMeasure, "Id", "UnitName", costItem.UnitOfMeasureId);
             return View(costItem);
-        }
-
-        private bool CostItemExists(int id) {
-            return _context.CostItem.Any(e => e.Id == id);
         }
     }
 }

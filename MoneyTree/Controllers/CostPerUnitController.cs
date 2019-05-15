@@ -65,24 +65,21 @@ namespace MoneyTree.Controllers {
 
                     _context.Add(costPerUnit);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(actionName: "Details", controllerName: "CostItem", routeValues: new { id = costPerUnit.CostItemId });
-                }
-
-                ViewData["CostItemId"] = id;
-                return View(costPerUnit);
-
-            } else {
-
-                if (ModelState.IsValid) {
-
-                    _context.Add(costPerUnit);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(actionName: "Details", controllerName: "CostItem", routeValues: new { id = costPerUnit.CostItemId });
+                    return RedirectToAction("Details", "CostItem", new { id = costPerUnit.CostItemId });
                 }
 
                 ViewData["CostItemId"] = id;
                 return View(costPerUnit);
             }
+            if (ModelState.IsValid) {
+
+                _context.Add(costPerUnit);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "CostItem", new { id = costPerUnit.CostItemId });
+            }
+
+            ViewData["CostItemId"] = id;
+            return View(costPerUnit);
         }
 
         // GET: CostPerUnits/Edit/5
@@ -127,12 +124,10 @@ namespace MoneyTree.Controllers {
 
                         return NotFound();
 
-                    } else {
-
-                        throw;
                     }
+                    throw;
                 }
-                return RedirectToAction(actionName: "Details", controllerName: "CostItem", routeValues: new { id = costPerUnit.CostItemId });
+                return RedirectToAction("Details", "CostItem", new { id = costPerUnit.CostItemId });
             }
             ViewData["CostItemId"] = costPerUnit.CostItemId;
             return View(costPerUnit);

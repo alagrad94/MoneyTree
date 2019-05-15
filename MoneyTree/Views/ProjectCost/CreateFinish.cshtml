@@ -1,0 +1,135 @@
+﻿@model MoneyTree.Models.ViewModels.ProjectCostCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<style type="text/css">
+
+    .project_cost_create_row {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .project_cost_create_field {
+        padding-right: 15px
+    }
+
+    .updated_quantity {
+        text-emphasis-color: darkgreen;
+        font-weight: bold
+    }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+        asp-fallback-test="window.jQuery"
+        crossorigin="anonymous"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
+
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">Results of Adding Project Costs</h1>
+</div>
+
+<hr />
+
+@if (Model.UpdatedRecords.Count > 0) {
+
+    <h3>Updated Records</h3>
+    <h6>The following records already existed.  The the records were updated to reflect the additional quantity you entered.</h6>
+
+    foreach (var item in Model.UpdatedRecords) {
+
+        <card class="card text-center mb-4" style="padding: 5px; width: 40%">
+            <dl class="row">
+                <dt class="col-sm">
+                    Item:
+                </dt>
+                <dd class="col-sm">
+                    @Html.DisplayFor(model => item.CostItem.ItemName)
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="col-sm updated_quantity">
+                    Updated Quantity:
+                </dt>
+                <dd class="col-sm updated_quantity">
+                    @Html.DisplayFor(model => item.Quantity)
+                </dd>
+             </dl>
+            <dl class="row">
+                <dt class="col-sm">
+                    Date Used:
+                </dt>
+                <dd class="col-sm">
+                    @Html.DisplayFor(model => item.DateUsed)
+                </dd>
+             </dl>
+            <dl class="row">
+                <dt class="col-sm">
+                    Cost:
+                </dt>
+                <dd class="col-sm">
+                    @Html.DisplayFor(model => item.CostPerUnit.Cost)
+                </dd>
+            </dl>
+
+            @if (Model.RejectedEntries.Count == 0){
+                <div>
+                    <a asp-action="Details" asp-controller="Project" asp-route-id="@Model.ProjectId">
+                    <button class="btn btn-dark" type="button">Back to Project Details</button></a>
+                </div>
+            }
+        </card>
+    }
+}
+
+@if (Model.RejectedEntries.Count > 0){
+
+    <h3>Rejected Records</h3>
+    <h6>The following records were rejected.  Please correct the records to ensure each record has an associated Cost Item,
+    a Date Used within the last year and a Quantity greater than 0.</h6>
+    <card class="card text-center mb-4">
+        <form asp-action="Create" class="" style="width: 100%">
+            <div id="pc_form" class="project_cost_create_form">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                @for (int i = 0; i < Model.RejectedEntries.Count; i++){
+
+                    <div class="project_cost_create_row" id="pc_form_row_@i">
+                        <div class="form-group" id="model_projectId_div_0">
+                            <input type="hidden" asp-for="ProjectId" class="form-control" id="model_projectId_input_0" />
+                        </div>
+                        <div class="form-group" id="cost_item_projectId_div_@i">
+                            <input type="hidden" asp-for="RejectedEntries[i].ProjectId" class="form-control" id="cost_item_projectId_input_@i" />
+                        </div>
+                        <div class="form-group project_cost_create_field" id="cost_item_select_div_@i">
+                            <label asp-for="RejectedEntries[i].CostItemId" class="control-label" id="cost_item_select_label_@i">Cost Item</label>
+                            <select asp-for="RejectedEntries[i].CostItemId" class="form-control" asp-items="@Model.ItemOptions" id="cost_item_select_@i"></select>
+                            <span asp-validation-for="RejectedEntries[i].CostItemId" class="text-danger" id="cost_item_select_val_@i"></span>
+                        </div>
+                        <div class="form-group project_cost_create_field" id="cost_item_date_div_@i">
+                            <label asp-for="RejectedEntries[i].DateUsed" class="control-label" id="cost_item_date_label_@i">Date Used</label>
+                            <input asp-for="RejectedEntries[i].DateUsed" type="date" class="form-control" id="cost_item_date_@i" />
+                            <span asp-validation-for="RejectedEntries[i].DateUsed" class="text-danger" id="cost_item_date_val_@i"></span>
+                        </div>
+                        <div class="form-group project_cost_create_field" id="cost_item_quantity_div_@i">
+                            <label asp-for="RejectedEntries[i].Quantity" class="control-label" id="cost_item_quantity_label_@i">Quantity</label>
+                            <input asp-for="RejectedEntries[i].Quantity" class="form-control" id="cost_item_quantity_@i" />
+                            <span asp-validation-for="RejectedEntries[i].Quantity" class="text-danger" id="cost_item_quantity_val_@i"></span>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div>
+                <input type="submit" value="Submit" class="btn btn-dark" />
+            </div>
+        </form>
+    </card>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

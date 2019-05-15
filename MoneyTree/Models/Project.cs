@@ -28,7 +28,7 @@ namespace MoneyTree.Models {
         public DateTime? CompletionDate { get; set; }
 
         [Display(Name = "Amount Charged")]
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         public double AmountCharged { get; set; }
 
         public int? CustomerId { get; set; }
@@ -39,7 +39,7 @@ namespace MoneyTree.Models {
 
         public ApplicationUser User { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         public double TotalCost {
             get {
                 double Total = 0.00;
@@ -53,7 +53,7 @@ namespace MoneyTree.Models {
             }
         }
 
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         public double Profit {
             get {
                 return AmountCharged - TotalCost;

@@ -9,8 +9,7 @@ using Microsoft.Extensions.Configuration;
 using MoneyTree.Data;
 using MoneyTree.Models;
 
-namespace MoneyTree.Controllers
-{
+namespace MoneyTree.Controllers {
 
     public class ProjectController : Controller {
 
@@ -122,10 +121,8 @@ namespace MoneyTree.Controllers
 
                         return NotFound();
                     }
-                    else {
 
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -168,11 +165,6 @@ namespace MoneyTree.Controllers
             return _context.Project.Any(e => e.Id == id);
         }
 
-        private bool ProjectCostExists(int id) {
-
-            return _context.ProjectCost.Any(e => e.Id == id);
-        }
-
         public Project GetProjectById(int? id) {
 
             using (SqlConnection conn = Connection) {
@@ -210,6 +202,8 @@ namespace MoneyTree.Controllers
                                 Id = reader.GetInt32(reader.GetOrdinal("ProjectId")),
                                 ProjectName = reader.GetString(reader.GetOrdinal("ProjectName")),
                                 StartDate = reader.GetDateTime(reader.GetOrdinal("ProjectStart")),
+                                Customer = new Customer(),
+                                ProjectCosts = new List<ProjectCost>()
                             };
                         }
 
@@ -225,19 +219,16 @@ namespace MoneyTree.Controllers
 
                         if (!reader.IsDBNull(reader.GetOrdinal("CustomerId"))) {
 
-                            project.Customer = new Customer {
-
-                                Id = reader.GetInt32(reader.GetOrdinal("CustomerId")),
-                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                                LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                                Email = reader.GetString(reader.GetOrdinal("Email")),
-                                PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber"))
-                            };
+                            project.Customer.Id = reader.GetInt32(reader.GetOrdinal("CustomerId"));
+                            project.Customer.FirstName = reader.GetString(reader.GetOrdinal("FirstName"));
+                            project.Customer.LastName = reader.GetString(reader.GetOrdinal("LastName"));
+                            project.Customer.Email = reader.GetString(reader.GetOrdinal("Email"));
+                            project.Customer.PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber"));
+                            
                         }
 
                         if (!reader.IsDBNull(reader.GetOrdinal("ProjectCostId"))) {
 
-                            project.ProjectCosts = new List<ProjectCost>();
                             int projectId = reader.GetInt32(reader.GetOrdinal("ProjectCostId"));
 
                             if (!project.ProjectCosts.Any(pc => pc.Id == projectId)) {

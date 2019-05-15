@@ -3,27 +3,21 @@
 @{
     ViewData["Title"] = "Index";
 }
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+<script src="~/lib/jquery/dist/jquery.min.js"
         asp-fallback-test="window.jQuery"
-        crossorigin="anonymous"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        crossorigin="anonymous">
 </script>
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">Cost Items  <a asp-action="Create"><i class="fas fa-plus-circle"></i></a></h1>
+</div>
 
-<h1>Cost Items</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
-<div id="container">
+<card id="container" class="card text-center mb-4" style="padding: 5px; width: 40%; display: inline-block">
     <label for="ddlCategory" class="control-label">Select A Cost Category</label>
     <select id="ddlCategory" asp-items="@Model.CategoryOptions"></select>
+</card>
 <br />
-<hr />
 <div id="dvCategoryResults">
     @{Html.RenderPartial("_IndexPartial", Model);}
-</div>
 </div>
 
 <script type="text/javascript">

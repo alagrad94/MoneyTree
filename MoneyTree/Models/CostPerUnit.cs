@@ -18,7 +18,7 @@ namespace MoneyTree.Models {
         public DateTime? EndDate { get; set; }
 
         [Required]
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         public double Cost { get; set; }
 
         [Required]
