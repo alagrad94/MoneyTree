@@ -17,7 +17,7 @@ namespace MoneyTree.Models.ViewModels
 
         public List<SelectListItem> CategoryOptions {
             get {
-                List<SelectListItem> CategoryOptionsList = CostCategories?.Where(c => c.Id != OldCategoryId)
+                List<SelectListItem> CategoryOptionsList = CostCategories?.OrderBy(cc => cc.CategoryName).Where(c => c.Id != OldCategoryId)
                 .Select(c => new SelectListItem {
                     Value = c.Id.ToString(),
                     Text = c.CategoryName

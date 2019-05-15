@@ -19,19 +19,6 @@ namespace MoneyTree.Controllers {
             _context = context;
         }
 
-        // GET: CostPerUnits
-        public async Task<IActionResult> Index() {
-
-            MaintainCostPerUnitRecords(_context);
-
-            var applicationDbContext = _context.CostPerUnit.Include(c => c.CostItem)
-                .ThenInclude(ci => ci.CostCategory)
-                .OrderBy(cpu => cpu.CostItemId)
-                .ThenByDescending(cpu => cpu.StartDate)
-                .ThenBy(cpu => cpu.CostItem.CostCategory);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
         // GET: CostPerUnits/Create
         public IActionResult Create(int id) {
 
@@ -56,7 +43,7 @@ namespace MoneyTree.Controllers {
             ModelState.Remove("CostItemId");
             if (CuurentCostPerUnit != null && costPerUnit.EndDate == null) {
 
-                CuurentCostPerUnit.EndDate = Today.AddDays(-1);
+                CuurentCostPerUnit.EndDate = costPerUnit.StartDate.AddDays(-1);
 
                 if (ModelState.IsValid) {
 
@@ -65,16 +52,21 @@ namespace MoneyTree.Controllers {
 
                     _context.Add(costPerUnit);
                     await _context.SaveChangesAsync();
+                    MaintainCostPerUnitRecords(_context);
                     return RedirectToAction("Details", "CostItem", new { id = costPerUnit.CostItemId });
                 }
 
                 ViewData["CostItemId"] = id;
                 return View(costPerUnit);
-            }
+            } //else if (CuurentCostPerUnit != null && costPerUnit.EndDate != null) {
+
+            //}
+
             if (ModelState.IsValid) {
 
                 _context.Add(costPerUnit);
                 await _context.SaveChangesAsync();
+                MaintainCostPerUnitRecords(_context);
                 return RedirectToAction("Details", "CostItem", new { id = costPerUnit.CostItemId });
             }
 

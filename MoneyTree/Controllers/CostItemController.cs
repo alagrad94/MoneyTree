@@ -23,11 +23,13 @@ namespace MoneyTree.Controllers {
         [HttpGet]
         public async Task<IActionResult> Index(string categoryId = "") {
 
+            CostPerUnitController.MaintainCostPerUnitRecords(_context);
+
             if (categoryId == "") {
 
                 var model = new CostItemIndexViewModel {
 
-                    CostCategories = await _context.CostCategory.ToListAsync(),
+                    CostCategories = await _context.CostCategory.OrderBy(cc => cc.CategoryName).ToListAsync(),
                     CategoryItems = new List<CostItem>()
                 };
 
@@ -41,6 +43,7 @@ namespace MoneyTree.Controllers {
                     CategoryItems = await _context.CostItem.Where(ci => ci.CostCategoryId == catId)
                                     .Include(c => c.CostCategory)
                                     .Include(c => c.UnitOfMeasure)
+                                    .OrderBy(ci => ci.ItemName)
                                     .ToListAsync()
                 };
 
@@ -60,6 +63,7 @@ namespace MoneyTree.Controllers {
             var costItem = await _context.CostItem
                 .Include(c => c.CostCategory)
                 .Include(c => c.UnitOfMeasure)
+                .OrderBy(ci => ci.ItemName)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             costItem.CostHistory = await _context.CostPerUnit.Where(cpu => cpu.CostItemId == id)
@@ -77,8 +81,8 @@ namespace MoneyTree.Controllers {
         // GET: CostItems/Create
         public IActionResult Create() {
 
-            ViewData["CostCategoryId"] = new SelectList(_context.CostCategory, "Id", "CategoryName");
-            ViewData["UnitOfMeasureId"] = new SelectList(_context.UnitOfMeasure, "Id", "UnitName");
+            ViewData["CostCategoryId"] = new SelectList(_context.CostCategory.OrderBy(cc => cc.CategoryName), "Id", "CategoryName");
+            ViewData["UnitOfMeasureId"] = new SelectList(_context.UnitOfMeasure.OrderBy(um => um.UnitName), "Id", "UnitName");
             return View();
         }
 
@@ -102,8 +106,8 @@ namespace MoneyTree.Controllers {
                 }
             }
 
-            ViewData["CostCategoryId"] = new SelectList(_context.CostCategory, "Id", "CategoryName", costItem.CostCategoryId);
-            ViewData["UnitOfMeasureId"] = new SelectList(_context.UnitOfMeasure, "Id", "UnitName", costItem.UnitOfMeasureId);
+            ViewData["CostCategoryId"] = new SelectList(_context.CostCategory.OrderBy(cc => cc.CategoryName), "Id", "CategoryName", costItem.CostCategoryId);
+            ViewData["UnitOfMeasureId"] = new SelectList(_context.UnitOfMeasure.OrderBy(um => um.UnitName), "Id", "UnitName", costItem.UnitOfMeasureId);
             return View(costItem);
         }
 
@@ -122,8 +126,8 @@ namespace MoneyTree.Controllers {
                 return NotFound();
             }
 
-            ViewData["CostCategoryId"] = new SelectList(_context.CostCategory, "Id", "CategoryName", costItem.CostCategoryId);
-            ViewData["UnitOfMeasureId"] = new SelectList(_context.UnitOfMeasure, "Id", "UnitName", costItem.UnitOfMeasureId);
+            ViewData["CostCategoryId"] = new SelectList(_context.CostCategory.OrderBy(cc => cc.CategoryName), "Id", "CategoryName", costItem.CostCategoryId);
+            ViewData["UnitOfMeasureId"] = new SelectList(_context.UnitOfMeasure.OrderBy(um => um.UnitName), "Id", "UnitName", costItem.UnitOfMeasureId);
             return View(costItem);
         }
 
@@ -151,9 +155,38 @@ namespace MoneyTree.Controllers {
                 }
             }
 
-            ViewData["CostCategoryId"] = new SelectList(_context.CostCategory, "Id", "CategoryName", costItem.CostCategoryId);
-            ViewData["UnitOfMeasureId"] = new SelectList(_context.UnitOfMeasure, "Id", "UnitName", costItem.UnitOfMeasureId);
+            ViewData["CostCategoryId"] = new SelectList(_context.CostCategory.OrderBy(cc => cc.CategoryName), "Id", "CategoryName", costItem.CostCategoryId);
+            ViewData["UnitOfMeasureId"] = new SelectList(_context.UnitOfMeasure.OrderBy(um => um.UnitName), "Id", "UnitName", costItem.UnitOfMeasureId);
             return View(costItem);
+        }
+
+        // GET: CostItem/Delete/5
+        public async Task<IActionResult> Delete(int? id) {
+
+            if (id == null) {
+                return NotFound();
+            }
+
+            var costItem = await _context.CostItem.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (costItem == null)
+            {
+                return NotFound();
+            }
+
+            return View(costItem);
+        }
+
+        // POST: CostItem/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id){
+
+            var costItem = await _context.CostItem.FindAsync(id);
+
+            _context.CostItem.Remove(costItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

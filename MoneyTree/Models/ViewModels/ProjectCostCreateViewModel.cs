@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using MoneyTree.Data;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +9,8 @@ namespace MoneyTree.Models.ViewModels {
     public class ProjectCostCreateViewModel {
 
         public int ProjectId { get; set; }
+
+        public Project Project { get; set; }
 
         public List<ProjectCost> Costs { get; set; }
 
@@ -18,9 +22,10 @@ namespace MoneyTree.Models.ViewModels {
 
         public List<SelectListItem> ItemOptions {
             get {
-                List<SelectListItem> ItemOptionsList = CostItems?.Select(c => new SelectListItem {
+                List<SelectListItem> ItemOptionsList = CostItems?.OrderBy(ci => ci.ItemName)
+                    .Select(c => new SelectListItem {
                     Value = c.Id.ToString(),
-                    Text = c.ItemName
+                    Text = c.ItemName + "(" + c.UnitOfMeasure.UnitName + ")"
                 }).ToList();
 
                 ItemOptionsList?.Insert(0, new SelectListItem { Value = "0", Text = "Select An Item", Selected = true });

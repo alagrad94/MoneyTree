@@ -21,7 +21,7 @@ namespace MoneyTree.Controllers {
         }
 
         // GET: ProjectCosts/Create
-        public IActionResult Create(int id) {
+        public async Task<IActionResult> Create(int id) {
 
             CostPerUnitController.MaintainCostPerUnitRecords(_context);
 
@@ -30,9 +30,12 @@ namespace MoneyTree.Controllers {
             ProjectCostCreateViewModel model = new ProjectCostCreateViewModel {
 
                 ProjectId = id,
+                Project = await _context.Project.FirstOrDefaultAsync(p => p.Id == id),
                 Costs = new List<ProjectCost>(),
-                CostItems = _context.CostItem.ToList()
+                CostItems = new List<CostItem> ()
             };
+
+            model.CostItems = await _context.CostItem.Include(ci => ci.UnitOfMeasure).OrderBy(ci => ci.ItemName).ToListAsync();
 
             ProjectCost Cost = new ProjectCost {
                 ProjectId = id,
@@ -49,18 +52,21 @@ namespace MoneyTree.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProjectCostCreateViewModel projectCosts) {
 
-            List<ProjectCost> ProjectCostsInContext = await _context.ProjectCost.Where(pc => pc.ProjectId == projectCosts.ProjectId).ToListAsync();
+            List<ProjectCost> ProjectCostsInContext = await _context.ProjectCost
+                .Where(pc => pc.ProjectId == projectCosts.ProjectId).ToListAsync();
             List<ProjectCost> CostsEntered = (projectCosts.Costs?.Count > 0) ? projectCosts.Costs :  projectCosts.RejectedEntries;
             List<ProjectCost> RejectecdEntries = new List<ProjectCost>();
             List<ProjectCost> UpdatedRecords = new List<ProjectCost>();
 
-            DateTime CheckDate = DateTime.UtcNow.AddDays(-365);
+            DateTime CheckDate = projectCosts.Project.StartDate;
 
             foreach (var cost in CostsEntered.ToList()) {
 
-                ProjectCost ExistingCost = ProjectCostsInContext.FirstOrDefault(pc => pc.ProjectId == cost.ProjectId && pc.CostItemId == cost.CostItemId && pc.DateUsed == cost.DateUsed);
+                ProjectCost ExistingCost = ProjectCostsInContext
+                    .FirstOrDefault(pc => pc.ProjectId == cost.ProjectId 
+                    && pc.CostItemId == cost.CostItemId && pc.DateUsed == cost.DateUsed);
 
-                if (cost.DateUsed <= CheckDate || cost.ProjectId == 0 || cost.CostItemId == 0) {
+                if (cost.DateUsed < CheckDate || cost.ProjectId == 0 || cost.CostItemId == 0) {
 
                     CostsEntered.Remove(cost);
                     RejectecdEntries.Add(cost);
@@ -79,11 +85,15 @@ namespace MoneyTree.Controllers {
 
             foreach (var projectCost in CostsEntered) {
 
-                CostPerUnit CuurentCostPerUnit = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId).FirstOrDefault(cpu => cpu.EndDate == null);
+                CostPerUnit CuurentCostPerUnit = _context.CostPerUnit
+                    .Where(cpu => cpu.CostItemId == projectCost.CostItemId)
+                    .FirstOrDefault(cpu => cpu.EndDate == null);
 
                 if (projectCost.DateUsed < CuurentCostPerUnit.StartDate) {
 
-                    CostPerUnit CostPerUnitCorrectDate = _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId).FirstOrDefault(cpu => projectCost.DateUsed <= cpu.EndDate && projectCost.DateUsed >= cpu.StartDate);
+                    CostPerUnit CostPerUnitCorrectDate = _context.CostPerUnit
+                        .Where(cpu => cpu.CostItemId == projectCost.CostItemId)
+                        .FirstOrDefault(cpu => projectCost.DateUsed <= cpu.EndDate && projectCost.DateUsed >= cpu.StartDate);
 
                     projectCost.CostPerUnitId = CostPerUnitCorrectDate.Id;
 
@@ -119,10 +129,12 @@ namespace MoneyTree.Controllers {
                 ProjectCostCreateViewModel viewModel = new ProjectCostCreateViewModel {
 
                     ProjectId = projectCosts.ProjectId,
-                    CostItems = _context.CostItem.ToList(),
+                    CostItems = new List<CostItem>(),
                     RejectedEntries = RejectecdEntries,
                     UpdatedRecords = UpdatedRecords
                 };
+
+                viewModel.CostItems = _context.CostItem.Include(ci => ci.UnitOfMeasure).OrderBy(ci => ci.ItemName).ToList();
 
                 return View("CreateFinish", viewModel);
 
@@ -141,8 +153,13 @@ namespace MoneyTree.Controllers {
             }
 
             var projectCost = await _context.ProjectCost.FindAsync(id);
+            projectCost.Project = await _context.Project.FindAsync(projectCost.ProjectId);
+            projectCost.CostItem = await _context.CostItem.FindAsync(projectCost.CostItemId);
 
-            List<CostPerUnit> CostPerUnitList = await _context.CostPerUnit.Where(cpu => cpu.CostItemId == projectCost.CostItemId).OrderByDescending(cpu => cpu.StartDate).ToListAsync();
+            List<CostPerUnit> CostPerUnitList = await _context.CostPerUnit
+                                .Where(cpu => cpu.CostItemId == projectCost.CostItemId)
+                                .OrderByDescending(cpu => cpu.StartDate)
+                                .ToListAsync();
 
             List<SelectListItem> CPUSelectList = new List<SelectListItem>();
 
@@ -157,8 +174,9 @@ namespace MoneyTree.Controllers {
                 });
             }
 
-            ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName", projectCost.CostItemId);
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "ProjectName", projectCost.ProjectId);
+
+            ViewData["CostItemId"] = projectCost.CostItem;
+            ViewData["ProjectId"] = projectCost.ProjectId;
             ViewData["CostPerUnitId"] = CPUSelectList;
             return View(projectCost);
         }
@@ -175,7 +193,9 @@ namespace MoneyTree.Controllers {
 
             if (ModelState.IsValid) {
 
-                ProjectCost ExistingCost = _context.ProjectCost.FirstOrDefault(pc => pc.ProjectId == projectCost.ProjectId && pc.CostItemId == projectCost.CostItemId && pc.DateUsed == projectCost.DateUsed);
+                ProjectCost ExistingCost = _context.ProjectCost
+                    .FirstOrDefault(pc => pc.ProjectId == projectCost.ProjectId 
+                    && pc.CostItemId == projectCost.CostItemId && pc.DateUsed == projectCost.DateUsed);
 
                 if (ExistingCost != null && ExistingCost.Id != projectCost.Id) {
 
@@ -183,6 +203,7 @@ namespace MoneyTree.Controllers {
                     _context.Update(ExistingCost);
                     _context.Remove(projectCost);
                     await _context.SaveChangesAsync();
+
                 } else {
 
                     ExistingCost.ProjectId = projectCost.ProjectId;
@@ -211,8 +232,8 @@ namespace MoneyTree.Controllers {
                 });
             }
 
-            ViewData["CostItemId"] = new SelectList(_context.CostItem, "Id", "ItemName", projectCost.CostItemId);
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "ProjectName", projectCost.ProjectId);
+            ViewData["CostItemId"] = projectCost.CostItemId;
+            ViewData["ProjectId"] = projectCost.ProjectId;
             ViewData["CostPerUnitId"] = CPUSelectList;
             return View(projectCost);
         }

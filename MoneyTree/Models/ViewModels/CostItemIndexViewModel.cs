@@ -17,7 +17,7 @@ namespace MoneyTree.Models.ViewModels {
         public List<SelectListItem> CategoryOptions {
 
             get {
-                List<SelectListItem> CategoryOptionsList = CostCategories.Select(c => new SelectListItem {
+                List<SelectListItem> CategoryOptionsList = CostCategories.OrderBy(cc => cc.CategoryName).Select(c => new SelectListItem {
                     Value = c.Id.ToString(),
                     Text = c.CategoryName
                 }).ToList();

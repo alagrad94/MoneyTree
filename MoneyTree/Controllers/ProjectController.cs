@@ -56,7 +56,8 @@ namespace MoneyTree.Controllers {
         // GET: Projects/Create
         public IActionResult Create() {
 
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "FullName");
+            ViewData["CustomerId"] = new SelectList(_context.Customer.OrderBy(c => c.LastName)
+                .ThenBy(c => c.FirstName), "Id", "FullName");
             return View();
         }
 
@@ -74,7 +75,8 @@ namespace MoneyTree.Controllers {
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "FullName", project.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customer.OrderBy(c => c.LastName)
+                .ThenBy(c => c.FirstName), "Id", "FullName", project.CustomerId);
             return View(project);
         }
 
@@ -91,7 +93,8 @@ namespace MoneyTree.Controllers {
 
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "FullName", project.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customer.OrderBy(c => c.LastName)
+                .ThenBy(c => c.FirstName), "Id", "FullName", project.CustomerId);
             return View(project);
         }
 
@@ -126,7 +129,8 @@ namespace MoneyTree.Controllers {
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "FullName", project.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customer.OrderBy(c => c.LastName)
+                .ThenBy(c => c.FirstName), "Id", "FullName", project.CustomerId);
             return View(project);
         }
 

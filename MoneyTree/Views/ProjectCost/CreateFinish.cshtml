@@ -87,8 +87,7 @@
 @if (Model.RejectedEntries.Count > 0){
 
     <h3>Rejected Records</h3>
-    <h6>The following records were rejected.  Please correct the records to ensure each record has an associated Cost Item,
-    a Date Used within the last year and a Quantity greater than 0.</h6>
+    <h6>The following records were rejected.  Please correct the records to ensure each record has an associated Cost Item, a Date Used AFTER the project start date and a Quantity greater than 0.</h6>
     <card class="card text-center mb-4">
         <form asp-action="Create" class="" style="width: 100%">
             <div id="pc_form" class="project_cost_create_form">
