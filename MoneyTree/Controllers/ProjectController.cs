@@ -111,7 +111,7 @@ namespace MoneyTree.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, 
-            [Bind("Id,ProjectName,StartDate,CompletionDate,AmountCharged,CustomerId,UserId")] Project project) {
+            [Bind("Id,ProjectName,StartDate,CompletionDate,AmountCharged,CustomerId,UserId,IsComplete")] Project project) {
 
             if (id != project.Id) {
 
