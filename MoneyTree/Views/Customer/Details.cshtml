@@ -59,7 +59,7 @@
                             Open
                         </td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info"></i></a>
+                            <a asp-controller="Project" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info"></i></a>
                         </td>
                     </tr>
                 }
@@ -98,7 +98,7 @@
 
                     <tr>
                         <td>
-                            <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ProjectName)</a>
+                            <a asp-controller="Project" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ProjectName)</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.StartDate)
@@ -113,7 +113,7 @@
                             Complete
                         </td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info"></i></a>
+                            <a asp-controller="Project" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info"></i></a>
                         </td>
                     </tr>
                 }
