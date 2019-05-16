@@ -22,7 +22,7 @@
             @foreach (var item in Model.CategoryItems){
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ItemName)
+                        <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ItemName)</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.UnitOfMeasure.UnitName)

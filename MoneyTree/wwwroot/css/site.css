@@ -82,7 +82,7 @@ th, td {
     width: auto;
     padding: 10px;
     text-align: center;
-    font-size: large;
+    /*font-size: large;*/
     text-wrap: none;
 }
 

@@ -1,43 +1,115 @@
-﻿@model MoneyTree.Models.Customer
+﻿@model MoneyTree.Models.ViewModels.CustomerDetailViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
-
 <div class="page_title_container container-fluid">
-    <h1 class="page_title">Customer Details <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
+    <h1 class="page_title">Projects For @Html.DisplayFor(model => model.Customer.FullName) <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
 </div>
-<card class="card text-center mb-4" style="padding: 5px; width: 40%">
-    <dl class="row">
-        <dt class="col-sm">
-            @Html.DisplayNameFor(model => model.FirstName):
-        </dt>
-        <dd class="col-sm">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm">
-            @Html.DisplayNameFor(model => model.LastName):
-        </dt>
-        <dd class="col-sm">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm">
-            @Html.DisplayNameFor(model => model.PhoneNumber):
-        </dt>
-        <dd class="col-sm">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm">
-            @Html.DisplayNameFor(model => model.Email):
-        </dt>
-        <dd class="col-sm">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
+<br />
+<card class="card text-center mb-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerProjects[0].ProjectName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerProjects[0].StartDate)
+                </th>
+                <th>
+                    Est. Completion
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerProjects[0].AmountCharged)
+                </th>
+                <th>
+                    Status
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CustomerProjects){
+
+                if (!item.IsComplete) {
+
+                    <tr>
+                        <td>
+                            <a asp-controller="Project" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ProjectName)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompletionDate)
+                        </td>
+                        <td>
+                            $@Html.DisplayFor(modelItem => item.AmountCharged)
+                        </td>
+                        <td>
+                            Open
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</card>
+<br />
+<h2>Completed Projects</h2>
+<card class="card text-center mb-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerProjects[0].ProjectName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerProjects[0].StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerProjects[0].CompletionDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerProjects[0].AmountCharged)
+                </th>
+                <th>
+                    Status
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CustomerProjects){
+
+                if (item.IsComplete) {
+
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ProjectName)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompletionDate)
+                        </td>
+                        <td>
+                            $@Html.DisplayFor(modelItem => item.AmountCharged)
+                        </td>
+                        <td>
+                            Complete
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 </card>

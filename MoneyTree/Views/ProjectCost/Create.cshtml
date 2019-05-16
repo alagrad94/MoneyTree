@@ -30,6 +30,8 @@
     </h1>
 </div>
 <card class="card text-center mb-4" style="padding: 5px; width: 60%">
+    <div style="font-size: large; font-weight: bold">Project: @Html.DisplayFor(model => model.Project.ProjectName)  
+    Start Date: @Html.DisplayFor(model => model.Project.StartDate)</div><br />
     <form asp-action="Create" class="" style="width: 100%">
         <div id="pc_form" class="project_cost_create_form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

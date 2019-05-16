@@ -1,4 +1,6 @@
-﻿New Functionality (after demo day):
+﻿Remove Cost button on Add Project Cost View
+
+New Functionality (after demo day):
 
 1. LOE: C  Estimating project costs - create PDF of estimate
 2. LOE: M  Add Suppliers (Supplier Table with SupplierId in CPU table or CostItem table or both???) 

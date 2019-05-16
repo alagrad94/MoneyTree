@@ -58,7 +58,8 @@ namespace MoneyTree.Controllers {
             List<ProjectCost> RejectecdEntries = new List<ProjectCost>();
             List<ProjectCost> UpdatedRecords = new List<ProjectCost>();
 
-            DateTime CheckDate = projectCosts.Project.StartDate;
+            Project Project = await _context.Project.FirstOrDefaultAsync(p => p.Id == projectCosts.ProjectId);
+            DateTime CheckDate = Project.StartDate;
 
             foreach (var cost in CostsEntered.ToList()) {
 

@@ -20,12 +20,16 @@ namespace MoneyTree.Controllers {
         }
 
         // GET: CostPerUnits/Create
-        public IActionResult Create(int id) {
+        public async Task<IActionResult> Create(int id) {
 
             MaintainCostPerUnitRecords(_context);
 
+            CostPerUnit Cost = new CostPerUnit {
+                CostItem = await _context.CostItem.FindAsync(id)
+            };
+
             ViewData["CostItemId"] = id;
-            return View();
+            return View(Cost);
         }
 
         // POST: CostPerUnits/Create

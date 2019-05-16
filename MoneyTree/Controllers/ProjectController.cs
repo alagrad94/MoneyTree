@@ -31,8 +31,15 @@ namespace MoneyTree.Controllers {
         // GET: Projects
         public async Task<IActionResult> Index() { 
 
-            var applicationDbContext = _context.Project.Include(p => p.Customer).OrderByDescending(p => p.StartDate);
-            return View(await applicationDbContext.ToListAsync());
+            List<Project> projectsGet = new List<Project>();
+
+            foreach (var project in await _context.Project.ToListAsync()) {
+
+              projectsGet.Add(GetProjectById(project.Id));
+            }
+
+            IEnumerable<Project> projects = projectsGet.OrderByDescending(p => p.StartDate.Date);
+            return View(projects);
         }
 
         // GET: Projects/Details/5
@@ -176,7 +183,7 @@ namespace MoneyTree.Controllers {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand()) {
 
-                    cmd.CommandText = @"SELECT p.Id AS ProjectId, p.ProjectName, p.StartDate AS ProjectStart, 
+                    cmd.CommandText = @"SELECT p.Id AS ProjectId, p.ProjectName, p.StartDate AS ProjectStart, p.IsComplete,
                                                p.CompletionDate AS ProjectEnd, p.AmountCharged, c.Id AS CustomerId, 
                                                c.FirstName, c.LastName, c.PhoneNumber, c.Email, pc.Id AS ProjectCostId, 
                                                pc.DateUsed, pc.Quantity, ci.Id AS CostItemId, ci.ItemName, um.Id AS UnitId,
@@ -206,6 +213,7 @@ namespace MoneyTree.Controllers {
                                 Id = reader.GetInt32(reader.GetOrdinal("ProjectId")),
                                 ProjectName = reader.GetString(reader.GetOrdinal("ProjectName")),
                                 StartDate = reader.GetDateTime(reader.GetOrdinal("ProjectStart")),
+                                IsComplete = reader.GetBoolean(reader.GetOrdinal("IsComplete")),
                                 Customer = new Customer(),
                                 ProjectCosts = new List<ProjectCost>()
                             };
@@ -241,7 +249,7 @@ namespace MoneyTree.Controllers {
 
                                     Id = reader.GetInt32(reader.GetOrdinal("ProjectCostId")),
                                     DateUsed = reader.GetDateTime(reader.GetOrdinal("DateUsed")),
-                                    Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                    Quantity = reader.GetDouble(reader.GetOrdinal("Quantity")),
                                     CostItem = new CostItem {
                                         Id = reader.GetInt32(reader.GetOrdinal("CostItemId")),
                                         ItemName = reader.GetString(reader.GetOrdinal("ItemName")),

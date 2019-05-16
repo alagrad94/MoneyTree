@@ -12,6 +12,9 @@
 <div class="row">
     <div class="col-md-4">
         <card class="card text-center mb-4" style="padding: 5px">
+            <div style="font-size: large; font-weight: bold">
+                Cost Item: @Html.DisplayFor(model => model.CostItem.ItemName)
+            </div><br />
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">

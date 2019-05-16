@@ -40,6 +40,7 @@ namespace MoneyTree.Models {
         public ApplicationUser User { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:F2}")]
+        [Display(Name = "Total Cost")]
         public double TotalCost {
             get {
                 double Total = 0.00;
@@ -53,6 +54,7 @@ namespace MoneyTree.Models {
             }
         }
 
+        [Display(Name = "Profit")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double Profit {
             get {

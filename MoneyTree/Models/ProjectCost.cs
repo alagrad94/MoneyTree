@@ -1,8 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace MoneyTree.Models
-{
+namespace MoneyTree.Models{
 
     public class ProjectCost {
 
@@ -25,7 +24,7 @@ namespace MoneyTree.Models
         public DateTime DateUsed { get; set; }
 
         [Required]
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
 
         [Display(Name = "Project Name")]
         public Project Project { get; set; }
