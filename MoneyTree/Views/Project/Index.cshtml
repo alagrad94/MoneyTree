@@ -51,7 +51,7 @@
                             <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ProjectName)</a>
                         </td>
                         <td>
-                            <a asp-controller="Customer" asp-action="Details" asp-route-id="@item.CustomerId">
+                            <a asp-controller="Customer" asp-action="Details" asp-route-id="@item.Customer.Id">
                             @Html.DisplayFor(modelItem => item.Customer.FullName)</a>
                         </td>
                         <td>
@@ -126,7 +126,7 @@
                             <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ProjectName)</a>
                         </td>
                         <td>
-                            <a asp-controller="Customer" asp-action="Details" asp-route-id="@item.CustomerId">
+                            <a asp-controller="Customer" asp-action="Details" asp-route-id="@item.Customer.Id">
                                 @Html.DisplayFor(modelItem => item.Customer.FullName)</a>
                         </td>
                         <td>

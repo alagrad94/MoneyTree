@@ -4,7 +4,15 @@
     ViewData["Title"] = "Details";
 }
 <div class="page_title_container container-fluid">
-    <h1 class="page_title">Projects For @Html.DisplayFor(model => model.Customer.FullName) <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
+    <h1 class="page_title">
+        Projects For @Html.DisplayFor(model => model.Customer.FullName)<br />
+        <a asp-controller="Project" asp-action="Index" style="font-size: medium">
+            <i class="fas fa-sm fa-arrow-alt-circle-left" style="font-size: xx-large"></i>To Projects
+        </a>
+        <a asp-action="Index" style="font-size: medium">
+            <i class="fas fa-sm fa-arrow-alt-circle-left" style="font-size: xx-large"></i>To Customers
+        </a>
+    </h1>
 </div>
 <br />
 <card class="card text-center mb-4">
