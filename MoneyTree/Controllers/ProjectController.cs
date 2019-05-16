@@ -68,7 +68,7 @@ namespace MoneyTree.Controllers {
                 Text = c.FullName
             }).ToListAsync();
 
-            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
+            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Customer", Selected = true });
 
             ViewData["CustomerId"] = CustomerOptions;
             return View();
@@ -94,7 +94,7 @@ namespace MoneyTree.Controllers {
                 Text = c.FullName
             }).ToListAsync();
 
-            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
+            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Customer", Selected = true });
 
             ViewData["CustomerId"] = CustomerOptions;
             return View(project);
@@ -118,7 +118,7 @@ namespace MoneyTree.Controllers {
                 Text = c.FullName
             }).ToListAsync();
 
-            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
+            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Customer", Selected = true });
 
             ViewData["CustomerId"] = CustomerOptions;
             return View(project);
@@ -160,7 +160,7 @@ namespace MoneyTree.Controllers {
                 Text = c.FullName
             }).ToListAsync();
 
-            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
+            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Customer", Selected = true });
 
             ViewData["CustomerId"] = CustomerOptions;
             return View(project);
