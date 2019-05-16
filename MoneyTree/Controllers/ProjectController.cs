@@ -61,10 +61,16 @@ namespace MoneyTree.Controllers {
         }
 
         // GET: Projects/Create
-        public IActionResult Create() {
+        public async Task<IActionResult> Create() {
 
-            ViewData["CustomerId"] = new SelectList(_context.Customer.OrderBy(c => c.LastName)
-                .ThenBy(c => c.FirstName), "Id", "FullName");
+            List<SelectListItem> CustomerOptions = await _context.Customer.OrderBy(c => c.LastName).Select(c => new SelectListItem {
+                Value = c.Id.ToString(),
+                Text = c.FullName
+            }).ToListAsync();
+
+            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
+
+            ViewData["CustomerId"] = CustomerOptions;
             return View();
         }
 
@@ -82,8 +88,15 @@ namespace MoneyTree.Controllers {
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer.OrderBy(c => c.LastName)
-                .ThenBy(c => c.FirstName), "Id", "FullName", project.CustomerId);
+
+            List<SelectListItem> CustomerOptions = await _context.Customer.OrderBy(c => c.LastName).Select(c => new SelectListItem {
+                Value = c.Id.ToString(),
+                Text = c.FullName
+            }).ToListAsync();
+
+            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
+
+            ViewData["CustomerId"] = CustomerOptions;
             return View(project);
         }
 
@@ -100,8 +113,14 @@ namespace MoneyTree.Controllers {
 
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer.OrderBy(c => c.LastName)
-                .ThenBy(c => c.FirstName), "Id", "FullName", project.CustomerId);
+            List<SelectListItem> CustomerOptions = await _context.Customer.OrderBy(c => c.LastName).Select(c => new SelectListItem {
+                Value = c.Id.ToString(),
+                Text = c.FullName
+            }).ToListAsync();
+
+            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
+
+            ViewData["CustomerId"] = CustomerOptions;
             return View(project);
         }
 
@@ -136,8 +155,14 @@ namespace MoneyTree.Controllers {
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer.OrderBy(c => c.LastName)
-                .ThenBy(c => c.FirstName), "Id", "FullName", project.CustomerId);
+            List<SelectListItem> CustomerOptions = await _context.Customer.OrderBy(c => c.LastName).Select(c => new SelectListItem {
+                Value = c.Id.ToString(),
+                Text = c.FullName
+            }).ToListAsync();
+
+            CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Category", Selected = true });
+
+            ViewData["CustomerId"] = CustomerOptions;
             return View(project);
         }
 
