@@ -156,6 +156,7 @@ namespace MoneyTree.Controllers {
             var projectCost = await _context.ProjectCost.FindAsync(id);
             projectCost.Project = await _context.Project.FindAsync(projectCost.ProjectId);
             projectCost.CostItem = await _context.CostItem.FindAsync(projectCost.CostItemId);
+            projectCost.CostPerUnit = await _context.CostPerUnit.FindAsync(projectCost.CostPerUnitId);
 
             List<CostPerUnit> CostPerUnitList = await _context.CostPerUnit
                                 .Where(cpu => cpu.CostItemId == projectCost.CostItemId)
@@ -169,10 +170,19 @@ namespace MoneyTree.Controllers {
                 string StartDateString = item.StartDate.ToShortDateString();
                 string EndDateString = item.EndDate?.ToShortDateString() ?? "----";
 
-                CPUSelectList.Add(new SelectListItem {
-                    Value = item.Id.ToString(),
-                    Text = $"Cost: ${item.Cost} - Date Range: {StartDateString} - {EndDateString}"
-                });
+                if (item.Id == projectCost.CostPerUnitId) {
+                    CPUSelectList.Add(new SelectListItem {
+                        Value = item.Id.ToString(),
+                        Text = $"Cost: ${item.Cost} - Date Range: {StartDateString} - {EndDateString}",
+                        Selected = true
+                    });
+                } else {
+
+                    CPUSelectList.Add(new SelectListItem {
+                        Value = item.Id.ToString(),
+                        Text = $"Cost: ${item.Cost} - Date Range: {StartDateString} - {EndDateString}"
+                    });
+                }
             }
 
 
