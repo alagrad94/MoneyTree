@@ -24,10 +24,13 @@ namespace MoneyTree.Controllers {
 
             MaintainCostPerUnitRecords(_context);
 
+            var today = DateTime.Now.ToString("yyyy-MM-dd");
+
             CostPerUnit Cost = new CostPerUnit {
                 CostItem = await _context.CostItem.FindAsync(id)
             };
 
+            ViewData["DefaultDate"] = today;
             ViewData["CostItemId"] = id;
             return View(Cost);
         }

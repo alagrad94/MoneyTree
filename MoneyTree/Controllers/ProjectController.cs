@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -70,6 +71,9 @@ namespace MoneyTree.Controllers {
 
             CustomerOptions?.Insert(0, new SelectListItem { Value = "0", Text = "Select A Customer", Selected = true });
 
+            var today = DateTime.Now.ToString("yyyy-MM-dd");
+
+            ViewData["DefaultDate"] = today;
             ViewData["CustomerId"] = CustomerOptions;
             return View();
         }

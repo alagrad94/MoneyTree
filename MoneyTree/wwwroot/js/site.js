@@ -1,8 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-function AddRow() {
+﻿function AddRow() {
 
     var ids = $('select').map(function () {
         var idNumber = this.id.split("_").pop();
@@ -24,28 +20,16 @@ function AddRow() {
     var selectClone = document.getElementById("cost_item_select_0").cloneNode(true);
     selectClone.setAttribute("id", `cost_item_select_${i}`);
     selectClone.setAttribute("name", `Costs[${i}].CostItemId`);
-    selectClone.setAttribute("aria-describedby", `cost_item_select_${i}-error`);
-
-    var selectValClone = document.getElementById("cost_item_select_val_0").cloneNode(true);
-    selectValClone.setAttribute("id", `cost_item_select_val_${i}`);
-    selectValClone.setAttribute("data-valmsg-for", `Costs[${i}].CostItemId`);
 
     selectDiv.appendChild(selectClone);
-    selectDiv.appendChild(selectValClone);
 
     var dateDiv = document.getElementById("cost_item_date_div_0");
 
     var dateClone = document.getElementById("cost_item_date_0").cloneNode(true);
     dateClone.setAttribute("id", `cost_item_date_${i}`);
     dateClone.setAttribute("name", `Costs[${i}].DateUsed`);
-    dateClone.setAttribute("aria-describedby", `cost_item_date_${i}-error`);
-
-    var dateValClone = document.getElementById("cost_item_date_val_0").cloneNode(true);
-    dateValClone.setAttribute("id", `cost_item_date_val_${i}`);
-    dateValClone.setAttribute("data-valmsg-for", `Costs[${i}].DateUsed`);
 
     dateDiv.appendChild(dateClone);
-    dateDiv.appendChild(dateValClone);
 
     var quantityDiv = document.getElementById("cost_item_quantity_div_0");
 
@@ -53,12 +37,39 @@ function AddRow() {
     quantityClone.setAttribute("id", `cost_item_quantity_${i}`);
     quantityClone.setAttribute("name", `Costs[${i}].Quantity`);
 
-    var quantityValClone = document.getElementById("cost_item_quantity_val_0").cloneNode(true);
-    quantityValClone.setAttribute("id", `cost_item_quantity_val_${i}`);
-    quantityValClone.setAttribute("data-valmsg-for", `Costs[${i}].Quantity`);
-
     quantityDiv.appendChild(quantityClone);
-    quantityDiv.appendChild(quantityValClone);
+
+    var removeButtonDiv = document.getElementById("pc_form_removeButton_div_0");
+    var removeButton = document.createElement("button");
+    removeButton.classList.add("btn", "btn-dark");
+    removeButton.setAttribute("type", "button");
+    removeButton.setAttribute("id", `removeButton_${i}`);
+    removeButton.addEventListener("click", RemoveRow);
+
+    var buttonText = document.createTextNode("Remove Cost");
+
+    removeButton.appendChild(buttonText);
+
+    removeButtonDiv.appendChild(removeButton);
 
     i++
+
+    var costFormRow = document.getElementById("pc_form_row");
+}
+
+function RemoveRow(event) {
+
+    var idNumber = event.target.id.split("_").pop();
+
+    var projectIdToRemove = document.getElementById(`cost_item_projectId_input_${idNumber}`);
+    var selectToRemove = document.getElementById(`cost_item_select_${idNumber}`);
+    var dateToRemove = document.getElementById(`cost_item_date_${idNumber}`);
+    var quantityToRemove = document.getElementById(`cost_item_quantity_${idNumber}`);
+    var buttonToRemove = document.getElementById(`removeButton_${idNumber}`);
+
+    projectIdToRemove.remove();
+    selectToRemove.remove();
+    dateToRemove.remove();
+    quantityToRemove.remove();
+    buttonToRemove.remove();
 }
