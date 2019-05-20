@@ -8,43 +8,43 @@
     <h1 class="page_title">Edit A Project Cost  <a asp-action="Details" asp-controller="Project" asp-route-id="@Model.ProjectId">
     <i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
 </div>
-<div class="row">
-    <div class="col-md-4">
-        <card class="card text-center mb-4" style="padding: 5px">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <div class="form-group">
-                    <input type="hidden" asp-for="ProjectId" class="form-control" />
-                    <input asp-for="Project.ProjectName" readonly type="text" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <input type="hidden" asp-for="CostItemId" class="form-control" />
-                    <input asp-for="CostItem.ItemName" readonly type="text" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="CostPerUnitId" class="control-label">Cost Per Unit</label>
-                    <select asp-for="CostPerUnitId" class="form-control" asp-items="ViewBag.CostPerUnitId"></select>
-                    <span asp-validation-for="CostPerUnitId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="DateUsed" class="control-label">Date Used</label>
-                    <input asp-for="DateUsed" type="date" class="form-control" />
-                    <p>***If you edit the Date Used, you must also select the appropriate Cost Per Unit in the dropdown above based on the new date you entered.</p>
-                    <span asp-validation-for="DateUsed" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Quantity" class="control-label">Quantity</label>
-                    <input asp-for="Quantity" class="form-control" />
-                    <span asp-validation-for="Quantity" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-dark" />
-                </div>
-            </form>
-        </card>
+<card class="card text-center mb-4" style="padding: 5px">
+    <div class="row">
+        <div class="col-md-4">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <input type="hidden" asp-for="ProjectId" class="form-control" />
+                        <input asp-for="Project.ProjectName" readonly type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="CostItemId" class="form-control" />
+                        <input asp-for="CostItem.ItemName" readonly type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CostPerUnitId" class="control-label">Cost Per Unit</label>
+                        <select asp-for="CostPerUnitId" class="form-control" asp-items="ViewBag.CostPerUnitId"></select>
+                        <span asp-validation-for="CostPerUnitId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DateUsed" class="control-label">Date Used</label>
+                        <input asp-for="DateUsed" type="date" class="form-control" />
+                        <p>***If you edit the Date Used, you must also select the appropriate Cost Per Unit in the dropdown above based on the new date you entered.</p>
+                        <span asp-validation-for="DateUsed" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Quantity" class="control-label">Quantity</label>
+                        <input asp-for="Quantity" class="form-control" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-dark" />
+                    </div>
+                </form>
+        </div>
     </div>
-</div>
+</card>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

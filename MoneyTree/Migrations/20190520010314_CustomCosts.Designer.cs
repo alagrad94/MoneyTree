@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoneyTree.Data;
 
 namespace MoneyTree.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190520010314_CustomCosts")]
+    partial class CustomCosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,7 +247,7 @@ namespace MoneyTree.Migrations
                     b.ToTable("CostPerUnit");
                 });
 
-            modelBuilder.Entity("MoneyTree.Models.CustomProjectCost", b =>
+            modelBuilder.Entity("MoneyTree.Models.CustomProjecCost", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -262,14 +264,11 @@ namespace MoneyTree.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.Property<string>("UnitOfMeasure")
-                        .IsRequired();
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("CustomProjectCost");
+                    b.ToTable("CustomProjecCost");
                 });
 
             modelBuilder.Entity("MoneyTree.Models.Customer", b =>
@@ -445,10 +444,10 @@ namespace MoneyTree.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MoneyTree.Models.CustomProjectCost", b =>
+            modelBuilder.Entity("MoneyTree.Models.CustomProjecCost", b =>
                 {
                     b.HasOne("MoneyTree.Models.Project", "Project")
-                        .WithMany("CustomCosts")
+                        .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

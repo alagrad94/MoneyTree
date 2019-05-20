@@ -37,6 +37,8 @@ namespace MoneyTree.Models {
 
         public List<ProjectCost> ProjectCosts { get; set; }
 
+        public List<CustomProjectCost> CustomCosts { get; set; }
+
         public ApplicationUser User { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:F2}")]
@@ -50,6 +52,14 @@ namespace MoneyTree.Models {
                         Total += item.TotalCost;
                     }
                 }
+
+                if (CustomCosts != null) {
+
+                    foreach (var item in CustomCosts) {
+                        Total += item.TotalCost;
+                    }
+                }
+
                 return Total;
             }
         }

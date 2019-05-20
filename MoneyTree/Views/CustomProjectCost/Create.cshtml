@@ -1,0 +1,60 @@
+﻿@model MoneyTree.Models.CustomProjectCost
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="page_title">
+    Add A Custom Cost to This Project  <a asp-action="Details" asp-controller="Project" asp-route-id="@Model.ProjectId">
+        <i class="fas fa-sm fa-arrow-alt-circle-left"></i>
+    </a>
+</h1>
+<card class="card text-center mb-4" style="padding: 5px; width: 60%">
+    <div style="font-size: large; font-weight: bold">
+        Project: @Html.DisplayFor(model => model.Project.ProjectName)
+        Start Date: @Html.DisplayFor(model => model.Project.StartDate)
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group" id="model_projectId_div">
+                    <input type="hidden" asp-for="ProjectId" class="form-control" />
+                    <input type="hidden" asp-for="Category" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="ItemName" class="control-label"></label>
+                    <input asp-for="ItemName" class="form-control" />
+                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UnitOfMeasure" class="control-label"></label>
+                    <input asp-for="UnitOfMeasure" class="form-control" />
+                    <span asp-validation-for="UnitOfMeasure" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CostPerUnit" class="control-label"></label>
+                    <input asp-for="CostPerUnit" class="form-control" />
+                    <span asp-validation-for="CostPerUnit" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Quantity" class="control-label"></label>
+                    <input asp-for="Quantity" class="form-control" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateUsed" class="control-label"></label>
+                    <input asp-for="DateUsed" type="date" class="form-control" />
+                    <span asp-validation-for="DateUsed" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-dark" />
+                </div>
+            </form>
+        </div>
+    </div>
+</card>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

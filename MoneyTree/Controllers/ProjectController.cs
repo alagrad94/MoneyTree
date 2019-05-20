@@ -128,9 +128,6 @@ namespace MoneyTree.Controllers {
             return View(project);
         }
 
-        // POST: Projects/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, 
@@ -217,10 +214,12 @@ namespace MoneyTree.Controllers {
                                                c.FirstName, c.LastName, c.PhoneNumber, c.Email, pc.Id AS ProjectCostId, 
                                                pc.DateUsed, pc.Quantity, ci.Id AS CostItemId, ci.ItemName, um.Id AS UnitId,
                                                um.UnitName, cc.Id AS CostCategoryId, cc.CategoryName, cpu.Id AS CostPerUnitId,
-                                               cpu.Cost, cpu.StartDate AS CostStart, cpu.EndDate AS CostEnd
+                                               cpu.Cost, cpu.StartDate AS CostStart, cpu.EndDate AS CostEnd, cpc.Id AS                           CustomCostID, cpc.ItemName AS CustomItem, cpc.CostPerUnit AS CustomCPU,
+                                               cpc.Quantity AS CustomQuantity, cpc.DateUsed AS CustomDate, cpc.UnitOfMeasure AS                  CustomUnits, cpc.Category AS CustomCategory
                                           FROM Project p
                                      LEFT JOIN Customer c ON p.CustomerId = c.Id
                                      LEFT JOIN ProjectCost pc ON p.Id = pc.ProjectId
+                                     LEFT JOIN CustomProjectCost cpc ON p.Id = cpc.ProjectId
                                      LEFT JOIN CostItem ci ON pc.CostItemId = ci.Id
                                      LEFT JOIN CostPerUnit cpu ON pc.CostPerUnitId = cpu.Id
                                      LEFT JOIN CostCategory cc ON ci.CostCategoryId = cc.Id
@@ -244,7 +243,8 @@ namespace MoneyTree.Controllers {
                                 StartDate = reader.GetDateTime(reader.GetOrdinal("ProjectStart")),
                                 IsComplete = reader.GetBoolean(reader.GetOrdinal("IsComplete")),
                                 Customer = new Customer(),
-                                ProjectCosts = new List<ProjectCost>()
+                                ProjectCosts = new List<ProjectCost>(),
+                                CustomCosts = new List<CustomProjectCost>()
                             };
                         }
 
@@ -268,11 +268,30 @@ namespace MoneyTree.Controllers {
                             
                         }
 
+                        if (!reader.IsDBNull(reader.GetOrdinal("CustomCostId"))) {
+
+                            int customCostId = reader.GetInt32(reader.GetOrdinal("CustomCostId"));
+
+                            if (!project.CustomCosts.Any(cpc => cpc.Id == customCostId)) {
+
+                                CustomProjectCost customCost = new CustomProjectCost {
+                                    Id = reader.GetInt32(reader.GetOrdinal("CustomCostId")),
+                                    ItemName = reader.GetString(reader.GetOrdinal("CustomItem")),
+                                    CostPerUnit = reader.GetDouble(reader.GetOrdinal("CustomCPU")),
+                                    Quantity = reader.GetInt32(reader.GetOrdinal("CustomQuantity")),
+                                    DateUsed = reader.GetDateTime(reader.GetOrdinal("CustomDate")),
+                                    UnitOfMeasure = reader.GetString(reader.GetOrdinal("CustomUnits")),
+                                    Category = reader.GetString(reader.GetOrdinal("CustomCategory"))
+                                };
+                                project.CustomCosts.Add(customCost);
+                            }
+                        }
+
                         if (!reader.IsDBNull(reader.GetOrdinal("ProjectCostId"))) {
 
-                            int projectId = reader.GetInt32(reader.GetOrdinal("ProjectCostId"));
+                            int projectCostId = reader.GetInt32(reader.GetOrdinal("ProjectCostId"));
 
-                            if (!project.ProjectCosts.Any(pc => pc.Id == projectId)) {
+                            if (!project.ProjectCosts.Any(pc => pc.Id == projectCostId)) {
 
                                 ProjectCost projectCost = new ProjectCost {
 

@@ -9,7 +9,7 @@
 </div>
 <card class="card text-center mb-4">
     <table style="width: 100%;">
-        <tbody >
+        <tbody>
             <tr style="border: thin solid grey;">
                 <td class="project_customer_data" style="width:75%; padding: 10px; text-align: left;">
                     Customer: @Html.DisplayFor(model => model.Customer.FullName) <br />
@@ -27,14 +27,18 @@
         </tbody>
     </table>
     <h3 style="width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
-        Project Costs  <a asp-controller="ProjectCost" asp-action="Create" asp-route-id="@Model.Id" style="font-size:1rem">
-        <i class="fas fa-plus-circle fa-2x"></i></a>
+        Itemized Costs
     </h3>
+    <h4 style="width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
+        Custom Costs  <a asp-controller="CustomProjectCost" asp-action="Create" asp-route-id="@Model.Id" style="font-size:1rem">
+            <i class="fas fa-plus-circle fa-2x"></i>
+        </a>
+    </h4>
     <table style="width:100%; ">
         <thead>
             <tr style="border: thin solid grey;">
                 <th style="border: thin solid grey;">
-                    Name
+                    Item
                 </th>
                 <th style="border: thin solid grey;">
                     Category
@@ -54,7 +58,7 @@
                 <th style="border: thin solid grey;">
                     Total
                 </th>
-                @if (Model.ProjectCosts.Count > 0){
+                @if (Model.CustomCosts.Count > 0) {
                     <th style="border: thin solid grey;">
 
                     </th>
@@ -62,9 +66,81 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model.ProjectCosts != null){
+            @if (Model.CustomCosts != null) {
 
-                @foreach (var item in Model.ProjectCosts){
+                @foreach (var item in Model.CustomCosts) {
+
+                    <tr style="border: thin solid grey">
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.ItemName)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            Custom
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.UnitOfMeasure)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            $@Html.DisplayFor(modelItem => item.CostPerUnit)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.DateUsed)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            $@Html.DisplayFor(modelItem => item.TotalCost)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            <a asp-controller="CustomProjectCost" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |
+                            <a asp-controller="CustomProjectCost" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <h4 style="width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
+        Standard Costs  <a asp-controller="ProjectCost" asp-action="Create" asp-route-id="@Model.Id" style="font-size:1rem">
+            <i class="fas fa-plus-circle fa-2x"></i>
+        </a>
+    </h4>
+    <table style="width:100%; ">
+        <thead>
+            <tr style="border: thin solid grey;">
+                <th style="border: thin solid grey;">
+                    Item
+                </th>
+                <th style="border: thin solid grey;">
+                    Category
+                </th>
+                <th style="border: thin solid grey;">
+                    Units
+                </th>
+                <th style="border: thin solid grey;">
+                    Cost Per Unit
+                </th>
+                <th style="border: thin solid grey;">
+                    Quantity
+                </th>
+                <th style="border: thin solid grey;">
+                    Date Used
+                </th>
+                <th style="border: thin solid grey;">
+                    Total
+                </th>
+                @if (Model.ProjectCosts.Count > 0) {
+                    <th style="border: thin solid grey;">
+
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ProjectCosts != null) {
+
+                @foreach (var item in Model.ProjectCosts)  {
                     <tr style="border: thin solid grey">
                         <td style="border: thin solid grey;">
                             @Html.DisplayFor(modelItem => item.CostItem.ItemName)
