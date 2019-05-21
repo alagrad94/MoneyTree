@@ -1,0 +1,117 @@
+﻿@model MoneyTree.Models.ViewModels.ProjectSummaryViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+<br />
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">@Html.DisplayFor(model => model.Project.ProjectName)  <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
+</div>
+<card class="card text-center mb-4">
+    <table style="width: 100%;">
+        <tbody>
+            <tr style="border: thin solid grey;">
+                <td class="project_customer_data" style="width:75%; padding: 10px; text-align: left;">
+                    Customer: @Html.DisplayFor(model => model.Project.Customer.FullName) <br />
+                    Email: @Html.DisplayFor(model => model.Project.Customer.Email)<br />
+                    Phone: @Html.DisplayFor(model => model.Project.Customer.PhoneNumber)<br />
+                    Start Date: @Html.DisplayFor(model => model.Project.StartDate)<br />
+                    Completed: @Html.DisplayFor(model => model.Project.CompletionDate)
+                </td>
+                <td class="project_cost_data" style="width:25%; padding: 10px; text-align: left;">
+                    Invoiced Amount: $@Html.DisplayFor(model => model.Project.AmountCharged)<br />
+                    Project Cost: $@Html.DisplayFor(model => model.Project.TotalCost)<br />
+                    Profit: $@Html.DisplayFor(model => model.Project.Profit)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 style="width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
+        Total Costs
+    </h3>
+    <h4 style="width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
+        Custom Costs
+    </h4>
+    <table style="width:100%; ">
+        <thead>
+            <tr style="border: thin solid grey;">
+                <th style="border: thin solid grey; width:40%;">
+                    Item
+                </th>
+                <th style="border: thin solid grey; width:20%;">
+                    Category
+                </th>
+                <th style="border: thin solid grey; width:20%;">
+                    Quantity
+                </th>
+                <th style="border: thin solid grey; width:20%;">
+                    Total
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.TotaledCustomCosts != null) {
+
+                @foreach (var item in Model.TotaledCustomCosts) {
+
+                    <tr style="border: thin solid grey">
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.ItemName)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            $@Html.DisplayFor(modelItem => item.TotalCost)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <h4 style="width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
+        Standard Costs
+    </h4>
+    <table style="width:100%; ">
+        <thead>
+            <tr style="border: thin solid grey;">
+                <th style="border: thin solid grey; width:40%;">
+                    Item
+                </th>
+                <th style="border: thin solid grey; width:20%;">
+                    Category
+                </th>
+                <th style="border: thin solid grey; width:20%;">
+                    Quantity
+                </th>
+                <th style="border: thin solid grey; width:20%;">
+                    Total
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.TotaledProjectCosts != null) {
+
+                @foreach (var item in Model.TotaledProjectCosts) {
+                    <tr style="border: thin solid grey">
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.ItemName)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            $@Html.DisplayFor(modelItem => item.TotalCost)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</card>

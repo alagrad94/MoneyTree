@@ -28,6 +28,7 @@ namespace MoneyTree.Models {
 
         [Required]
         [Display(Name = "Cost Per Unit")]
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         public double CostPerUnit { get; set; }
 
         [Required]
