@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MoneyTree.Data;
 using MoneyTree.Models;
+using MoneyTree.Models.ViewModels;
 
 namespace MoneyTree.Controllers {
 
@@ -53,12 +54,72 @@ namespace MoneyTree.Controllers {
 
             var project = GetProjectById(id);
 
+            //Iterate project.ProjectCosts and project.CustomCosts and consolidate by item
+            project.ProjectCosts.GroupBy(pc => pc.CostItemId);
+            project.CustomCosts.GroupBy(pc => pc.ItemName);
+
+
             if (project == null) {
 
                 return NotFound();
             }
 
             return View(project);
+        }
+
+        // GET: Projects/Summary/5
+        public IActionResult Summary(int id) {
+
+            ProjectSummaryViewModel viewModel = new ProjectSummaryViewModel {
+
+                Project = GetProjectById(id),
+                TotaledProjectCosts = new List<TotaledCost>(),
+                TotaledCustomCosts = new List<TotaledCost>()
+            };
+
+            foreach (var item in viewModel.Project.ProjectCosts) {
+
+                if (viewModel.TotaledProjectCosts.Any(c => c.ItemName.ToUpper() == item.CostItem.ItemName.ToUpper())) {
+
+                    TotaledCost cost = viewModel.TotaledProjectCosts
+                        .FirstOrDefault(c => c.ItemName.ToUpper() == item.CostItem.ItemName.ToUpper());
+
+                    cost.Quantity += item.Quantity;
+                    cost.TotalCost += item.TotalCost;
+                } else {
+                    TotaledCost cost = new TotaledCost {
+
+                        ItemName = item.CostItem.ItemName,
+                        Category = item.CostItem.CostCategory.CategoryName,
+                        Quantity = item.Quantity,
+                        TotalCost = item.TotalCost
+                    };
+
+                    viewModel.TotaledProjectCosts.Add(cost);
+                }
+            }
+
+            foreach (var item in viewModel.Project.CustomCosts) {
+
+                if (viewModel.TotaledCustomCosts.Any(c => c.ItemName.ToUpper() == item.ItemName.ToUpper())) {
+
+                    TotaledCost cost = viewModel.TotaledCustomCosts
+                        .FirstOrDefault(c => c.ItemName.ToUpper() == item.ItemName.ToUpper());
+
+                    cost.Quantity += item.Quantity;
+                    cost.TotalCost += item.TotalCost;
+                } else {
+                    TotaledCost cost = new TotaledCost {
+                        ItemName = item.ItemName,
+                        Category = item.Category,
+                        Quantity = item.Quantity,
+                        TotalCost = item.TotalCost
+                    };
+
+                    viewModel.TotaledCustomCosts.Add(cost);
+                }
+            }
+            return View(viewModel);
         }
 
         // GET: Projects/Create
@@ -214,8 +275,9 @@ namespace MoneyTree.Controllers {
                                                c.FirstName, c.LastName, c.PhoneNumber, c.Email, pc.Id AS ProjectCostId, 
                                                pc.DateUsed, pc.Quantity, ci.Id AS CostItemId, ci.ItemName, um.Id AS UnitId,
                                                um.UnitName, cc.Id AS CostCategoryId, cc.CategoryName, cpu.Id AS CostPerUnitId,
-                                               cpu.Cost, cpu.StartDate AS CostStart, cpu.EndDate AS CostEnd, cpc.Id AS                           CustomCostID, cpc.ItemName AS CustomItem, cpc.CostPerUnit AS CustomCPU,
-                                               cpc.Quantity AS CustomQuantity, cpc.DateUsed AS CustomDate, cpc.UnitOfMeasure AS                  CustomUnits, cpc.Category AS CustomCategory
+                                               cpu.Cost, cpu.StartDate AS CostStart, cpu.EndDate AS CostEnd, cpc.Id AS CustomCostID, 
+                                               cpc.ItemName AS CustomItem, cpc.CostPerUnit AS CustomCPU, cpc.Quantity AS CustomQuantity, 
+                                               cpc.DateUsed AS CustomDate, cpc.UnitOfMeasure AS CustomUnits, cpc.Category AS CustomCategory
                                           FROM Project p
                                      LEFT JOIN Customer c ON p.CustomerId = c.Id
                                      LEFT JOIN ProjectCost pc ON p.Id = pc.ProjectId

@@ -1,4 +1,4 @@
 ﻿New Functionality (after demo day):
 
 1. LOE: C  Estimating project costs - create PDF of estimate
-4. Excel Import Export
+2. Excel Import Export
