@@ -28,7 +28,8 @@ namespace MoneyTree.Models.ViewModels {
                     Text = c.ItemName + "(" + c.UnitOfMeasure.UnitName + ")"
                 }).ToList();
 
-                ItemOptionsList?.Insert(0, new SelectListItem { Value = "0", Text = "Select An Item", Selected = true });
+                ItemOptionsList?.Insert(0, new SelectListItem { Value = "", Text = "Select An Item", Selected = true });
+                //ItemOptionsList?.Insert(0, new SelectListItem { Value = "", Text = ""});
                 return ItemOptionsList;
             }
         }
