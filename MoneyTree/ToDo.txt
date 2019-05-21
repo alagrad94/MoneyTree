@@ -1,8 +1,4 @@
 ﻿New Functionality (after demo day):
 
 1. LOE: C  Estimating project costs - create PDF of estimate
-3. Make Cost Item select take input and narrow list??
 4. Excel Import Export
-5. Custom (one-time) ProjectCosts - add/remove row
-6. Cascading dropdowns CC => CI
-

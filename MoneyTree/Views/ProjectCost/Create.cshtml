@@ -16,9 +16,6 @@
     }
 </style>
 
-<script src="~/lib/jquery/dist/jquery.min.js"
-        asp-fallback-test="window.jQuery"
-        crossorigin="anonymous"></script>
 
 
 <h1 class="page_title">
@@ -27,14 +24,14 @@
     </a>
 </h1>
 
-<card class="card text-center mb-4" style="padding: 5px; width: 60%">
+<card class="card text-center mb-4" style="padding: 5px; width: 90%">
     <div style="font-size: large; font-weight: bold">
-        Project: @Html.DisplayFor(model => model.Project.ProjectName)  
+        Project: @Html.DisplayFor(model => model.Project.ProjectName)
         Start Date: @Html.DisplayFor(model => model.Project.StartDate)
     </div>
     <br />
-    <form asp-action="Create" class="" style="width: 100%">
-        <div id="pc_form" class="project_cost_create_form">
+    <form asp-action="Create" id="pc_form" style="width: 100%">
+        <div class="project_cost_create_form">
             <div class="project_cost_create_row" id="pc_form_row_0">
                 <div class="form-group" id="model_projectId_div_0" style="width: 0%">
                     <input type="hidden" asp-for="ProjectId" class="form-control" id="model_projectId_input_0" />
@@ -42,9 +39,10 @@
                 <div class="form-group" id="cost_item_projectId_div_0" style="width: 0%">
                     <input type="hidden" asp-for="Costs[0].ProjectId" class="form-control" id="cost_item_projectId_input_0" />
                 </div>
-                <div class="form-group project_cost_create_field" id="cost_item_select_div_0" style="width: 35%">
+                <div class="form-group project_cost_create_field" id="cost_item_select_div_0" style="width: 40%">
                     <label asp-for="Costs[0].CostItemId" class="control-label" id="cost_item_select_label_0">Cost Item</label>
-                    <select asp-for="Costs[0].CostItemId" class="form-control" asp-items="@Model.ItemOptions" id="cost_item_select_0"></select>
+                    <select asp-for="Costs[0].CostItemId" class="form-control custom-select" data-search="true"
+                            asp-items="@Model.ItemOptions" id="cost_item_select_0"></select>
                 </div>
                 <div class="form-group project_cost_create_field" id="cost_item_date_div_0" style="width: 30%">
                     <label asp-for="Costs[0].DateUsed" class="control-label" id="cost_item_date_label_0">Date Used</label>
@@ -54,11 +52,11 @@
                     <label asp-for="Costs[0].Quantity" class="control-label" id="cost_item_quantity_label_0">Quantity</label>
                     <input asp-for="Costs[0].Quantity" class="form-control" id="cost_item_quantity_0" />
                 </div>
-                <div class="form-group project_cost_create_field" id="pc_form_removeButton_div_0" style="width: 25%">
-                    <label for="removeButton_0" class="control-label" id="removeButton_label_0" 
-                        style="background-color: transparent; color: transparent; border-color: transparent"> Button     </label>
+                <div class="form-group project_cost_create_field" id="pc_form_removeButton_div_0" style="width: 15%">
+                    <label for="removeButton_0" class="control-label" id="removeButton_label_0"
+                           style="background-color: transparent; color: transparent; border-color: transparent">Button</label>
                     <input type="button" class="btn btn-dark" id="removeButton_0" value="Remove Cost"
-                        style="background-color: transparent; color: transparent; border-color: transparent"/>
+                           style="background-color: transparent; color: transparent; border-color: transparent" />
                 </div>
             </div>
         </div>
@@ -69,8 +67,15 @@
     </form>
 </card>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section scripts {
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src='~/lib/jquery/dist/jquery-customselect-1.9.1.js'></script>
+<link href='~/css/jquery-customselect-1.9.1.css' rel='stylesheet' />
+
+<script id="customSelect_0" type="text/javascript">$(document).ready(function () {
+        $("#cost_item_select_0").customselect({
+            search: true,
+            hoveropen: false
+        });
+    });</script>
 }
-
-

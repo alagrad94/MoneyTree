@@ -49,8 +49,17 @@
     var buttonText = document.createTextNode("Remove Cost");
 
     removeButton.appendChild(buttonText);
-
     removeButtonDiv.appendChild(removeButton);
+
+    var pcForm = document.getElementById("pc_form");
+
+    var customSelectScript = document.createElement("script");
+    customSelectScript.setAttribute("id", `customSelect_${i}`);
+    customSelectScript.type = "text/javascript";
+    customSelectScript.innerHTML = `$(document).ready(function () {
+    $("#cost_item_select_${i}").customselect({ search: true,hoveropen: false });});`
+
+    pcForm.appendChild(customSelectScript);
 
     i++
 }
@@ -61,15 +70,19 @@ function RemoveProjectCostRow(event) {
 
     var projectIdToRemove = document.getElementById(`cost_item_projectId_input_${idNumber}`);
     var selectToRemove = document.getElementById(`cost_item_select_${idNumber}`);
+    var parentToRemove = selectToRemove.parentElement;
     var dateToRemove = document.getElementById(`cost_item_date_${idNumber}`);
     var quantityToRemove = document.getElementById(`cost_item_quantity_${idNumber}`);
     var buttonToRemove = document.getElementById(`removeButton_${idNumber}`);
+    var scriptToRemove = document.getElementById(`customSelect_${idNumber}`);
 
     projectIdToRemove.remove();
     selectToRemove.remove();
     dateToRemove.remove();
     quantityToRemove.remove();
     buttonToRemove.remove();
+    parentToRemove.remove();
+    scriptToRemove.remove();
 }
 
 function AddCustomCostRow(){
@@ -176,3 +189,5 @@ function RemoveCustomCostRow(event) {
     dateToRemove.remove();
     removeButtonToRemove.remove();
 }
+
+
