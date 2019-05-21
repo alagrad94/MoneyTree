@@ -1,60 +1,75 @@
-﻿@model MoneyTree.Models.CustomProjectCost
+﻿@model MoneyTree.Models.ViewModels.CustomCostCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
+
+<style type="text/css">
+
+    .custom_cost_create_row {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .custom_cost_create_field {
+        padding-right: 15px
+    }
+</style>
 
 <h1 class="page_title">
     Add A Custom Cost to This Project  <a asp-action="Details" asp-controller="Project" asp-route-id="@Model.ProjectId">
         <i class="fas fa-sm fa-arrow-alt-circle-left"></i>
     </a>
 </h1>
-<card class="card text-center mb-4" style="padding: 5px; width: 60%">
+<card class="card text-center mb-4" style="padding: 5px; width: 80%">
     <div style="font-size: large; font-weight: bold">
         Project: @Html.DisplayFor(model => model.Project.ProjectName)
         Start Date: @Html.DisplayFor(model => model.Project.StartDate)
     </div>
     <br />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group" id="model_projectId_div">
-                    <input type="hidden" asp-for="ProjectId" class="form-control" />
-                    <input type="hidden" asp-for="Category" class="form-control" />
+    <form asp-action="Create" class="" style="width: 100%">
+        <div id="cpc_form" class="custom_cost_create_form">
+            <div class="custom_cost_create_row" id="cpc_form_row_0">
+                <div class="form-group" id="custom_projectId_div_0" style="width: 0%">
+                    <input type="hidden" asp-for="ProjectId" class="form-control" id="model_projectId_input_0" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="ItemName" class="control-label"></label>
-                    <input asp-for="ItemName" class="form-control" />
-                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                <div class="form-group" id="cost_item_projectId_div_0" style="width: 0%">
+                    <input type="hidden" asp-for="CustomCosts[0].ProjectId" class="form-control" id="cost_item_projectId_input_0" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="UnitOfMeasure" class="control-label"></label>
-                    <input asp-for="UnitOfMeasure" class="form-control" />
-                    <span asp-validation-for="UnitOfMeasure" class="text-danger"></span>
+                <div class="form-group" id="custom_category_div_0" style="width: 0%">
+                    <input type="hidden" asp-for="CustomCosts[0].Category" class="form-control" id="custom_category_input_0" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="CostPerUnit" class="control-label"></label>
-                    <input asp-for="CostPerUnit" class="form-control" />
-                    <span asp-validation-for="CostPerUnit" class="text-danger"></span>
+                <div class="form-group custom_cost_create_field" id="custom_item_div_0" style="width: 35%">
+                    <label asp-for="CustomCosts[0].ItemName" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].ItemName" class="form-control" id="custom_item_input_0" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="Quantity" class="control-label"></label>
-                    <input asp-for="Quantity" class="form-control" />
-                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                <div class="form-group custom_cost_create_field" id="custom_unit_div_0" style="width: 20%">
+                    <label asp-for="CustomCosts[0].UnitOfMeasure" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].UnitOfMeasure" class="form-control" id="custom_unit_input_0" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="DateUsed" class="control-label"></label>
-                    <input asp-for="DateUsed" type="date" class="form-control" />
-                    <span asp-validation-for="DateUsed" class="text-danger"></span>
+                <div class="form-group custom_cost_create_field" id="custom_cpu_div_0" style="width: 30%">
+                    <label asp-for="CustomCosts[0].CostPerUnit" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].CostPerUnit" class="form-control" id="custom_cpu_input_0" />
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-dark" />
+                <div class="form-group custom_cost_create_field" id="custom_quantity_div_0" style="width: 10%">
+                    <label asp-for="CustomCosts[0].Quantity" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].Quantity" class="form-control" id="custom_quantity_input_0" />
                 </div>
-            </form>
+                <div class="form-group custom_cost_create_field" id="custom_date_div_0" style="width: 25%">
+                    <label asp-for="CustomCosts[0].DateUsed" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].DateUsed" type="date" class="form-control" id="custom_date_input_0" />
+                </div>
+                <div class="form-group project_cost_create_field" id="cpc_form_removeButton_div_0" style="width: 30%">
+                    <label for="removeButton_0" class="control-label" id="removeButton_label_0"
+                           style="background-color: transparent; color: transparent; border-color: transparent">Button</label>
+                    <input type="button" class="btn btn-dark" id="cpc_removeButton_0" value="Remove Cost"
+                           style="background-color: transparent; color: transparent; border-color: transparent" />
+                </div>
+            </div>
         </div>
-    </div>
+        <div>
+            <input type="button" class="btn btn-dark" value="Add Another Cost" onclick="AddCustomCostRow()" />
+            <input type="submit" value="Create" class="btn btn-dark" />
+        </div>
+    </form>
 </card>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

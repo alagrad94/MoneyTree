@@ -21,11 +21,9 @@
     }
 </style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+<script src="~/lib/jquery/dist/jquery.min.js"
         asp-fallback-test="window.jQuery"
-        crossorigin="anonymous"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
+        crossorigin="anonymous"></script>
 
 <div class="page_title_container container-fluid">
     <h1 class="page_title">Results of Adding Project Costs</h1>
@@ -70,7 +68,7 @@
                     Cost:
                 </dt>
                 <dd class="col-sm">
-                    @Html.DisplayFor(model => item.CostPerUnit.Cost)
+                    $@Html.DisplayFor(model => item.CostPerUnit.Cost)
                 </dd>
             </dl>
 
