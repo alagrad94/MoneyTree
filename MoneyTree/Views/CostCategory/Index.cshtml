@@ -14,15 +14,24 @@
                 <th>
                     @Html.DisplayNameFor(model => model.CategoryName)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MarkupPercent)
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
+            @foreach (var item in Model) {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        @{
+                            var percentToDisplay = item.MarkupPercent * (100);
+                        }
+                        @percentToDisplay.ToString("F2")%
+                       
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |

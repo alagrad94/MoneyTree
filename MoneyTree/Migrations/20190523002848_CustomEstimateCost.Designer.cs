@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoneyTree.Data;
 
 namespace MoneyTree.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190523002848_CustomEstimateCost")]
+    partial class CustomEstimateCost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,9 +200,13 @@ namespace MoneyTree.Migrations
                     b.Property<string>("CategoryName")
                         .IsRequired();
 
+                    b.Property<int?>("EstimateId");
+
                     b.Property<double>("MarkupPercent");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
 
                     b.ToTable("CostCategory");
                 });
@@ -290,6 +296,8 @@ namespace MoneyTree.Migrations
 
                     b.Property<DateTime>("DateUsed");
 
+                    b.Property<int?>("EstimateId");
+
                     b.Property<string>("ItemName")
                         .IsRequired();
 
@@ -301,6 +309,8 @@ namespace MoneyTree.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
 
                     b.HasIndex("ProjectId");
 
@@ -358,17 +368,25 @@ namespace MoneyTree.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CostCategoryId");
+
                     b.Property<int>("CostItemId");
 
                     b.Property<int>("EstimateId");
 
                     b.Property<double>("Quantity");
 
+                    b.Property<int>("UnitOfMeasureId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CostCategoryId");
 
                     b.HasIndex("CostItemId");
 
                     b.HasIndex("EstimateId");
+
+                    b.HasIndex("UnitOfMeasureId");
 
                     b.ToTable("EstimateCost");
                 });
@@ -502,6 +520,13 @@ namespace MoneyTree.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MoneyTree.Models.CostCategory", b =>
+                {
+                    b.HasOne("MoneyTree.Models.Estimate")
+                        .WithMany("Categories")
+                        .HasForeignKey("EstimateId");
+                });
+
             modelBuilder.Entity("MoneyTree.Models.CostItem", b =>
                 {
                     b.HasOne("MoneyTree.Models.CostCategory", "CostCategory")
@@ -526,13 +551,17 @@ namespace MoneyTree.Migrations
             modelBuilder.Entity("MoneyTree.Models.CustomEstimateCost", b =>
                 {
                     b.HasOne("MoneyTree.Models.Estimate", "Estimate")
-                        .WithMany("CustomCosts")
+                        .WithMany()
                         .HasForeignKey("EstimateId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MoneyTree.Models.CustomProjectCost", b =>
                 {
+                    b.HasOne("MoneyTree.Models.Estimate")
+                        .WithMany("CustomCosts")
+                        .HasForeignKey("EstimateId");
+
                     b.HasOne("MoneyTree.Models.Project", "Project")
                         .WithMany("CustomCosts")
                         .HasForeignKey("ProjectId")
@@ -549,6 +578,11 @@ namespace MoneyTree.Migrations
 
             modelBuilder.Entity("MoneyTree.Models.EstimateCost", b =>
                 {
+                    b.HasOne("MoneyTree.Models.CostCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CostCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("MoneyTree.Models.CostItem", "CostItem")
                         .WithMany()
                         .HasForeignKey("CostItemId")
@@ -557,6 +591,11 @@ namespace MoneyTree.Migrations
                     b.HasOne("MoneyTree.Models.Estimate", "Estimate")
                         .WithMany("EstimateCosts")
                         .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MoneyTree.Models.UnitOfMeasure", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitOfMeasureId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

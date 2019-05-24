@@ -1,0 +1,75 @@
+﻿@model MoneyTree.Models.ViewModels.CustomEstimateCostCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<style type="text/css">
+
+    .custom_cost_create_row {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .custom_cost_create_field {
+        padding-right: 15px
+    }
+</style>
+
+<h1 class="page_title">
+    Add A Custom Cost to This Project  <a asp-action="Details" asp-controller="Estimate" asp-route-id="@Model.EstimateId">
+        <i class="fas fa-sm fa-arrow-alt-circle-left"></i>
+    </a>
+</h1>
+<card class="card text-center mb-4" style="padding: 5px; width: 85%">
+    <div style="font-size: large; font-weight: bold">
+        Project: @Html.DisplayFor(model => model.Estimate.ProjectTitle)
+        Start Date: @Html.DisplayFor(model => model.Estimate.EstimateDate)
+    </div>
+    <br />
+    <form asp-action="Create" class="" style="width: 100%">
+        <div id="cpc_form" class="custom_cost_create_form">
+            <div class="custom_cost_create_row" id="cpc_form_row_0">
+                <div class="form-group" id="custom_estimate_model_estimateId_div_0" style="width: 0%">
+                    <input type="hidden" asp-for="EstimateId" class="form-control" id="custom_estimate_model_estimateId_input_0" />
+                </div>
+                <div class="form-group" id="custom_estimate_item_estimateId_div_0" style="width: 0%">
+                    <input type="hidden" asp-for="CustomCosts[0].EstimateId" class="form-control" id="custom_estimate_item_estimateId_input_0" />
+                </div>
+                <div class="form-group" id="custom_estimate_category_div_0" style="width: 0%">
+                    <input type="hidden" asp-for="CustomCosts[0].Category" class="form-control" id="custom_estimate_category_input_0" />
+                </div>
+                <div class="form-group custom_cost_create_field" id="custom_estimate_item_div_0" style="width: 35%">
+                    <label asp-for="CustomCosts[0].ItemName" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].ItemName" class="form-control" id="custom_estimate_item_input_0" />
+                </div>
+                <div class="form-group custom_cost_create_field" id="custom_estimate_unit_div_0" style="width: 20%">
+                    <label asp-for="CustomCosts[0].UnitOfMeasure" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].UnitOfMeasure" class="form-control" id="custom_estimate_unit_input_0" />
+                </div>
+                <div class="form-group custom_cost_create_field" id="custom_estimate_cpu_div_0" style="width: 30%">
+                    <label asp-for="CustomCosts[0].CostPerUnit" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].CostPerUnit" class="form-control" id="custom_estimate_cpu_input_0" />
+                </div>
+                <div class="form-group custom_cost_create_field" id="custom_estimate_quantity_div_0" style="width: 10%">
+                    <label asp-for="CustomCosts[0].Quantity" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].Quantity" class="form-control" id="custom_estimate_quantity_input_0" />
+                </div>
+                <div class="form-group custom_cost_create_field" id="custom_estimate_markup_div_0" style="width: 25%">
+                    <label asp-for="CustomCosts[0].MarkupPercent" class="control-label"></label>
+                    <input asp-for="CustomCosts[0].MarkupPercent" class="form-control" id="custom_estimate_markup_input_0" />
+                </div>
+                <div class="form-group project_cost_create_field" id="cec_form_removeButton_div_0" style="width: 30%">
+                    <label for="removeButton_0" class="control-label" id="estimate_removeButton_label_0"
+                           style="background-color: transparent; color: transparent; border-color: transparent">Button</label>
+                    <input type="button" class="btn btn-dark" id="cec_removeButton_0" value="Remove Cost"
+                           style="background-color: transparent; color: transparent; border-color: transparent" />
+                </div>
+            </div>
+        </div>
+        <div>
+            <input type="button" class="btn btn-dark" value="Add Another Cost" onclick="AddCustomEstimateCostRow()" />
+            <input type="submit" value="Create" class="btn btn-dark" />
+        </div>
+    </form>
+</card>

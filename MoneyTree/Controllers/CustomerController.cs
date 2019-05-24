@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MoneyTree.Data;
 using MoneyTree.Models;
 using MoneyTree.Models.ViewModels;
@@ -14,9 +15,11 @@ namespace MoneyTree.Controllers {
     public class CustomerController : Controller {
 
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
 
-        public CustomerController(ApplicationDbContext context) {
+        public CustomerController(ApplicationDbContext context, IConfiguration config) {
             _context = context;
+            _config = config;
         }
 
         // GET: Customers
@@ -40,15 +43,24 @@ namespace MoneyTree.Controllers {
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id) {
 
+            ProjectController projectController = new ProjectController(_context, _config);
+            EstimateController estimateController = new EstimateController(_context, _config);
+
             if (id == null) {
                 return NotFound();
             }
 
+            DateTime Today = DateTime.UtcNow;
+
             CustomerDetailViewModel viewModel = new CustomerDetailViewModel {
 
                 Customer = await _context.Customer.FirstOrDefaultAsync(c => c.Id == id),
-                CustomerProjects = await _context.Project.Where(p => p.CustomerId == id).ToListAsync()
+                CustomerCurrentProjects = await _context.Project.Where(p => p.CustomerId == id && p.IsComplete == false).ToListAsync(),
+                CustomerCompletedProjects = await _context.Project.Where(p => p.CustomerId == id && p.IsComplete == true).ToListAsync(),
+                CustomerCurrentEstimates = await _context.Estimate.Where(e=> e.CustomerId == id && e.ExpirationDate <= Today).ToListAsync(),
+                CustomerPastEstimates = await _context.Estimate.Where(e => e.CustomerId == id && Today > e.ExpirationDate ).ToListAsync()
             };
+
 
             if (viewModel.Customer == null) {
                 return NotFound();

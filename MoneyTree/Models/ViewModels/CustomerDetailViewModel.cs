@@ -11,6 +11,12 @@ namespace MoneyTree.Models.ViewModels {
 
         public Customer Customer { get; set; }
 
-        public List<Project> CustomerProjects { get; set; }
+        public List<Project> CustomerCompletedProjects { get; set; }
+
+        public List<Project> CustomerCurrentProjects { get; set; }
+
+        public List<Estimate> CustomerCurrentEstimates { get; set; }
+
+        public List<Estimate> CustomerPastEstimates { get; set; }
     }
 }

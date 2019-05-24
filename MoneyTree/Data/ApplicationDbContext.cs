@@ -18,5 +18,8 @@ namespace MoneyTree.Data {
         public DbSet<ProjectCost> ProjectCost { get; set; }
         public DbSet<UnitOfMeasure> UnitOfMeasure { get; set; }
         public DbSet<CustomProjectCost> CustomProjectCost { get; set; }
+        public DbSet<Estimate> Estimate { get; set; }
+        public DbSet<EstimateCost> EstimateCost { get; set; }
+        public DbSet<CustomEstimateCost> CustomEstimateCost { get; set; }
     }
 }

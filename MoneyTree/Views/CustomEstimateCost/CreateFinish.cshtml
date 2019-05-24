@@ -1,4 +1,4 @@
-﻿@model MoneyTree.Models.ViewModels.CustomCostCreateViewModel
+﻿@model MoneyTree.Models.ViewModels.CustomEstimateCostCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -26,7 +26,7 @@
         crossorigin="anonymous"></script>
 
 <div class="page_title_container container-fluid">
-    <h1 class="page_title">Results of Adding Project Costs</h1>
+    <h1 class="page_title">Results of Adding Estimate Costs</h1>
 </div>
 
 <hr />
@@ -57,14 +57,6 @@
              </dl>
             <dl class="row">
                 <dt class="col-sm">
-                    Date Used:
-                </dt>
-                <dd class="col-sm">
-                    @Html.DisplayFor(model => item.DateUsed)
-                </dd>
-             </dl>
-            <dl class="row">
-                <dt class="col-sm">
                     Cost:
                 </dt>
                 <dd class="col-sm">
@@ -82,8 +74,8 @@
 
             @if (Model.RejectedEntries.Count == 0){
                 <div>
-                    <a asp-action="Details" asp-controller="Project" asp-route-id="@Model.ProjectId">
-                    <button class="btn btn-dark" type="button">Back to Project Details</button></a>
+                    <a asp-action="Details" asp-controller="Estimate" asp-route-id="@Model.EstimateId">
+                    <button class="btn btn-dark" type="button">Back to Estimate Details</button></a>
                 </div>
             }
         </card>
@@ -93,15 +85,15 @@
 @if (Model.RejectedEntries.Count > 0){
 
     <h3>Rejected Records</h3>
-    <h6>The following records were rejected.  Please correct the records to ensure the Item Name and Units fields are filled in, the Date Used is AFTER the project start date and the Quantity and Cost Per Unit Fields are greater than 0.</h6>
+    <h6>The following records were rejected.  Please correct the records to ensure the Item Name and Units fields are filled in and the Quantity, Cost Per Unit and Markup Percent Fields are greater than 0.</h6>
     <card class="card text-center mb-4">
         <form asp-action="Create" class="" style="width: 100%">
             <div id="pc_form" class="project_cost_create_form">
                 @for (int i = 0; i < Model.RejectedEntries.Count; i++){
 
                 <div class="project_cost_create_row" id="pc_form_row_@i">
-                    <div class="form-group" id="custom_projectId_div_@i" style="width: 0%">
-                        <input type="hidden" asp-for="RejectedEntries[i].ProjectId" class="form-control" id="custom_projectId_input_@i" />
+                    <div class="form-group" id="custom_estimateId_div_@i" style="width: 0%">
+                        <input type="hidden" asp-for="RejectedEntries[i].EstimateId" class="form-control" id="custom_estimateId_input_@i" />
                     </div>
                     <div class="form-group" id="custom_category_div_@i" style="width: 0%">
                         <input type="hidden" asp-for="RejectedEntries[i].Category" class="form-control" id="custom_category_input_@i" />
@@ -122,9 +114,9 @@
                         <label asp-for="RejectedEntries[i].Quantity" class="control-label"></label>
                         <input asp-for="RejectedEntries[i].Quantity" class="form-control" id="custom_quantity_input_@i" />
                     </div>
-                    <div class="form-group custom_cost_create_field" id="custom_date_div_@i" style="width: 25%">
-                        <label asp-for="RejectedEntries[i].DateUsed" class="control-label"></label>
-                        <input asp-for="RejectedEntries[i].DateUsed" type="date" class="form-control" id="custom_date_input_@i" />
+                    <div class="form-group custom_cost_create_field" id="custom_markup_div_@i" style="width: 25%">
+                        <label asp-for="RejectedEntries[i].MarkupPercent" class="control-label"></label>
+                        <input asp-for="RejectedEntries[i].MarkupPercent" class="form-control" id="custom_markup_input_@i" />
                     </div>
                 </div>
                 }

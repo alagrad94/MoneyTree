@@ -54,11 +54,6 @@ namespace MoneyTree.Controllers {
 
             var project = GetProjectById(id);
 
-            //Iterate project.ProjectCosts and project.CustomCosts and consolidate by item
-            project.ProjectCosts.GroupBy(pc => pc.CostItemId);
-            project.CustomCosts.GroupBy(pc => pc.ItemName);
-
-
             if (project == null) {
 
                 return NotFound();
@@ -140,8 +135,6 @@ namespace MoneyTree.Controllers {
         }
 
         // POST: Projects/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(

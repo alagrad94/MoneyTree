@@ -1,0 +1,63 @@
+﻿@model IEnumerable<MoneyTree.Models.Estimate>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">Estimates  <a asp-action="Create"><i class="fas fa-sm fa-plus-circle"></i></a></h1>
+</div>
+<br />
+
+<card class="card text-center mb-4" style="width: 110%">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Project Title
+                </th>
+                <th>
+                    Customer
+                </th>
+                <th>
+                    Estimate Date
+                </th>
+                <th>
+                    Expiration Date
+                </th>
+                <th>
+                    Estimated Cost
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model){
+                <tr>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ProjectTitle)</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Customer" asp-action="Details" asp-route-id="@item.Customer.Id">
+                            @Html.DisplayFor(modelItem => item.Customer.FullName)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EstimateDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExpirationDate)
+                    </td>
+                    <td>
+                        $@Html.DisplayFor(modelItem => item.TotalCost)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |
+                        <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info"></i></a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</card>

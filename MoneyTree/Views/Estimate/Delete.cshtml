@@ -1,0 +1,51 @@
+﻿@model MoneyTree.Models.Estimate
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">Delete  <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
+</div>
+
+<card class="card text-center mb-4" style="padding: 5px; width: 50%">
+    <h3 class="text-danger">Are you sure you want to delete this?</h3>
+    <dl class="row">
+        <dt class="col-sm">
+            @Html.DisplayNameFor(model => model.ProjectTitle):
+        </dt>
+        <dd class="col-sm">
+            @Html.DisplayFor(model => model.ProjectTitle)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm">
+            Customer:
+        </dt>
+        <dd class="col-sm">
+            @Html.DisplayFor(model => model.Customer.FullName)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm">
+            @Html.DisplayNameFor(model => model.EstimateDate):
+        </dt>
+        <dd class="col-sm">
+            @Html.DisplayFor(model => model.EstimateDate)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm">
+            @Html.DisplayNameFor(model => model.ExpirationDate):
+        </dt>
+        <dd class="col-sm">
+            @Html.DisplayFor(model => model.ExpirationDate)
+        </dd>
+    </dl>
+    <div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-dark" />
+
+    </form>
+    </div>

@@ -9,5 +9,8 @@ namespace MoneyTree.Models {
         [Required]
         [Display(Name = "Category")]
         public string CategoryName { get; set; }
+
+        [Display(Name = "Markup")]
+        public double MarkupPercent { get; set; }
     }
 }
