@@ -1,0 +1,59 @@
+﻿@model MoneyTree.Models.CustomEstimateCost
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">
+        Edit A Custom Cost  <a asp-action="Details" asp-controller="Estimate" asp-route-id="@Model.EstimateId">
+            <i class="fas fa-sm fa-arrow-alt-circle-left"></i>
+        </a>
+    </h1>
+</div>
+<card class="card text-center mb-4" style="padding: 5px">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <input type="hidden" asp-for="Category" class="form-control" />
+                    <input type="hidden" asp-for="EstimateId" class="form-control" />
+                    <input asp-for="Estimate.ProjectTitle" readonly type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="ItemName" class="control-label"></label>
+                    <input asp-for="ItemName" class="form-control" />
+                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UnitOfMeasure" class="control-label"></label>
+                    <input asp-for="UnitOfMeasure" class="form-control" />
+                    <span asp-validation-for="UnitOfMeasure" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CostPerUnit" class="control-label"></label>
+                    <input asp-for="CostPerUnit" class="form-control" />
+                    <span asp-validation-for="CostPerUnit" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Quantity" class="control-label"></label>
+                    <input asp-for="Quantity" class="form-control" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MarkupPercent" class="control-label"></label>
+                    <input asp-for="MarkupPercent" class="form-control" />
+                    <span asp-validation-for="MarkupPercent" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-dark" />
+                </div>
+            </form>
+        </div>
+    </div>
+</card>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

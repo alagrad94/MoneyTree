@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoneyTree.Data;
 using MoneyTree.Models;
@@ -35,11 +33,12 @@ namespace MoneyTree.Controllers {
         // POST: CostCategories/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryName")] CostCategory costCategory) {
+        public async Task<IActionResult> Create([Bind("Id,CategoryName,MarkupPercent")] CostCategory costCategory) {
 
             if (ModelState.IsValid) {
 
-                CostCategory ExistingCategory = _context.CostCategory.FirstOrDefault(cc => cc.CategoryName.ToUpper() == costCategory.CategoryName.ToUpper());
+                CostCategory ExistingCategory = _context.CostCategory
+                    .FirstOrDefault(cc => cc.CategoryName.ToUpper() == costCategory.CategoryName.ToUpper());
 
                 if (ExistingCategory == null) {
 
@@ -47,10 +46,8 @@ namespace MoneyTree.Controllers {
                     await _context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Index));
-                } else {
-
-                    return View("CreateDuplicate", costCategory);
                 }
+                return View("CreateDuplicate", costCategory);
             }
             return View(costCategory);
         }
@@ -74,7 +71,7 @@ namespace MoneyTree.Controllers {
         // POST: CostCategories/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName")] CostCategory costCategory) {
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName,MarkupPercent")] CostCategory costCategory) {
 
             if (id != costCategory.Id) {
 
@@ -83,18 +80,17 @@ namespace MoneyTree.Controllers {
 
             if (ModelState.IsValid) {
 
-                CostCategory ExistingCategory = _context.CostCategory.FirstOrDefault(cc => cc.CategoryName.ToUpper() == costCategory.CategoryName.ToUpper());
+                CostCategory ExistingCategory = _context.CostCategory
+                    .FirstOrDefault(cc => cc.CategoryName.ToUpper() == costCategory.CategoryName.ToUpper());
 
                 if (ExistingCategory == null) {
 
                     _context.Update(costCategory);
                     await _context.SaveChangesAsync();
- 
-                    return RedirectToAction(nameof(Index));
-                } else {
 
-                    return View("EditDuplicate", costCategory);
+                    return RedirectToAction(nameof(Index));
                 }
+                return View("EditDuplicate", costCategory);
             }
             return View(costCategory);
         }
@@ -143,11 +139,6 @@ namespace MoneyTree.Controllers {
                 item.CostCategoryId = newCatId;
                 _context.Update(item);
             }
-        }
-
-        private bool CostCategoryExists(int id) {
-
-            return _context.CostCategory.Any(e => e.Id == id);
         }
     }
 }

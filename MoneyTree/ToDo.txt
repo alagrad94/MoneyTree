@@ -1,4 +1,6 @@
-﻿New Functionality (after demo day):
+﻿1. LOE: C  Estimating project costs
+    b.  Integrate CustomEstimateCost into Estimate Details (example Project/ProjectCustomCost)
 
-1. LOE: C  Estimating project costs - create PDF of estimate
-2. Excel Import Export
+2. Excel Import (cost items, cost per unit, project costs, customers) 
+Export (project details, project summary, estimates, customers, cost items with cost history)
+3. Create PDFs (project details, project summary, estimates, customers, cost items with cost history)

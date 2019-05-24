@@ -5,17 +5,17 @@ using System.Linq;
 namespace MoneyTree.Models.ViewModels
 {
 
-    public class ProjectCostCreateViewModel {
+    public class EstimateCostCreateViewModel {
 
-        public int ProjectId { get; set; }
+        public int EstimateId { get; set; }
 
-        public Project Project { get; set; }
+        public Estimate Estimate { get; set; }
 
-        public List<ProjectCost> Costs { get; set; }
+        public List<EstimateCost> Costs { get; set; }
 
-        public List<ProjectCost> UpdatedRecords { get; set; }
+        public List<EstimateCost> UpdatedRecords { get; set; }
 
-        public List<ProjectCost> RejectedEntries { get; set; }
+        public List<EstimateCost> RejectedEntries { get; set; }
 
         public List<CostItem> CostItems { get; set; }
 

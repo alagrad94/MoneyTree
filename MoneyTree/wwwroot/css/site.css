@@ -137,3 +137,10 @@ dd {
 .category {
     padding-left: 20px
 }
+
+.customer_back {
+    vertical-align: middle;
+    padding-left: 0;
+    color: black;
+
+}

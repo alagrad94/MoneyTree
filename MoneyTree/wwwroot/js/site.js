@@ -87,17 +87,17 @@ function RemoveProjectCostRow(event) {
 
 function AddCustomCostRow(){
 
-   var ids = $('select').map(function () {
+   var ids = $('input').map(function () {
         var idNumber = this.id.split("_").pop();
         return idNumber;
     }).get().sort((a, b) => b - a);
 
    var i = parseInt(ids[0]) +1;
 
-   var projectIdDiv = document.getElementById("custom_projectId_div_0");
+   var projectIdDiv = document.getElementById("cost_item_projectId_div_0");
 
-   var projectIdInputClone = document.getElementById("custom_projectId_input_0").cloneNode(true);
-   projectIdInputClone.setAttribute("id", `custom_projectId_input_${i}`);
+   var projectIdInputClone = document.getElementById("cost_item_projectId_input_0").cloneNode(true);
+   projectIdInputClone.setAttribute("id", `cost_item_projectId_input_${i}`);
    projectIdInputClone.setAttribute("name", `CustomCosts[${i}].ProjectId`);
 
    projectIdDiv.appendChild(projectIdInputClone);
@@ -171,7 +171,7 @@ function RemoveCustomCostRow(event) {
 
     var idNumber = event.target.id.split("_").pop();
 
-    var projectIdToRemove = document.getElementById(`custom_projectId_input_${idNumber}`);
+    var projectIdToRemove = document.getElementById(`cost_item_projectId_input_${idNumber}`);
     var categoryToRemove = document.getElementById(`custom_category_input_${idNumber}`);
     var itemToRemove = document.getElementById(`custom_item_input_${idNumber}`);
     var unitDivToRemove = document.getElementById(`custom_unit_input_${idNumber}`);
@@ -190,4 +190,184 @@ function RemoveCustomCostRow(event) {
     removeButtonToRemove.remove();
 }
 
+function AddEstimateCostRow() {
 
+    var ids = $('select').map(function () {
+        var idNumber = this.id.split("_").pop();
+        return idNumber;
+    }).get().sort((a, b) => b - a);
+
+    var i = parseInt(ids[0]) +1;
+
+    var estimateIdDiv = document.getElementById("estimate_item_estimateId_div_0");
+
+    var estimateIdInputClone = document.getElementById("estimate_item_estimateId_input_0").cloneNode(true);
+    estimateIdInputClone.setAttribute("id", `estimate_item_estimateId_input_${i}`);
+    estimateIdInputClone.setAttribute("name", `Costs[${i}].EstimatetId`);
+
+    estimateIdDiv.appendChild(estimateIdInputClone);
+
+    var selectDiv = document.getElementById("estimate_item_select_div_0");
+
+    var selectClone = document.getElementById("estimate_item_select_0").cloneNode(true);
+    selectClone.setAttribute("id", `estimate_item_select_${i}`);
+    selectClone.setAttribute("name", `Costs[${i}].CostItemId`);
+
+    selectDiv.appendChild(selectClone);
+
+    var quantityDiv = document.getElementById("estimate_item_quantity_div_0");
+
+    var quantityClone = document.getElementById("estimate_item_quantity_0").cloneNode(true);
+    quantityClone.setAttribute("id", `estimate_item_quantity_${i}`);
+    quantityClone.setAttribute("name", `Costs[${i}].Quantity`);
+
+    quantityDiv.appendChild(quantityClone);
+
+    var removeButtonDiv = document.getElementById("estimate_form_removeButton_div_0");
+    var removeButton = document.createElement("button");
+    removeButton.classList.add("btn", "btn-dark");
+    removeButton.setAttribute("type", "button");
+    removeButton.setAttribute("id", `estimate_removeButton_${i}`);
+    removeButton.addEventListener("click", RemoveEstimateCostRow);
+
+    var buttonText = document.createTextNode("Remove Cost");
+
+    removeButton.appendChild(buttonText);
+    removeButtonDiv.appendChild(removeButton);
+
+    var pcForm = document.getElementById("estimate_form");
+
+    var customSelectScript = document.createElement("script");
+    customSelectScript.setAttribute("id", `estimate_customSelect_${i}`);
+    customSelectScript.type = "text/javascript";
+    customSelectScript.innerHTML = `$(document).ready(function () {
+    $("#estimate_item_select_${i}").customselect({ search: true,hoveropen: false });});`
+
+    pcForm.appendChild(customSelectScript);
+
+    i++
+}
+
+function RemoveEstimateCostRow(event) {
+
+    var idNumber = event.target.id.split("_").pop();
+    console.log(idNumber)
+    var estimateIdToRemove = document.getElementById(`estimate_item_estimateId_input_${idNumber}`);
+    var selectToRemove = document.getElementById(`estimate_item_select_${idNumber}`);
+    var parentToRemove = selectToRemove.parentElement;
+    var quantityToRemove = document.getElementById(`estimate_item_quantity_${idNumber}`);
+    var buttonToRemove = document.getElementById(`estimate_removeButton_${idNumber}`);
+    var scriptToRemove = document.getElementById(`estimate_customSelect_${idNumber}`);
+
+    estimateIdToRemove.remove();
+    selectToRemove.remove();
+    quantityToRemove.remove();
+    buttonToRemove.remove();
+    parentToRemove.remove();
+    scriptToRemove.remove();
+}
+
+function AddCustomEstimateCostRow(){
+
+   var ids = $('input').map(function () {
+        var idNumber = this.id.split("_").pop();
+        return idNumber;
+    }).get().sort((a, b) => b - a);
+
+   var i = parseInt(ids[0]) +1;
+
+   var projectIdDiv = document.getElementById("custom_estimate_item_estimateId_div_0");
+
+   var projectIdInputClone = document.getElementById("custom_estimate_item_estimateId_input_0").cloneNode(true);
+   projectIdInputClone.setAttribute("id", `custom_estimate_item_estimateId_input_${i}`);
+   projectIdInputClone.setAttribute("name", `CustomCosts[${i}].EstimateId`);
+
+   projectIdDiv.appendChild(projectIdInputClone);
+
+   var categoryDiv = document.getElementById("custom_estimate_category_div_0");
+
+   var categoryInputClone = document.getElementById("custom_estimate_category_input_0").cloneNode(true);
+   categoryInputClone.setAttribute("id", `custom_estimate_category_input_${i}`);
+   categoryInputClone.setAttribute("name", `CustomCosts[${i}].Category`);
+
+   categoryDiv.appendChild(categoryInputClone);
+
+   var itemDiv = document.getElementById("custom_estimate_item_div_0");
+
+   var itemInputClone = document.getElementById("custom_estimate_item_input_0").cloneNode(true);
+   itemInputClone.setAttribute("id", `custom_estimate_item_input_${i}`);
+   itemInputClone.setAttribute("name", `CustomCosts[${i}].ItemName`);
+
+   itemDiv.appendChild(itemInputClone);
+
+   var unitDiv = document.getElementById("custom_estimate_unit_div_0");
+
+   var unitInputClone = document.getElementById("custom_estimate_unit_input_0").cloneNode(true);
+   unitInputClone.setAttribute("id", `custom_estimate_unit_input_${i}`);
+   unitInputClone.setAttribute("name", `CustomCosts[${i}].UnitOfMeasure`);
+
+   unitDiv.appendChild(unitInputClone);
+
+   var cpuDiv = document.getElementById("custom_estimate_cpu_div_0");
+
+   var cpuInputClone = document.getElementById("custom_estimate_cpu_input_0").cloneNode(true);
+   cpuInputClone.setAttribute("id", `custom_estimate_cpu_input_${i}`);
+   cpuInputClone.setAttribute("name", `CustomCosts[${i}].CostPerUnit`);
+
+   cpuDiv.appendChild(cpuInputClone);
+
+   var quantityDiv = document.getElementById("custom_estimate_quantity_div_0");
+
+   var quantityInputClone = document.getElementById("custom_estimate_quantity_input_0").cloneNode(true);
+   quantityInputClone.setAttribute("id", `custom_estimate_quantity_input_${i}`);
+   quantityInputClone.setAttribute("name", `CustomCosts[${i}].Quantity`);
+
+   quantityDiv.appendChild(quantityInputClone);
+
+   var dateDiv = document.getElementById("custom_estimate_markup_div_0");
+
+   var dateInputClone = document.getElementById("custom_estimate_markup_input_0").cloneNode(true);
+   dateInputClone.setAttribute("id", `custom_estimate_markup_input_${i}`);
+   dateInputClone.setAttribute("name", `CustomCosts[${i}].MarkupPercent`);
+
+   dateDiv.appendChild(dateInputClone);
+
+   var removeButtonDiv = document.getElementById("cec_form_removeButton_div_0");
+   var removeButton = document.createElement("button");
+   removeButton.classList.add("btn", "btn-dark");
+   removeButton.setAttribute("type", "button");
+   removeButton.setAttribute("id", `cec_removeButton_${i}`);
+   removeButton.addEventListener("click", RemoveCustomEstimateCostRow);
+
+   var buttonText = document.createTextNode("Remove Cost");
+
+   removeButton.appendChild(buttonText);
+
+   removeButtonDiv.appendChild(removeButton);
+   
+   i++
+
+}
+
+function RemoveCustomEstimateCostRow(event) {
+
+    var idNumber = event.target.id.split("_").pop();
+
+    var projectIdToRemove = document.getElementById(`custom_estimate_item_estimateId_input_${idNumber}`);
+    var categoryToRemove = document.getElementById(`custom_estimate_category_input_${idNumber}`);
+    var itemToRemove = document.getElementById(`custom_estimate_item_input_${idNumber}`);
+    var unitDivToRemove = document.getElementById(`custom_estimate_unit_input_${idNumber}`);
+    var cpuDivToRemove = document.getElementById(`custom_estimate_cpu_input_${idNumber}`);
+    var quantityToRemove = document.getElementById(`custom_estimate_quantity_input_${idNumber}`);
+    var markupToRemove = document.getElementById(`custom_estimate_markup_input_${idNumber}`);
+    var removeButtonToRemove = document.getElementById(`cec_removeButton_${idNumber}`);
+
+    projectIdToRemove.remove();
+    categoryToRemove.remove();
+    itemToRemove.remove();
+    unitDivToRemove.remove();
+    cpuDivToRemove.remove();
+    quantityToRemove.remove();
+    markupToRemove.remove();
+    removeButtonToRemove.remove();
+}

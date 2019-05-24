@@ -12,6 +12,12 @@
     <Compile Remove="Migrations\20190520005931_CustomCosts.Designer.cs" />
     <Compile Remove="Migrations\20190520010202_CustomCosts.cs" />
     <Compile Remove="Migrations\20190520010202_CustomCosts.Designer.cs" />
+    <Compile Remove="Migrations\20190523000214_WTF.cs" />
+    <Compile Remove="Migrations\20190523000214_WTF.Designer.cs" />
+    <Compile Remove="Migrations\20190523002651_CustomEstimateCost.cs" />
+    <Compile Remove="Migrations\20190523002651_CustomEstimateCost.Designer.cs" />
+    <Compile Remove="Migrations\20190523005942_WTF.cs" />
+    <Compile Remove="Migrations\20190523005942_WTF.Designer.cs" />
   </ItemGroup>
 
 

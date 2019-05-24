@@ -1,0 +1,205 @@
+﻿@model MoneyTree.Models.Estimate
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="page_title_container container-fluid">
+    <h1 class="page_title">@Html.DisplayFor(model => model.ProjectTitle)  <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
+</div>
+<card class="card text-center mb-4" style="width: 110%;">
+    <table style="width: 100%;">
+        <tbody>
+            <tr style="border: thin solid grey;">
+                <td class="project_customer_data" style="font-weight:bolder; width:70%; padding: 10px; text-align: left;">
+                    Customer: @Html.DisplayFor(model => model.Customer.FullName) <br />
+                    Email: @Html.DisplayFor(model => model.Customer.Email)<br />
+                    Phone: @Html.DisplayFor(model => model.Customer.PhoneNumber)<br />
+                </td>
+                <td class="project_cost_data" style="font-weight:bolder; width:30%; padding: 10px; text-align: left;">
+                    Estimate Date: @Html.DisplayFor(model => model.EstimateDate)<br />
+                    Expiration Date: @Html.DisplayFor(model => model.ExpirationDate)<br />
+                    Total Estimated Cost: $@Html.DisplayFor(model => model.TotalCost)<br />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 style="font-weight:bolder; width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
+        Itemized Costs  <a asp-controller="EstimateCost" asp-action="Create" asp-route-id="@Model.Id" style="font-size:1rem">
+            <i class="fas fa-plus-circle fa-2x"></i>
+        </a>
+    </h3>
+    <h4 style="width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
+        Custom Costs  <a asp-controller="CustomEstimateCost" asp-action="Create" asp-route-id="@Model.Id" style="font-size:1rem">
+            <i class="fas fa-plus-circle fa-2x"></i>
+        </a>
+    </h4>
+    <table>
+            <tbody>
+                <tr style="border: thin solid grey;">
+                    <td style="border: thin solid grey; width: 70%">
+                        <h5 style="font-weight:bolder; width:100%; padding:10px; margin:0px; text-align: left; ">
+                            Category: Custom
+                        </h5>
+                    </td>
+                    <td style="border: thin solid grey; width: 30%; text-align: center;">
+
+                        @{
+                            string keyText = "Custom";
+                            double valueCustom = 0.00;
+                            double totalCustom = 0.00;
+                            if (ViewBag.CategoryTotals.TryGetValue(keyText, out valueCustom)) {
+                                totalCustom = valueCustom;
+                            }
+                        }
+                        <h5 style="font-weight:bolder; width:100%; padding:10px; margin:0px; text-align: left;">
+                            Total: $@totalCustom.ToString("F2")
+                        </h5>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    <table style="width:100%; ">
+        <thead>
+            <tr style="border: thin solid grey;">
+                <th style="border: thin solid grey; width:45%;">
+                    Item
+                </th>
+                <th style="border: thin solid grey; width:10%;">
+                    Units
+                </th>
+                <th style="border: thin solid grey; width:10%;">
+                    Quantity
+                </th>
+                <th style="border: thin solid grey; width:10%;">
+                    Cost
+                </th>
+                <th style="border: thin solid grey; width:15%;">
+                    Total
+                </th>
+                <th style="border: thin solid grey; width:10%;">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.CustomCosts != null){
+
+                @foreach (var item in Model.CustomCosts) {
+
+                    <tr style="border: thin solid grey">
+                        <td style="border: thin solid grey; text-wrap: none">
+                            @Html.DisplayFor(modelItem => item.ItemName)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.UnitOfMeasure)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @{
+                                var costToDisplay = item.CostPerUnit * (1 + item.MarkupPercent);
+                            }
+                                $@costToDisplay.ToString("F2")
+                        </td>
+                        <td style="border: thin solid grey;">
+                            $@Html.DisplayFor(modelItem => item.TotalCost)
+                        </td>
+                        <td style="border: thin solid grey;">
+                            <a asp-controller="CustomProjectCost" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a> |
+                            <a asp-controller="CustomProjectCost" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <h4 style="width:100%; padding:10px; margin:0px; text-align: left; border: thin solid grey;">
+    Standard Costs  <a asp-controller="EstimateCost" asp-action="Create" asp-route-id="@Model.Id" style="font-size:1rem">
+            <i class="fas fa-plus-circle fa-2x"></i>
+        </a>
+    </h4>
+    @foreach (var category in Model.Categories) {
+        <table>
+            <tbody>
+                <tr style="border: thin solid grey;">
+                    <td style="border: thin solid grey; width: 70%">
+                        <h5 style="font-weight:bolder; width:100%; padding:10px; margin:0px; text-align: left; ">
+                            Category: @Html.DisplayFor(item => category.CategoryName)
+                        </h5>
+                    </td>
+                    <td style="border: thin solid grey; width: 30%; text-align: center;">
+
+                        @{
+                            string key = category.CategoryName;
+                            double value = 0.00;
+                            double total = 0.00;
+                            if (ViewBag.CategoryTotals.TryGetValue(key, out value)) {
+                                total = value;
+                            }
+                        }
+                        <h5 style="font-weight:bolder; width:100%; padding:10px; margin:0px; text-align: left;">
+                            Total: $@total.ToString("F2")
+                        </h5>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table style="width:100%; ">
+            <thead>
+                <tr style="border: thin solid grey;">
+                    <th style="border: thin solid grey; width:45%;">
+                        Item
+                    </th>
+                    <th style="border: thin solid grey; width:10%;">
+                        Units
+                    </th>
+                    <th style="border: thin solid grey; width:10%;">
+                        Quantity
+                    </th>
+                    <th style="border: thin solid grey; width:10%;">
+                        Cost
+                    </th>
+                    <th style="border: thin solid grey; width:15%;">
+                        Total
+                    </th>
+                    <th style="border: thin solid grey; width:10%;">
+                    </th>
+                </tr>
+            </thead>
+
+            @foreach (var cost in Model.EstimateCosts) {
+
+                @if (cost.CostItem.CostCategory.CategoryName.ToUpper() == category.CategoryName.ToUpper()) {
+
+                    <tbody>
+                        <tr style="border: thin solid grey">
+                            <td style="border: thin solid grey; text-wrap: none">
+                                @Html.DisplayFor(modelItem => cost.CostItem.ItemName)
+                            </td>
+                            <td style="border: thin solid grey;">
+                                @Html.DisplayFor(modelItem => cost.CostItem.UnitOfMeasure.UnitName)
+                            </td>
+                            <td style="border: thin solid grey;">
+                                @Html.DisplayFor(modelItem => cost.Quantity)
+                            </td>
+                            <td style="border: thin solid grey;">
+
+                                @{
+                                    var costToDisplay = cost.CostPerUnit * (1 + category.MarkupPercent);
+                                }
+                                $@costToDisplay.ToString("F2")
+                            </td>
+                            <td style="border: thin solid grey;">
+                                $@Html.DisplayFor(modelItem => cost.Total)
+                            </td>
+                            <td style="border: thin solid grey;">
+                                <a asp-controller="EstimateCost" asp-action="Edit" asp-route-id="@cost.Id"><i class="fas fa-edit"></i></a> |
+                                <a asp-controller="EstimateCost" asp-action="Delete" asp-route-id="@cost.Id"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+            }
+        </table>
+    }
+</card>

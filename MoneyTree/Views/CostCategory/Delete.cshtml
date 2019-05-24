@@ -21,10 +21,10 @@
                 </dd>
             </dl>
 
-            <p style="font-weight: bold">Please select a new category below.  All Cost Items current assigned to the deleted Cost Category will be reassigned to the new category chosen.</p>
+            <p style="font-weight: bold">Please select a new category below.  
+            All Cost Items current assigned to the deleted Cost Category will be reassigned to the new category chosen.</p>
 
             <div class="form-group">
-                @*<label asp-for="@Model.NewCategoryId" class="control-label">Please Select A New Category</label>*@
                 <select asp-for="@Model.NewCategoryId" class="form-control" asp-items="@Model.CategoryOptions"></select>
             </div>
 

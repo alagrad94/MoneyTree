@@ -144,25 +144,20 @@ namespace MoneyTree.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ItemName,ProjectId,Category, UnitOfMeasure,CostPerUnit,Quantity,DateUsed")] CustomProjectCost customProjectCost) {
+        public async Task<IActionResult> Edit(int id, 
+            [Bind("Id,ItemName,ProjectId,Category, UnitOfMeasure,CostPerUnit,Quantity,DateUsed")]
+                 CustomProjectCost customProjectCost) {
 
             if (id != customProjectCost.Id) {
                 return NotFound();
             }
+
             ModelState.Remove("Project");
 
             if (ModelState.IsValid) {
-                try  {
-                    _context.Update(customProjectCost);
-                    await _context.SaveChangesAsync();
-                }  catch (DbUpdateConcurrencyException)  {
-                    if (!CustomProjectCostExists(customProjectCost.Id))  {
-                        return NotFound();
-                    }  else  {
-                        throw;
-                    }
-                }
 
+                _context.Update(customProjectCost);
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Project", new { id = customProjectCost.ProjectId });
             }
 
@@ -198,10 +193,6 @@ namespace MoneyTree.Controllers {
             _context.CustomProjectCost.Remove(customProjectCost);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "Project", new { id = customProjectCost.ProjectId });
-        }
-
-        private bool CustomProjectCostExists(int id) {
-            return _context.CustomProjectCost.Any(e => e.Id == id);
         }
     }
 }
