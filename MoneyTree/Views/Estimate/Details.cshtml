@@ -4,7 +4,12 @@
     ViewData["Title"] = "Details";
 }
 <div class="page_title_container container-fluid">
-    <h1 class="page_title">@Html.DisplayFor(model => model.ProjectTitle)  <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a></h1>
+    <h1 class="page_title">@Html.DisplayFor(model => model.ProjectTitle)  <a asp-action="Index"><i class="fas fa-sm fa-arrow-alt-circle-left"></i></a> </h1>
+    <div class="form-group">
+
+        <a asp-action="PrintDetails" asp-route-id="@Model.Id"><input type="button" value="Print View" class="btn btn-dark" /></a>
+        
+    </div>
 </div>
 <card class="card text-center mb-4" style="width: 110%;">
     <table style="width: 100%;">

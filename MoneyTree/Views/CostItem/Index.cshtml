@@ -5,8 +5,7 @@
 }
 <script src="~/lib/jquery/dist/jquery.min.js"
         asp-fallback-test="window.jQuery"
-        crossorigin="anonymous">
-</script>
+        crossorigin="anonymous"></script>
 <div class="page_title_container container-fluid">
     <h1 class="page_title">Cost Items  <a asp-action="Create"><i class="fas fa-plus-circle"></i></a></h1>
 </div>
@@ -20,11 +19,9 @@
     @{Html.RenderPartial("_IndexPartial", Model);}
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
+<script type="text/javascript">$(document).ready(function () {
         $("#ddlCategory").change(function () {
-            var categoryId =  $("#ddlCategory").val();
-               $("#dvCategoryResults").load('CostItem?categoryId=' + categoryId);
+            var categoryId = $("#ddlCategory").val();
+            $("#dvCategoryResults").load('CostItem?categoryId=' + categoryId);
         });
-    });
-</script>  
+    });</script>  
