@@ -83,6 +83,47 @@ namespace MoneyTree.Controllers {
             return View(estimate);
         }
 
+        // GET: Estimates/PrintDetails/5
+        public IActionResult PrintDetails(int? id) {
+            if (id == null) {
+                return NotFound();
+            }
+
+            var estimate = GetEstimateById(id);
+
+            estimate.Categories.Sort((a, b) => string.Compare(a.CategoryName, b.CategoryName, StringComparison.CurrentCulture));
+
+            if (estimate == null) {
+                return NotFound();
+            }
+
+            Dictionary<string, double> categoryTotals = new Dictionary<string, double>();
+
+            foreach (var category in estimate.Categories) {
+
+                double categoryTotal = 0.00;
+
+                foreach (var cost in estimate.EstimateCosts) {
+
+                    if (cost.CostItem.CostCategory.CategoryName == category.CategoryName) {
+
+                        categoryTotal += cost.Total;
+                    }
+                }
+                categoryTotals.Add(category.CategoryName, categoryTotal);
+            }
+
+            double customTotal = 0.00;
+            foreach (var cost in estimate.CustomCosts) {
+                customTotal += cost.TotalCost;
+            }
+
+            categoryTotals.Add("Custom", customTotal);
+
+            ViewData["CategoryTotals"] = categoryTotals;
+            return View(estimate);
+        }
+
         // GET: Estimates/Create
         public IActionResult Create()  {
 

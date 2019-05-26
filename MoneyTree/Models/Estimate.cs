@@ -23,12 +23,12 @@ namespace MoneyTree.Models {
 
         [Required]
         [Display(Name = "Estimate Preparation Date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyy}")]
         public DateTime EstimateDate { get; set; }
 
         [Required]
         [Display(Name = "Estimate Expiration Date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyy}")]
         public DateTime ExpirationDate { get; set; }
 
         public List<EstimateCost> EstimateCosts { get; set; }
