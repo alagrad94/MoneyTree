@@ -57,7 +57,7 @@
     customSelectScript.setAttribute("id", `customSelect_${i}`);
     customSelectScript.type = "text/javascript";
     customSelectScript.innerHTML = `$(document).ready(function () {
-    $("#cost_item_select_${i}").customselect({ search: true,hoveropen: false });});`
+    $("#cost_item_select_${i}").customselect({ search: true,hoveropen: true });});`
 
     pcForm.appendChild(customSelectScript);
 
@@ -241,7 +241,7 @@ function AddEstimateCostRow() {
     customSelectScript.setAttribute("id", `estimate_customSelect_${i}`);
     customSelectScript.type = "text/javascript";
     customSelectScript.innerHTML = `$(document).ready(function () {
-    $("#estimate_item_select_${i}").customselect({ search: true,hoveropen: false });});`
+    $("#estimate_item_select_${i}").customselect({ search: true,hoveropen: true });});`
 
     pcForm.appendChild(customSelectScript);
 
@@ -251,7 +251,6 @@ function AddEstimateCostRow() {
 function RemoveEstimateCostRow(event) {
 
     var idNumber = event.target.id.split("_").pop();
-    console.log(idNumber)
     var estimateIdToRemove = document.getElementById(`estimate_item_estimateId_input_${idNumber}`);
     var selectToRemove = document.getElementById(`estimate_item_select_${idNumber}`);
     var parentToRemove = selectToRemove.parentElement;
